@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+const items = [
+  {
+    icon: '/images/cryzel-mail-open-love.svg',
+    title: 'Campaign builder',
+    text: 'Design visually engaging emails and landing flows with reusable blocks.',
+  },
+  {
+    icon: '/images/cryzel-target-02.svg',
+    title: 'Audience targeting',
+    text: 'Segment by behavior, plan, and lifecycle stage for precise messaging.',
+  },
+  {
+    icon: '/images/cryzel-computer-dollar.svg',
+    title: 'Revenue attribution',
+    text: 'Connect campaigns to outcomes so finance and marketing share one truth.',
+  },
+  {
+    icon: '/images/cryzel-clock.svg',
+    title: 'Automated journeys',
+    text: 'Trigger follow-ups from product events without manual busywork.',
+  },
+  {
+    icon: '/images/cryzel-discover-circle.svg',
+    title: 'Experimentation',
+    text: 'Test subject lines, offers, and layouts with clear winner reporting.',
+  },
+  {
+    icon: '/images/cryzel-laptop-charging.svg',
+    title: 'Integrations',
+    text: 'Sync CRM, billing, and analytics so every tool stays in step.',
+  },
+];
+---
+
+<BaseLayout title="Features" description="Explore Cryzel funnel, automation, and reporting features.">
+  <Header slot="header" />
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>Features</h1>
+      <p>Essential tools for driving funnel conversions and lasting customer growth.</p>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span><span>Features</span>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cards-3">
+        {
+          items.map((item) => (
+            <article class="card">
+              <img class="card-icon" src={item.icon} alt="" width="48" height="48" />
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </article>
+          ))
+        }
+      </div>
+      <div class="cta-band" style="margin-top:3rem">
+        <h2>See Cryzel in action</h2>
+        <p>Start free and explore the full feature set with your team.</p>
+        <a class="btn" href="/contact">Get Started for Free</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

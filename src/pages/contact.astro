@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout title="Contact" description="Contact Cryzel for demos, pricing questions, or partnership inquiries.">
+  <Header slot="header" />
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>Contact</h1>
+      <p>Tell us about your team — we will help you get started.</p>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span><span>Contact</span>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-grid">
+      <div>
+        <div class="contact-card">
+          <h3>Email</h3>
+          <p>hello@cryzel.demo</p>
+        </div>
+        <div class="contact-card">
+          <h3>Sales</h3>
+          <p>sales@cryzel.demo</p>
+        </div>
+        <div class="contact-card">
+          <h3>Office</h3>
+          <p>120 Market Street<br />San Francisco, CA</p>
+        </div>
+      </div>
+      <form class="contact-form" id="contact-form">
+        <div class="row">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" required autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required autocomplete="email" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="company">Company</label>
+          <input id="company" name="company" />
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+        <button class="btn btn-dark" type="submit">Send Message</button>
+        <p data-success hidden style="margin-top:1rem;color:var(--accent-9);font-weight:600">
+          Thanks! Connect a form endpoint to deliver this message in production.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('contact-form')?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const success = document.querySelector<HTMLElement>('[data-success]');
+    if (success) success.hidden = false;
+  });
+</script>

@@ -1,0 +1,60 @@
+---
+const links = [
+  { href: '/#features', label: 'Features' },
+  { href: '/#company', label: 'Company' },
+  { href: '/#pricing', label: 'Pricing' },
+  { href: '/#contact', label: 'Contact' },
+];
+---
+
+<header class="site-header" role="banner">
+  <div class="container header-inner">
+    <a class="logo" href="/" rel="home" aria-label="Cryzel home">
+      <img src="/images/cryzel-logo-white.svg" alt="Cryzel" width="130" height="30" />
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="Primary">
+      <button class="nav-close" type="button" aria-label="Close menu" data-nav-close>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"></path>
+        </svg>
+      </button>
+      <ul class="nav-list">
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a class="btn btn-white header-cta hide-on-mobile" href="/">Get Started for Free</a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" data-nav-toggle>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const nav = document.getElementById('main-nav');
+  document.querySelector('[data-nav-toggle]')?.addEventListener('click', () => {
+    nav?.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  });
+  document.querySelector('[data-nav-close]')?.addEventListener('click', () => {
+    nav?.classList.remove('is-open');
+    document.body.style.overflow = '';
+  });
+  nav?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      nav.classList.remove('is-open');
+      document.body.style.overflow = '';
+    })
+  );
+</script>

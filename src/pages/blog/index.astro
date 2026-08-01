@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { posts } from '../../data/posts';
+import '../../styles/global.css';
+---
+
+<BaseLayout title="Insights" description="Cryzel blog — funnel strategy, email campaigns, and growth insights.">
+  <Header slot="header" />
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>Insights</h1>
+      <p>Ideas for building funnels that convert and customers that stay.</p>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span><span>Insights</span>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="blog-grid">
+        {
+          posts.map((post) => (
+            <article class="blog-card">
+              <a href={`/blog/${post.slug}`}>
+                <img src={post.image} alt="" width="600" height="375" loading="lazy" />
+              </a>
+              <div class="blog-card__body">
+                <p class="blog-card__meta">
+                  {post.date} · {post.author}
+                </p>
+                <h3>
+                  <a href={`/blog/${post.slug}`}>{post.title}</a>
+                </h3>
+                <p>{post.excerpt}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

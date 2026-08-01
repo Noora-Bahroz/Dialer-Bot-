@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout title="Pricing" description="Simple Cryzel pricing plans for teams of every size.">
+  <Header slot="header" />
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>Pricing</h1>
+      <p>Transparent plans that scale as your funnel grows.</p>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span><span>Pricing</span>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="pricing-grid">
+        <article class="price-card">
+          <h3>Standard</h3>
+          <p class="desc">Perfect for trying out the core features</p>
+          <div class="amount"><strong>$39</strong> <span>Monthly</span></div>
+          <p><strong>Included Features</strong></p>
+          <hr />
+          <ul>
+            <li>Basic Reporting</li>
+            <li>Standard Personalization</li>
+            <li>Basic Segmentation</li>
+            <li>Standard Support (Email)</li>
+          </ul>
+          <a class="btn btn-dark" href="/contact">Get Started for Free</a>
+        </article>
+        <article class="price-card featured">
+          <h3>Business</h3>
+          <p class="desc">Perfect for growing teams that need more control</p>
+          <div class="amount"><strong>$59</strong> <span>Monthly</span></div>
+          <p><strong>Included Features</strong></p>
+          <hr />
+          <ul>
+            <li>Advanced Reporting</li>
+            <li>Dynamic Personalization</li>
+            <li>Advanced Segmentation</li>
+            <li>Priority Support</li>
+          </ul>
+          <a class="btn" href="/contact">Get Started for Free</a>
+        </article>
+        <article class="price-card">
+          <h3>Enterprise</h3>
+          <p class="desc">For organizations that need scale and security</p>
+          <div class="amount"><strong>$99</strong> <span>Monthly</span></div>
+          <p><strong>Included Features</strong></p>
+          <hr />
+          <ul>
+            <li>Custom Reporting</li>
+            <li>SSO & advanced security</li>
+            <li>Dedicated success manager</li>
+            <li>SLA-backed support</li>
+          </ul>
+          <a class="btn btn-dark" href="/contact">Contact Sales</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

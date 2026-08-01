@@ -1,0 +1,365 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+const benefitFeatures = [
+  {
+    icon: '/images/cryzel-elements.svg',
+    title: 'Build Tailored Campaigns Effortlessly',
+    text: 'Create highly personalized campaigns without the usual complexity. With Cryzel, you can easily build targeted',
+  },
+  {
+    icon: '/images/cryzel-elements-1.svg',
+    title: 'Analyse Performance in Real Time',
+    text: 'Cryzel provides instant performance tracking so you can see how your campaigns are performing the moment they go live.',
+  },
+];
+
+const sponsors = [
+  'company-logo-01.png',
+  'company-logo-02.png',
+  'company-logo-03.png',
+  'company-logo-04.png',
+  'company-logo-05.png',
+  'company-logo-06.png',
+];
+
+const spotlights = [
+  { image: '/images/cryzel-home-01.webp', title: 'Streamline your email campaigns' },
+  { image: '/images/cryzel-home-02.webp', title: 'Easily build tailored campaigns' },
+  { image: '/images/cryzel-home-03.webp', title: 'Monitor results with live analytics' },
+];
+
+const serviceRows = [
+  {
+    reverse: false,
+    label: 'Real-Time Insights',
+    title: 'Stay on top with live performance insights',
+    points: [
+      { icon: '/images/cryzel-elements.svg', text: 'Streamlined Task Prioritisation' },
+      { icon: '/images/cryzel-elements-2.svg', text: 'Time Tracking and Reporting' },
+      { icon: '/images/cryzel-elements-3.svg', text: 'Automated Task Reminders' },
+      { icon: '/images/cryzel-analysis-text-link.svg', text: 'Collaborative Project Management' },
+    ],
+    image: '/images/cryzel-frame-02.png',
+  },
+  {
+    reverse: true,
+    label: "Today's Agenda",
+    title: 'Planned activities and appointments lined.',
+    points: [
+      { icon: '/images/cryzel-radial.svg', text: 'Automated Email Campaigns' },
+      { icon: '/images/cryzel-target-02.svg', text: 'Personalised Email Templates' },
+      { icon: '/images/cryzel-crowdfunding.svg', text: 'A/B Testing for Optimisation' },
+      { icon: '/images/cryzel-computer-dollar.svg', text: 'Sales Pipeline Management' },
+    ],
+    image: '/images/cryzel-frame-03.png',
+  },
+  {
+    reverse: false,
+    label: 'Smart Note Sorting',
+    title: 'Sort and manage your notes within categorized.',
+    points: [
+      { icon: '/images/cryzel-elements-4.svg', text: 'Track your credit score in real-time' },
+      { icon: '/images/cryzel-discover-circle.svg', text: 'Lead Generation and Nurturing' },
+      { icon: '/images/cryzel-bulb-charge.svg', text: 'Contact Segmentation and Targeting' },
+      { icon: '/images/cryzel-cloud-upload.svg', text: 'Sales Pipeline Management' },
+    ],
+    image: '/images/cryzel-frame-04.png',
+  },
+  {
+    reverse: true,
+    label: 'Unique Impact',
+    title: 'Monitor performance and enhance strategies.',
+    points: [
+      { icon: '/images/cryzel-cloud-upload.svg', text: 'Track your credit score in real-time' },
+      { icon: '/images/cryzel-clock.svg', text: 'Create and manage personalised financial plans' },
+      { icon: '/images/cryzel-hourglass.svg', text: 'CrediSure helps you set realistic financial objectives' },
+      { icon: '/images/cryzel-paragraph-bullets-point-01.svg', text: 'Create and manage personalized financial plans' },
+    ],
+    image: '/images/cryzel-donut-chart.png',
+  },
+];
+
+const successPoints = [
+  {
+    icon: '/images/cryzel-icon.png',
+    title: 'Beyond Ordinary Work',
+    text: 'This isn’t just another job it’s an opportunity to grow, create.',
+  },
+  {
+    icon: '/images/cryzel-icon-1.png',
+    title: 'Nurture Your Mind',
+    text: 'Your well-being is your greatest asset. When you take time to care.',
+  },
+];
+
+const testimonialQuote =
+  'We leverage the latest technology to provide efficient and convenient services, including online policy management and claims filing.';
+
+const testimonials = [
+  { name: 'Justin L. Clark', role: 'PBX installer', image: '/images/cryzel-pricing-01.webp' },
+  { name: 'Jimmie P. Johnson', role: 'Business support assistant', image: '/images/cryzel-pricing-02.webp' },
+  { name: 'Darlene B. Wilkerson', role: 'Aircraft rigging assembler', image: '/images/cryzel-pricing-03.webp' },
+  { name: 'Kenneth B. Emery', role: 'Health care executive', image: '/images/cryzel-pricing-04.webp' },
+  { name: 'Shellie F. Connell', role: 'Assistant cook', image: '/images/cryzel-pricing-05.webp' },
+  { name: 'Brian A. Barnes', role: 'Rough carpenter', image: '/images/cryzel-pricing-06.webp' },
+];
+---
+
+<BaseLayout
+  title="Cryzel"
+  description="Capture attention with result-driven campaigns. Cryzel helps teams craft engaging funnels and secure financial workflows."
+>
+  <Header slot="header" />
+
+  <!-- a1-hero-banner -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="announcement">
+            <span class="badge">NEW</span>
+            <p>The Financial Brighter Application</p>
+            <span class="arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+          </div>
+          <h1>Capture attention with result-driven campaigns</h1>
+          <p class="lead">
+            Create email campaigns that not only reach inboxes but drive real results. With Cryzel, you can craft
+            visually engaging.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="/">Get Started</a>
+            <a class="btn btn-ghost" href="/">Watch Demo</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img src="/images/cryzel-illustration-01.png" alt="Cryzel Illustration" width="560" height="590" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- benifits -->
+  <section class="benefits" id="features">
+    <div class="wrap">
+      <div class="benefits-head">
+        <div>
+          <p class="section-label">Funnel Power Tools</p>
+          <h2 class="section-title">Essential features for driving funnel conversions</h2>
+        </div>
+        <div></div>
+      </div>
+
+      <div class="benefits-card">
+        <img src="/images/cryzel-tabs-01.png" alt="Smart transfers triggered by your spending habits" />
+        <div>
+          <h3>Smart transfers triggered by your spending habits</h3>
+          {
+            benefitFeatures.map((f) => (
+              <div class="benefits-feature">
+                <span class="icon-mask" style={`--icon:url(${f.icon})`} />
+                <div>
+                  <p>{f.title}</p>
+                  <p class="desc">{f.text}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- sponsors-section -->
+  <section class="sponsors">
+    <div class="wrap">
+      <h2 class="section-title center">Trusted by the top product teams globally</h2>
+      <div class="sponsors-logos">
+        {sponsors.map((logo) => <img src={`/images/${logo}`} alt="Photo of a Company Logo." />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- feature-spotlight-grid -->
+  <section class="spotlight">
+    <div class="spotlight-inner">
+      <p class="section-label center">Power Your Growth</p>
+      <h2 class="section-title center">Find the tools that convert clicks to customers.</h2>
+      <div class="spotlight-grid">
+        {
+          spotlights.map((card) => (
+            <article class="spotlight-card" style={`background-image:url(${card.image})`}>
+              <div />
+              <div>
+                <h3>{card.title}</h3>
+                <a class="btn btn-outline-white" href="/">
+                  Read More
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- a4-cryzel-service -->
+  <section class="service">
+    <div class="wrap">
+      {
+        serviceRows.map((row) => (
+          <div class:list={['service-row', { reverse: row.reverse }]}>
+            <div class="service-copy">
+              <p class="section-label">{row.label}</p>
+              <h2>{row.title}</h2>
+              <div class="service-points">
+                {row.points.map((point) => (
+                  <div class="icon-row">
+                    <span class="icon-mask" style={`--icon:url(${point.icon})`} />
+                    <p>{point.text}</p>
+                  </div>
+                ))}
+              </div>
+              <a class="btn btn-chip" href="/">
+                See a sample Chart Visualization
+              </a>
+            </div>
+            <div class="service-media">
+              <img src={row.image} alt="" />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- a2-cryzel-success -->
+  <section class="success" id="company">
+    <div class="wrap">
+      <p class="section-label center">Future Gains, Today</p>
+      <h2 class="section-title center">Your success, recognized</h2>
+
+      <div class="success-grid">
+        <div class="success-copy">
+          <p class="section-label">Aligned with Your Promise</p>
+          <h2>Showcases your value</h2>
+          <p class="lead">
+            We ensure that every element from visuals to messaging clearly communicates the value you deliver while
+            staying consistent with your brand’s mission and goals.
+          </p>
+          <div class="success-points">
+            {
+              successPoints.map((point) => (
+                <div>
+                  <img src={point.icon} alt="Photo of a cryzel icon." />
+                  <h3>{point.title}</h3>
+                  <p>{point.text}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        <div class="success-media">
+          <img src="/images/cryzel-company-13.webp" alt="Photo of a cryzel company image." />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- a3-statistics -->
+  <section class="stats" id="pricing">
+    <div class="wrap">
+      <p class="section-label center">Proof in Performance</p>
+      <h2 class="section-title center">The Stats Behind Our Growth</h2>
+
+      <div class="stats-top">
+        <div class="stat-media">
+          <img src="/images/cryzel-home-04.webp" alt="Photo of a cryzel home image." />
+        </div>
+        <div class="stat-card">
+          <div class="num">45K</div>
+          <h3>Customer loyalty rate</h3>
+          <p>
+            A key metric that shows how well your business keeps customers coming back higher retention means
+            stronger relationships and lasting growth.
+          </p>
+        </div>
+      </div>
+
+      <div class="stats-bottom">
+        <div class="stat-card">
+          <div class="num">0%</div>
+          <h3>Conversion Rates</h3>
+          <p>
+            A key metric that shows how well your business keeps customers coming back higher retention means
+            stronger relationships and lasting growth.
+          </p>
+        </div>
+        <div class="stat-media">
+          <img src="/images/cryzel-home-05.webp" alt="Photo of a cryzel home image." />
+        </div>
+        <div class="stat-card">
+          <div class="num">85%</div>
+          <h3>Faster Funnel Creation</h3>
+          <p>
+            A key metric that shows how well your business keeps customers coming back higher retention means
+            stronger relationships and lasting growth.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- testimonials -->
+  <section class="testimonials">
+    <div class="wrap">
+      <p class="section-label center">50% Sales Increase in 3 Months</p>
+      <h2 class="section-title center">What our customers are saying</h2>
+      <div class="testimonial-grid">
+        {
+          testimonials.map((t) => (
+            <article class="testimonial">
+              <div class="testimonial-head">
+                <img src={t.image} alt={t.name} />
+                <div>
+                  <strong>{t.name}</strong>
+                  <span>{t.role}</span>
+                </div>
+              </div>
+              <p>{testimonialQuote}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- a5-tasks -->
+  <section class="cta-wrap" id="contact">
+    <div class="wrap">
+      <div class="cta-band">
+        <h2>Improve how you handle tasks</h2>
+        <p>
+          Easily organize, prioritize, and track your tasks all in one place. Stay focused, reduce stress, and get
+          more done<br /> with smarter task management tools.
+        </p>
+        <div class="cta-actions">
+          <a class="btn btn-white" href="/">Get Started for Free</a>
+          <a class="btn btn-ghost" href="/">Watch Demo</a>
+        </div>
+        <div class="preview">
+          <img src="/images/cryzel-illustration-03.png" alt="Photo of a cryzel illustration." />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

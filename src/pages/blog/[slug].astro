@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { posts, getPost } from '../../data/posts';
+import '../../styles/global.css';
+
+export function getStaticPaths() {
+  return posts.map((post) => ({ params: { slug: post.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = getPost(slug!);
+if (!post) return Astro.redirect('/404');
+---
+
+<BaseLayout title={post.title} description={post.excerpt}>
+  <Header slot="header" />
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>{post.title}</h1>
+      <p>{post.date} · by {post.author}</p>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span><a href="/blog">Insights</a><span>/</span><span>{post.title}</span>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <img
+        src={post.image}
+        alt=""
+        width="1000"
+        height="560"
+        style="width:100%;max-width:900px;margin:0 auto 2rem;border-radius:var(--radius);aspect-ratio:16/9;object-fit:cover"
+      />
+      <article class="prose" set:html={post.content} />
+      <p style="text-align:center;margin-top:2rem">
+        <a class="btn btn-dark" href="/blog">← Back to Insights</a>
+      </p>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

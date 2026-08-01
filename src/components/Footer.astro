@@ -1,0 +1,84 @@
+---
+const navigation = [
+  { label: 'Products', href: '/features' },
+  { label: 'Company', href: '/#company' },
+  { label: 'Pricing', href: '/#pricing' },
+  { label: 'Insights', href: '/blog' },
+];
+
+const resources = [
+  { label: 'Privacy Policy', href: '#' },
+  { label: 'Changelog', href: '#' },
+  { label: 'Terms & Conditions', href: '#' },
+];
+
+const company = [
+  { label: 'Careers', href: '#' },
+  { label: 'Contact', href: '/#contact' },
+  { label: 'FAQs', href: '#' },
+];
+
+const socials = [
+  { icon: '/images/cryzel-social-icon-1.png', width: 30, label: 'Facebook' },
+  { icon: '/images/cryzel-social-icon-2.png', width: 34, label: 'Twitter' },
+  { icon: '/images/cryzel-social-icon-3.png', width: 34, label: 'LinkedIn' },
+];
+---
+
+<footer class="site-footer" role="contentinfo">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-columns">
+        <div class="footer-brand">
+          <a class="logo" href="/" aria-label="Cryzel home">
+            <img src="/images/cryzel-logo-black.svg" alt="Cryzel" width="120" height="30" />
+          </a>
+          <p>Cryzel is a cutting-edge financial technology platform offering secure, seamless financial services.</p>
+          <div class="footer-awards">
+            <span>Golden Partner Award</span>
+            <img src="/images/cryzel-award-01.png" alt="Cryzel award icon" width="47" height="56" />
+            <img src="/images/cryzel-award-02.png" alt="Cryzel award icon" width="47" height="56" />
+          </div>
+        </div>
+
+        <div>
+          <h3>NAVIGATION</h3>
+          <ul>
+            {navigation.map((link) => (
+              <li><a href={link.href}>{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3>RESOURCES</h3>
+          <ul>
+            {resources.map((link) => (
+              <li><a href={link.href}>{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3>COMPANY</h3>
+          <ul>
+            {company.map((link) => (
+              <li><a href={link.href}>{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>Copyright © 2025 Cryzel. All rights reserved</p>
+      <div class="footer-socials" aria-label="Social links">
+        {socials.map((social) => (
+          <a href="#" aria-label={social.label}>
+            <img src={social.icon} alt="" width={social.width} height="auto" />
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</footer>
