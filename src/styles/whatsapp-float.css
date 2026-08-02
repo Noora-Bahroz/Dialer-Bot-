@@ -14,7 +14,7 @@
   width: 56px;
   height: 56px;
   padding: 0;
-  border-radius: 14px;
+  border-radius: 50%;
   background: var(--wa-green);
   color: #fff;
   text-decoration: none;
@@ -46,8 +46,8 @@
   display: block;
   position: relative;
   z-index: 1;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
 }
 
 .wa-float__label {
