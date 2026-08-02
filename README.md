@@ -1,16 +1,20 @@
-# Cryzel (Static)
+# Dialer Bot
 
-Static Astro frontend converted from the **Cryzel** WordPress block theme (BdThemes). Deployable on Vercel.
+Marketing site for [Dialer Bot](https://dialerbot.online) — AI voice bots for call centers, truck dispatch, ACA, FE, HI, and more. Built with Astro.
 
 ## Pages
 
-- `/` — Marketing home (hero, sponsors, features, stats, testimonials, pricing, FAQ, CTA, blog)
-- `/features` — Feature grid
-- `/pricing` — Pricing plans
-- `/company` — About + careers
+- `/` — Marketing home
+- `/features` — Product features
+- `/pricing` — Plans and coverage
+- `/company` — About Dialer Bot
+- `/contact` — Contact channels
+- `/careers` — Open roles
+- `/faqs` — Common questions
 - `/blog` — Insights index
 - `/blog/[slug]` — Article
-- `/contact` — Contact form
+- `/privacy`, `/terms` — Legal
+- `/changelog` — Product updates
 - `/404` — Not found
 
 ## Local development
@@ -27,4 +31,4 @@ npm run build
 npx vercel
 ```
 
-Design tokens match the WP theme: Manrope, `#1E322D` / `#DBFE7A` / `#FAF8F4`.
+Brand tokens: Manrope, `#1E322D` / `#DBFE7A` / `#FAF8F4` / `#2f9d63`.
