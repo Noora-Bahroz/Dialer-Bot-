@@ -1,0 +1,70 @@
+---
+/**
+ * Benefits visual — soft cast sculpture.
+ * High-craft product art in the spirit of the original Cryzel panel.
+ */
+const ghosts = [1, 2, 3];
+---
+
+<div class="softcast" data-viz aria-label="Find the closer for a warm handoff">
+  <div class="softcast-tray">
+    <button type="button" class="softcast-search" data-mock>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7"></circle>
+        <path d="M20 20l-3.2-3.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
+      </svg>
+      <span>Search new closer</span>
+    </button>
+
+    <div class="softcast-list">
+      <button type="button" class="softcast-row is-on" data-mock>
+        <img src="/images/cryzel-pricing-01.webp" alt="" width="48" height="48" />
+        <span class="softcast-meta">
+          <strong>Farhan Rizvi</strong>
+          <em>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"></rect>
+              <path d="M3 7l9 7 9-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+            </svg>
+            seat12@aca.floor
+          </em>
+        </span>
+        <span class="softcast-x" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </span>
+      </button>
+
+      {
+        ghosts.map((g) => (
+          <div class={`softcast-skel s${g}`} aria-hidden="true">
+            <i class="av" />
+            <span class="tx">
+              <b />
+              <b />
+            </span>
+            <i class="dot" />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="softcast-float" aria-hidden="true">
+    <span class="softcast-tag">Warm · ACA</span>
+    <span class="softcast-tag dim">Bot cleared</span>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.softcast[data-viz]').forEach((root) => {
+    root.querySelectorAll('[data-mock]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        el.classList.add('is-pressed');
+        window.setTimeout(() => el.classList.remove('is-pressed'), 150);
+      });
+    });
+  });
+</script>

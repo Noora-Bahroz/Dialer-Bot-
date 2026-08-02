@@ -4,6 +4,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import DemoConsoleMock from '../components/DemoConsoleMock.astro';
 import FeatureConsoleMock from '../components/FeatureConsoleMock.astro';
+import WarmHandoffMock from '../components/WarmHandoffMock.astro';
+import HeroOrbitMock from '../components/HeroOrbitMock.astro';
 import '../styles/global.css';
 
 const benefitFeatures = [
@@ -194,7 +196,7 @@ const testimonials = [
           </div>
         </div>
         <div class="hero-visual">
-          <img src="/images/cryzel-illustration-01.png" alt="Dialer Bot AI voice bot platform" width="560" height="590" />
+          <HeroOrbitMock />
         </div>
       </div>
     </div>
@@ -211,7 +213,9 @@ const testimonials = [
       </div>
 
       <div class="benefits-card">
-        <img src="/images/cryzel-tabs-01.png" alt="Dialer Bot qualifying inbound and outbound calls" />
+        <div class="benefits-media">
+          <WarmHandoffMock />
+        </div>
         <div>
           <h3>First-contact qualification that saves seats, time, and budget</h3>
           {

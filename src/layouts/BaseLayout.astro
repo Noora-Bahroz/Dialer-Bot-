@@ -47,5 +47,73 @@ const pageTitle = title.includes('Dialer Bot') ? title : `${title} | Dialer Bot`
       <slot />
     </main>
     <slot name="footer" />
+
+    <script>
+      import Lenis from 'lenis';
+      import 'lenis/dist/lenis.css';
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduced) {
+        const lenis = new Lenis({
+          duration: 1.65,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: 'vertical',
+          gestureOrientation: 'vertical',
+          smoothWheel: true,
+          wheelMultiplier: 0.72,
+          touchMultiplier: 1.35,
+          infinite: false,
+          autoRaf: false,
+        });
+
+        window.__lenis = lenis;
+
+        const raf = (time) => {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
+
+        document.documentElement.classList.add('has-smooth-scroll');
+
+        document.addEventListener('click', (e) => {
+          const a = e.target?.closest?.('a[href]');
+          if (!a) return;
+
+          const href = a.getAttribute('href');
+          if (!href || href === '#' || /^https?:/i.test(href)) return;
+
+          let url;
+          try {
+            url = new URL(href, window.location.href);
+          } catch {
+            return;
+          }
+
+          if (url.origin !== window.location.origin) return;
+          if (url.pathname !== window.location.pathname) return;
+          if (!url.hash || url.hash === '#') return;
+
+          const el = document.querySelector(url.hash);
+          if (!el) return;
+
+          e.preventDefault();
+          lenis.scrollTo(el, {
+            offset: -72,
+            duration: 1.75,
+          });
+          history.pushState(null, '', url.hash);
+        });
+
+        const syncMenuLock = () => {
+          if (document.body.style.overflow === 'hidden') lenis.stop();
+          else lenis.start();
+        };
+        new MutationObserver(syncMenuLock).observe(document.body, {
+          attributes: true,
+          attributeFilter: ['style'],
+        });
+      }
+    </script>
   </body>
 </html>

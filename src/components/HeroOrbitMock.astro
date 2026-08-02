@@ -1,0 +1,202 @@
+---
+/**
+ * Hero visual — live qualification call.
+ * Soft product moment: qualify → warm handoff.
+ */
+const steps = [
+  { label: 'Openers', state: 'done' },
+  { label: 'Intent', state: 'done' },
+  { label: 'Handoff', state: 'active' },
+];
+
+const turns = [
+  { who: 'bot', text: 'Hey Jordan — checked your health subsidy this year?' },
+  { who: 'lead', text: 'Yeah, I think so. Why?' },
+  { who: 'sys', text: 'Intent · subsidy_yes · TX 78701' },
+  { who: 'bot', text: 'Great — connecting you to Priya now.' },
+];
+---
+
+<div class="hlive" data-viz aria-label="Live Dialer Bot qualification call">
+  <div class="hlive-stage">
+    <div class="hlive-card">
+      <header class="hlive-top">
+        <div class="hlive-id">
+          <span class="hlive-dot" aria-hidden="true" />
+          <div>
+            <strong>Live call</strong>
+            <em>ACA · Jordan · TX</em>
+          </div>
+        </div>
+        <div class="hlive-timer">
+          <span data-hlive-timer>0:48</span>
+          <em data-hlive-line>Bot on line</em>
+        </div>
+      </header>
+
+      <div class="hlive-steps" data-hlive-steps aria-hidden="true">
+        {
+          steps.map((s, i) => (
+            <span class:list={['hlive-step', s.state]} data-step={s.label.toLowerCase()}>
+              {i > 0 && <i class="hlive-steps-line" />}
+              <em>
+                {s.state === 'done' ? (
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M5 12l5 5L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                ) : null}
+                {s.label}
+              </em>
+            </span>
+          ))
+        }
+      </div>
+
+      <div class="hlive-wave" data-hlive-wave aria-hidden="true">
+        <div class="hlive-wave-meta">
+          <strong data-hlive-voice>Sofia</strong>
+          <em data-hlive-voice-state>Speaking</em>
+        </div>
+        <div class="hlive-wave-bars">
+          <i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i />
+        </div>
+      </div>
+
+      <div class="hlive-thread">
+        {
+          turns.map((t, i) => (
+            <div class:list={['hlive-bubble', t.who]} style={`--d:${120 + i * 70}ms`}>
+              {t.who !== 'sys' && <span>{t.who === 'bot' ? 'Dialer Bot' : 'Jordan'}</span>}
+              <p>{t.text}</p>
+            </div>
+          ))
+        }
+        <div class="hlive-bubble sys hlive-xfer" data-hlive-xfer hidden>
+          <p>Warm transfer · Priya · Seat 07</p>
+        </div>
+      </div>
+
+      <footer class="hlive-foot">
+        <div class="hlive-agent">
+          <span class="hlive-agent-av">
+            <img src="/images/cryzel-pricing-02.webp" alt="" width="32" height="32" />
+            <i aria-hidden="true" />
+          </span>
+          <div>
+            <strong data-hlive-agent>Priya ready</strong>
+            <em data-hlive-meta>Seat 07</em>
+          </div>
+        </div>
+        <button type="button" class="hlive-cta" data-mock>Transfer now</button>
+      </footer>
+    </div>
+
+    <div class="hlive-badge" aria-hidden="true">
+      <strong data-hlive-badge-title>Qualified</strong>
+      <span data-hlive-badge-sub>in under a minute</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.hlive[data-viz]').forEach((root) => {
+    const timerEl = root.querySelector('[data-hlive-timer]');
+    const lineEl = root.querySelector('[data-hlive-line]');
+    const agentEl = root.querySelector('[data-hlive-agent]');
+    const metaEl = root.querySelector('[data-hlive-meta]');
+    const voiceEl = root.querySelector('[data-hlive-voice]');
+    const voiceStateEl = root.querySelector('[data-hlive-voice-state]');
+    const badgeTitle = root.querySelector('[data-hlive-badge-title]');
+    const badgeSub = root.querySelector('[data-hlive-badge-sub]');
+    const xferNote = root.querySelector('[data-hlive-xfer]');
+    const handoffStep = root.querySelector('[data-step="handoff"]');
+    const cta = root.querySelector('[data-mock]');
+    let secs = 48;
+    let tick = 0;
+    let demo = 0;
+    let locked = false;
+
+    const setTransferred = (on) => {
+      root.classList.toggle('is-transferred', on);
+      if (cta) {
+        cta.classList.toggle('is-on', on);
+        cta.textContent = on ? 'Connected' : 'Transfer now';
+      }
+      if (agentEl) agentEl.textContent = on ? 'Priya on call' : 'Priya ready';
+      if (metaEl) metaEl.textContent = on ? 'On call · Seat 07' : 'Seat 07';
+      if (lineEl) lineEl.textContent = on ? 'Agent on line' : 'Bot on line';
+      if (voiceEl) voiceEl.textContent = on ? 'Priya' : 'Sofia';
+      if (voiceStateEl) voiceStateEl.textContent = on ? 'Live' : 'Speaking';
+      if (badgeTitle) badgeTitle.textContent = on ? 'Transferred' : 'Qualified';
+      if (badgeSub) badgeSub.textContent = on ? 'agent connected' : 'in under a minute';
+      if (xferNote) xferNote.hidden = !on;
+      if (handoffStep) {
+        handoffStep.classList.toggle('active', !on);
+        handoffStep.classList.toggle('done', on);
+        const em = handoffStep.querySelector('em');
+        if (em) {
+          em.innerHTML = on
+            ? `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>Handoff`
+            : 'Handoff';
+        }
+      }
+    };
+
+    const runTransfer = () => {
+      if (locked) return;
+      locked = true;
+      setTransferred(true);
+      window.setTimeout(() => {
+        setTransferred(false);
+        locked = false;
+      }, 2600);
+    };
+
+    tick = window.setInterval(() => {
+      if (!root.isConnected) {
+        window.clearInterval(tick);
+        return;
+      }
+      secs += 1;
+      if (timerEl) {
+        const m = Math.floor(secs / 60);
+        const s = String(secs % 60).padStart(2, '0');
+        timerEl.textContent = `${m}:${s}`;
+      }
+    }, 1000);
+
+    cta?.addEventListener('click', (e) => {
+      e.preventDefault();
+      runTransfer();
+    });
+
+    // Quiet auto-demo after bubbles settle — twice, then stop
+    const startDemo = () => {
+      if (demo) return;
+      let plays = 0;
+      demo = window.setTimeout(function tickDemo() {
+        if (!root.isConnected || plays >= 2) return;
+        runTransfer();
+        plays += 1;
+        if (plays < 2) demo = window.setTimeout(tickDemo, 7200);
+      }, 2400);
+    };
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              startDemo();
+              io.disconnect();
+            }
+          });
+        },
+        { threshold: 0.35 },
+      );
+      io.observe(root);
+    } else {
+      startDemo();
+    }
+  });
+</script>
