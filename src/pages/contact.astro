@@ -2,72 +2,348 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { wa, site } from '../data/site';
 import '../styles/global.css';
+import '../styles/contact-page.css';
+
+const channels = [
+  {
+    n: '01',
+    title: 'WhatsApp',
+    text: 'Primary line to the builders. Fastest for bots, quotes, and floor questions.',
+    href: wa.general,
+    cta: 'Open WhatsApp',
+    external: true,
+    primary: true,
+  },
+  {
+    n: '02',
+    title: 'Email',
+    text: 'Briefs, contracts, and attachments when a thread needs a paper trail.',
+    href: `mailto:${site.email}`,
+    cta: site.email,
+    external: false,
+    primary: false,
+  },
+  {
+    n: '03',
+    title: 'Office',
+    text: `${site.address.line1}, ${site.address.line2}, ${site.address.city}.`,
+    href: wa.general,
+    cta: 'Message before you visit',
+    external: true,
+    primary: false,
+  },
+];
+
+const reasons = [
+  'New bot or campaign pack',
+  'Enterprise / multi-bot quote',
+  'Dialer integration help',
+  'Careers or partnership',
+  'Something else',
+];
 ---
 
-<BaseLayout title="Contact" description="Contact Cryzel for demos, pricing questions, or partnership inquiries.">
+<BaseLayout
+  title="Contact | Dialer Bot"
+  description={`Contact Dialer Bot — WhatsApp ${site.phoneDisplay}, ${site.email}. Office 8, ZamZama Plaza, Rawalpindi.`}
+>
   <Header slot="header" />
 
-  <section class="page-hero">
-    <div class="container">
-      <h1>Contact</h1>
-      <p>Tell us about your team — we will help you get started.</p>
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a><span>/</span><span>Contact</span>
-      </nav>
-    </div>
-  </section>
+  <main class="ct">
+    <header class="ct-mast">
+      <div class="ct-shell ct-mast__grid">
+        <div class="ct-mast__copy">
+          <nav class="ct-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Contact</span>
+          </nav>
+          <p class="ct-brand">Dialer Bot</p>
+          <h1>WhatsApp first. Office when you are nearby.</h1>
+          <p class="ct-deck">
+            Reach the people who ship the bots — not a ticket queue. Use WhatsApp for speed, email for briefs, or
+            stop by Office 8 at ZamZama Plaza.
+          </p>
+          <div class="ct-actions">
+            <a class="ct-btn ct-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
+              Open WhatsApp
+            </a>
+            <a class="ct-btn ct-btn--ghost" href={`mailto:${site.email}`}>Email us</a>
+          </div>
+        </div>
 
-  <section class="section">
-    <div class="container contact-grid">
-      <div>
-        <div class="contact-card">
-          <h3>Email</h3>
-          <p>hello@cryzel.demo</p>
-        </div>
-        <div class="contact-card">
-          <h3>Sales</h3>
-          <p>sales@cryzel.demo</p>
-        </div>
-        <div class="contact-card">
-          <h3>Office</h3>
-          <p>120 Market Street<br />San Francisco, CA</p>
-        </div>
+        <aside class="ct-mast__aside" aria-label="How to reach us">
+          <div class="ct-reach" data-ct-reach data-channel="whatsapp">
+            <div class="ct-reach__tabs" role="tablist" aria-label="Contact channel">
+              <button
+                type="button"
+                class="ct-reach__tab is-active"
+                role="tab"
+                aria-selected="true"
+                data-channel-tab="whatsapp"
+                id="ct-tab-wa"
+              >
+                WhatsApp
+              </button>
+              <button
+                type="button"
+                class="ct-reach__tab"
+                role="tab"
+                aria-selected="false"
+                data-channel-tab="email"
+                id="ct-tab-email"
+                tabindex="-1"
+              >
+                Email
+              </button>
+              <button
+                type="button"
+                class="ct-reach__tab"
+                role="tab"
+                aria-selected="false"
+                data-channel-tab="office"
+                id="ct-tab-office"
+                tabindex="-1"
+              >
+                Visit
+              </button>
+            </div>
+
+            <div
+              class="ct-reach__panel is-active"
+              role="tabpanel"
+              data-channel-panel="whatsapp"
+              aria-labelledby="ct-tab-wa"
+            >
+              <p class="ct-reach__kicker">Fastest reply</p>
+              <p class="ct-reach__value">
+                <a href={wa.general} target="_blank" rel="noopener noreferrer">{site.phoneDisplay}</a>
+              </p>
+              <p class="ct-reach__note">Bots, quotes, dialer help — message the builders directly.</p>
+              <a class="ct-btn ct-btn--solid ct-reach__cta" href={wa.general} target="_blank" rel="noopener noreferrer">
+                Open WhatsApp
+              </a>
+            </div>
+
+            <div
+              class="ct-reach__panel"
+              role="tabpanel"
+              data-channel-panel="email"
+              aria-labelledby="ct-tab-email"
+              hidden
+            >
+              <p class="ct-reach__kicker">For briefs &amp; contracts</p>
+              <p class="ct-reach__value">
+                <a href={`mailto:${site.email}`}>{site.email}</a>
+              </p>
+              <p class="ct-reach__note">Attachments and longer threads belong on email.</p>
+              <a class="ct-btn ct-btn--solid ct-reach__cta" href={`mailto:${site.email}`}>Send email</a>
+            </div>
+
+            <div
+              class="ct-reach__panel"
+              role="tabpanel"
+              data-channel-panel="office"
+              aria-labelledby="ct-tab-office"
+              hidden
+            >
+              <p class="ct-reach__kicker">Rawalpindi HQ</p>
+              <p class="ct-reach__value ct-reach__value--addr">
+                {site.address.line1}<br />
+                {site.address.line2}<br />
+                {site.address.city}
+              </p>
+              <p class="ct-reach__note">Message before you drop by — we will confirm someone is in.</p>
+              <a class="ct-btn ct-btn--solid ct-reach__cta" href={wa.general} target="_blank" rel="noopener noreferrer">
+                WhatsApp before visit
+              </a>
+            </div>
+          </div>
+        </aside>
       </div>
-      <form class="contact-form" id="contact-form">
-        <div class="row">
-          <div class="field">
-            <label for="name">Name</label>
-            <input id="name" name="name" required autocomplete="name" />
+    </header>
+
+    <section class="ct-section" aria-labelledby="ct-channels-title">
+      <div class="ct-shell">
+        <div class="ct-section__head">
+          <p class="ct-kicker">Channels</p>
+          <h2 id="ct-channels-title">Three ways in. One team behind them.</h2>
+        </div>
+        <ul class="ct-channels">
+          {
+            channels.map((ch) => (
+              <li class:list={[{ 'is-primary': ch.primary }]}>
+                <span>{ch.n}</span>
+                <h3>{ch.title}</h3>
+                <p>{ch.text}</p>
+                <a
+                  href={ch.href}
+                  target={ch.external ? '_blank' : undefined}
+                  rel={ch.external ? 'noopener noreferrer' : undefined}
+                >
+                  {ch.cta}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="ct-section ct-section--tint" aria-labelledby="ct-brief-title">
+      <div class="ct-shell ct-brief">
+        <div class="ct-brief__copy">
+          <p class="ct-kicker">Quick brief</p>
+          <h2 id="ct-brief-title">Write it here. Send it on WhatsApp.</h2>
+          <p>
+            Nothing is stored on this site. Choosing a reason and hitting continue only opens WhatsApp with your
+            message filled in.
+          </p>
+          <ul class="ct-brief__tips">
+            <li>Dialer type and seat count help us place you fast</li>
+            <li>Campaign list (ACA, FE, HI, dispatch…) steers the opener pack</li>
+            <li>Enterprise asks should mention multi-bot or compliance needs</li>
+          </ul>
+        </div>
+
+        <form id="contact-form" class="ct-form" novalidate>
+          <div class="ct-form__row">
+            <label>
+              <span>Name</span>
+              <input name="name" type="text" required autocomplete="name" placeholder="Your name" />
+            </label>
+            <label>
+              <span>Company / floor</span>
+              <input name="company" type="text" autocomplete="organization" placeholder="Optional" />
+            </label>
           </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" required autocomplete="email" />
-          </div>
+
+          <fieldset class="ct-reasons">
+            <legend>Reason</legend>
+            <div class="ct-reasons__grid" role="radiogroup" aria-label="Contact reason">
+              {
+                reasons.map((r, i) => (
+                  <label class:list={['ct-reason', { 'is-on': i === 0 }]}>
+                    <input type="radio" name="reason" value={r} checked={i === 0} />
+                    <span>{r}</span>
+                  </label>
+                ))
+              }
+            </div>
+          </fieldset>
+
+          <label class="ct-form__message">
+            <span>Message</span>
+            <textarea
+              name="message"
+              rows="5"
+              required
+              placeholder="Dialer type, campaign, seats, what you need…"></textarea>
+          </label>
+
+          <button class="ct-btn ct-btn--solid" type="submit">Continue on WhatsApp</button>
+          <p class="ct-form__note">Opens WhatsApp with your brief. No account required on this page.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="ct-close">
+      <div class="ct-shell ct-close__inner">
+        <div>
+          <p class="ct-brand ct-brand--on-dark">Dialer Bot</p>
+          <h2>Prefer to skip the form?</h2>
+          <p>
+            Message {site.phoneDisplay} directly — or email {site.email} for contracts and longer briefs.
+          </p>
         </div>
-        <div class="field">
-          <label for="company">Company</label>
-          <input id="company" name="company" />
-        </div>
-        <div class="field">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" required></textarea>
-        </div>
-        <button class="btn btn-dark" type="submit">Send Message</button>
-        <p data-success hidden style="margin-top:1rem;color:var(--accent-9);font-weight:600">
-          Thanks! Connect a form endpoint to deliver this message in production.
-        </p>
-      </form>
-    </div>
-  </section>
+        <a class="ct-btn ct-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
+          Chat on WhatsApp
+        </a>
+      </div>
+    </section>
+  </main>
 
   <Footer slot="footer" />
 </BaseLayout>
 
 <script>
-  document.getElementById('contact-form')?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const success = document.querySelector<HTMLElement>('[data-success]');
-    if (success) success.hidden = false;
+  function initReach(root: HTMLElement) {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-channel-tab]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-channel-panel]'));
+
+    const setChannel = (channel: string) => {
+      root.dataset.channel = channel;
+      tabs.forEach((tab) => {
+        const on = tab.dataset.channelTab === channel;
+        tab.classList.toggle('is-active', on);
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        tab.tabIndex = on ? 0 : -1;
+      });
+      panels.forEach((panel) => {
+        const on = panel.dataset.channelPanel === channel;
+        panel.classList.toggle('is-active', on);
+        panel.hidden = !on;
+      });
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => setChannel(tab.dataset.channelTab || 'whatsapp'));
+    });
+
+    root.querySelector('.ct-reach__tabs')?.addEventListener('keydown', (event) => {
+      const e = event as KeyboardEvent;
+      const current = tabs.findIndex((t) => t.classList.contains('is-active'));
+      if (current < 0) return;
+      let next = current;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (current + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (current - 1 + tabs.length) % tabs.length;
+      else return;
+      e.preventDefault();
+      tabs[next].focus();
+      setChannel(tabs[next].dataset.channelTab || 'whatsapp');
+    });
+
+    setChannel(root.dataset.channel || 'whatsapp');
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-ct-reach]').forEach(initReach);
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+
+  form?.querySelectorAll<HTMLLabelElement>('.ct-reason').forEach((label) => {
+    const input = label.querySelector<HTMLInputElement>('input');
+    input?.addEventListener('change', () => {
+      form.querySelectorAll('.ct-reason').forEach((el) => el.classList.remove('is-on'));
+      if (input.checked) label.classList.add('is-on');
+    });
+  });
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const name = String(fd.get('name') || '').trim();
+    const company = String(fd.get('company') || '').trim();
+    const reason = String(fd.get('reason') || '').trim();
+    const message = String(fd.get('message') || '').trim();
+    if (!name || !message) return;
+
+    const text = [
+      'Hi Dialer Bot — contact form',
+      `Name: ${name}`,
+      company ? `Company: ${company}` : null,
+      `Reason: ${reason}`,
+      '',
+      message,
+    ]
+      .filter(Boolean)
+      .join('\n');
+
+    window.open(
+      `https://wa.me/923116877887?text=${encodeURIComponent(text)}`,
+      '_blank',
+      'noopener,noreferrer',
+    );
   });
 </script>

@@ -1,87 +1,120 @@
 ---
-const navigation = [
-  { label: 'Products', href: '/features' },
-  { label: 'Company', href: '/#company' },
-  { label: 'Pricing', href: '/#pricing' },
-  { label: 'Insights', href: '/blog' },
-];
+import { wa, site } from '../data/site';
 
-const resources = [
-  { label: 'Privacy Policy', href: '#' },
-  { label: 'Changelog', href: '#' },
-  { label: 'Terms & Conditions', href: '#' },
+const product = [
+  { label: 'Features', href: '/features' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Changelog', href: '/changelog' },
+  { label: 'FAQs', href: '/faqs' },
 ];
 
 const company = [
-  { label: 'Careers', href: '#' },
-  { label: 'Contact', href: '/#contact' },
-  { label: 'FAQs', href: '#' },
+  { label: 'About', href: '/company' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'Insights', href: '/blog' },
 ];
 
-const socials = [
-  { icon: '/images/cryzel-social-icon-1.png', width: 30, label: 'Facebook' },
-  { icon: '/images/cryzel-social-icon-2.png', width: 34, label: 'Twitter' },
-  { icon: '/images/cryzel-social-icon-3.png', width: 34, label: 'LinkedIn' },
+const legal = [
+  { label: 'Privacy', href: '/privacy' },
+  { label: 'Terms', href: '/terms' },
 ];
 ---
 
-<footer class="site-footer" role="contentinfo">
-  <div class="wrap">
-    <div class="footer-inner">
-      <div class="footer-columns">
-        <div class="footer-brand">
-          <a class="logo" href="/" aria-label="Dialer Bot home">
-            <img src="/images/dialerbot-logo-black.svg" alt="Dialer Bot" width="204" height="36" />
-          </a>
-          <p>
-            Dialer Bot builds AI voice bots that qualify inbound and outbound calls for call centers, truck
-            dispatch, ACA, FE, HI, and every team that still dials by hand.
-          </p>
-          <div class="footer-awards">
-            <span>Built for dialing floors</span>
-            <img src="/images/cryzel-award-01.png" alt="" width="47" height="56" />
-            <img src="/images/cryzel-award-02.png" alt="" width="47" height="56" />
-          </div>
-        </div>
+<footer class="ft" role="contentinfo" data-ft>
+  <div class="ft-shell">
+    <div class="ft-grid">
+      <div class="ft-brand" data-ft-rise style="--ft-i:0">
+        <a class="ft-logo" href="/" aria-label="Dialer Bot home">
+          <img src="/images/dialerbot-logo-black.svg" alt="Dialer Bot" width="272" height="48" />
+        </a>
+        <p>
+          AI voice bots for call centers, dispatch, ACA, FE, and HI — qualify the call, warm the handoff.
+        </p>
+        <a class="ft-wa" href={wa.general} target="_blank" rel="noopener noreferrer">
+          <span class="ft-wa__dot" aria-hidden="true"></span>
+          WhatsApp {site.phoneDisplay}
+        </a>
+      </div>
 
-        <div>
-          <h3>NAVIGATION</h3>
-          <ul>
-            {navigation.map((link) => (
-              <li><a href={link.href}>{link.label}</a></li>
-            ))}
-          </ul>
-        </div>
+      <nav class="ft-col" aria-label="Product" data-ft-rise style="--ft-i:1">
+        <h3>Product</h3>
+        <ul>
+          {product.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-        <div>
-          <h3>RESOURCES</h3>
-          <ul>
-            {resources.map((link) => (
-              <li><a href={link.href}>{link.label}</a></li>
-            ))}
-          </ul>
-        </div>
+      <nav class="ft-col" aria-label="Company" data-ft-rise style="--ft-i:2">
+        <h3>Company</h3>
+        <ul>
+          {company.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-        <div>
-          <h3>COMPANY</h3>
-          <ul>
-            {company.map((link) => (
-              <li><a href={link.href}>{link.label}</a></li>
-            ))}
-          </ul>
-        </div>
+      <div class="ft-col" data-ft-rise style="--ft-i:3">
+        <h3>Contact</h3>
+        <ul class="ft-meta">
+          <li>
+            <span>Email</span>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </li>
+          <li>
+            <span>Office</span>
+            <span>
+              {site.address.line1}, {site.address.city}
+            </span>
+          </li>
+          <li>
+            <span>Legal</span>
+            <span class="ft-meta__row">
+              {legal.map((link) => (
+                <a href={link.href}>{link.label}</a>
+              ))}
+            </span>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <div class="footer-bottom">
-      <p>Copyright © 2026 Dialer Bot. All rights reserved · dialerbot.online</p>
-      <div class="footer-socials" aria-label="Social links">
-        {socials.map((social) => (
-          <a href="#" aria-label={social.label}>
-            <img src={social.icon} alt="" width={social.width} height="auto" />
-          </a>
-        ))}
-      </div>
+    <div class="ft-bottom" data-ft-rise style="--ft-i:4">
+      <p>
+        <span>&copy; {new Date().getFullYear()} Dialer Bot</span>
+        <span aria-hidden="true">·</span>
+        <span>{site.domain}</span>
+      </p>
+      <p class="ft-bottom__note">
+        <span class="ft-bottom__mark" aria-hidden="true"></span>
+        Built for dialing floors · Rawalpindi
+      </p>
     </div>
   </div>
 </footer>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-ft]');
+  if (root) {
+    const reveal = () => root.classList.add('is-in');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            reveal();
+            io.disconnect();
+          }
+        },
+        { threshold: 0.15 },
+      );
+      io.observe(root);
+    } else {
+      reveal();
+    }
+  }
+</script>

@@ -1,0 +1,289 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { wa, waLink, site } from '../data/site';
+import '../styles/global.css';
+import '../styles/careers-page.css';
+
+const roles = [
+  {
+    id: 'conversation',
+    niche: 'Voice AI',
+    title: 'Conversation Designer',
+    type: 'Full-time · Remote / Rawalpindi',
+    blurb: 'Craft opener packs, clarification loops, and handoff thresholds for ACA, FE, HI, and dispatch bots.',
+  },
+  {
+    id: 'platform',
+    niche: 'Engineering',
+    title: 'Realtime Voice Platform Engineer',
+    type: 'Full-time · Rawalpindi preferred',
+    blurb: 'SIP paths, recording pipelines, webhook dispositions, and dialer–model glue under live pressure.',
+  },
+  {
+    id: 'success',
+    niche: 'Ops',
+    title: 'Floor Success Specialist',
+    type: 'Full-time · Hybrid',
+    blurb: 'Onboard campaigns, tune pace governors, sit with supervisors until the bot feels native.',
+  },
+  {
+    id: 'compliance',
+    niche: 'Trust',
+    title: 'Calling Compliance Analyst',
+    type: 'Contract / Full-time',
+    blurb: 'Map consent gates, quiet hours, and disposition policy into product rules.',
+  },
+  {
+    id: 'partnerships',
+    niche: 'Growth',
+    title: 'Dialer Partnerships Lead',
+    type: 'Full-time · Remote OK',
+    blurb: 'Relationships with dialer vendors, BPOs, and insurance floors — diagnose queues, do not recite features.',
+  },
+  {
+    id: 'qa',
+    niche: 'QA',
+    title: 'Voice QA Reviewer',
+    type: 'Part-time · Remote',
+    blurb: 'Score transcripts, flag drift, feed winning phrasing back into opener packs.',
+  },
+];
+
+const filters = ['All', ...Array.from(new Set(roles.map((r) => r.niche)))];
+
+const traits = [
+  {
+    n: '01',
+    title: 'Floor-fluent',
+    text: 'You have sat near a dialer — or you learn that rhythm fast.',
+  },
+  {
+    n: '02',
+    title: 'Direct',
+    text: 'WhatsApp to the builders. No layers between you and the work.',
+  },
+  {
+    n: '03',
+    title: 'Ship-minded',
+    text: 'If it does not survive a live campaign morning, it does not ship.',
+  },
+];
+---
+
+<BaseLayout
+  title="Careers | Dialer Bot"
+  description="Open roles at Dialer Bot — conversation design, voice platform, floor success, compliance, partnerships, and QA."
+>
+  <Header slot="header" />
+
+  <main class="cr">
+    <header class="cr-mast">
+      <div class="cr-shell cr-mast__grid">
+        <div class="cr-mast__copy">
+          <nav class="cr-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Careers</span>
+          </nav>
+          <p class="cr-brand">Dialer Bot</p>
+          <h1>Work on the layer agents never see</h1>
+          <p class="cr-deck">
+            Six niches. One mission — protect agent time with honest qualification and warm handoffs. Small team in
+            Rawalpindi, open to remote where the work allows.
+          </p>
+          <div class="cr-actions">
+            <a class="cr-btn cr-btn--solid" href={wa.careers} target="_blank" rel="noopener noreferrer">
+              Apply on WhatsApp
+            </a>
+            <a class="cr-btn cr-btn--ghost" href="/company">About the company</a>
+          </div>
+        </div>
+
+        <aside class="cr-mast__aside" aria-label="Quick apply">
+          <div class="cr-apply" data-cr-apply>
+            <p class="cr-apply__label">Quick apply</p>
+            <label class="cr-apply__field">
+              <span>Role</span>
+              <select data-cr-role>
+                {
+                  roles.map((role, i) => {
+                    const href = waLink(
+                      `Hi Dialer Bot — I'm interested in the ${role.title} role.\n\nHere's a short note and a link to my work:`,
+                    );
+                    return (
+                      <option value={role.id} data-href={href} data-type={role.type} selected={i === 0}>
+                        {role.title}
+                      </option>
+                    );
+                  })
+                }
+              </select>
+            </label>
+            <p class="cr-apply__type" data-cr-type>{roles[0].type}</p>
+            <p class="cr-apply__hint">Opens WhatsApp with the role title filled in. Add your note and a work link.</p>
+            <a
+              class="cr-btn cr-btn--solid cr-apply__cta"
+              href={waLink(
+                `Hi Dialer Bot — I'm interested in the ${roles[0].title} role.\n\nHere's a short note and a link to my work:`,
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cr-cta
+            >
+              Apply on WhatsApp
+            </a>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section class="cr-section cr-section--tint" aria-labelledby="cr-traits-title">
+      <div class="cr-shell">
+        <div class="cr-section__head">
+          <p class="cr-kicker">Who thrives here</p>
+          <h2 id="cr-traits-title">Three signals we hire for</h2>
+        </div>
+        <ul class="cr-traits">
+          {
+            traits.map((t) => (
+              <li>
+                <span>{t.n}</span>
+                <h3>{t.title}</h3>
+                <p>{t.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="cr-section" aria-labelledby="cr-roles-title">
+      <div class="cr-shell">
+        <div class="cr-roles-head">
+          <div class="cr-section__head">
+            <p class="cr-kicker">Open roles</p>
+            <h2 id="cr-roles-title">Multiple niches, one floor mission</h2>
+          </div>
+          <div class="cr-filters" data-cr-filters role="tablist" aria-label="Filter by niche">
+            {
+              filters.map((f, i) => (
+                <button
+                  type="button"
+                  class:list={['cr-filter', { 'is-active': i === 0 }]}
+                  role="tab"
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  data-filter={f}
+                  tabindex={i === 0 ? 0 : -1}
+                >
+                  {f}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <ul class="cr-jobs" data-cr-jobs>
+          {
+            roles.map((role, i) => {
+              const apply = waLink(
+                `Hi Dialer Bot — I'm interested in the ${role.title} role.\n\nHere's a short note and a link to my work:`,
+              );
+              return (
+                <li data-niche={role.niche} style={`--cr-i:${i}`}>
+                  <div class="cr-job__meta">
+                    <span>{role.niche}</span>
+                    <em>{role.type}</em>
+                  </div>
+                  <div class="cr-job__body">
+                    <h3>{role.title}</h3>
+                    <p>{role.blurb}</p>
+                  </div>
+                  <a class="cr-btn cr-btn--solid cr-job__cta" href={apply} target="_blank" rel="noopener noreferrer">
+                    Apply
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+        <p class="cr-empty" data-cr-empty hidden>No open roles in that niche right now — try All, or message us anyway.</p>
+      </div>
+    </section>
+
+    <section class="cr-close">
+      <div class="cr-shell cr-close__inner">
+        <div>
+          <p class="cr-brand cr-brand--on-dark">Dialer Bot</p>
+          <h2>Do not see your title?</h2>
+          <p>
+            Still message WhatsApp with what you do best. We hire for floor impact — not only the six niches above.
+            Office 8, {site.address.line1}.
+          </p>
+        </div>
+        <a class="cr-btn cr-btn--lime" href={wa.careers} target="_blank" rel="noopener noreferrer">
+          Message careers
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  const applyRoot = document.querySelector<HTMLElement>('[data-cr-apply]');
+  const roleSelect = applyRoot?.querySelector<HTMLSelectElement>('[data-cr-role]');
+  const typeEl = applyRoot?.querySelector<HTMLElement>('[data-cr-type]');
+  const cta = applyRoot?.querySelector<HTMLAnchorElement>('[data-cr-cta]');
+
+  const syncApply = () => {
+    const opt = roleSelect?.selectedOptions[0];
+    if (!opt || !cta) return;
+    const href = opt.getAttribute('data-href');
+    const type = opt.getAttribute('data-type');
+    if (href) cta.href = href;
+    if (typeEl && type) typeEl.textContent = type;
+  };
+
+  roleSelect?.addEventListener('change', syncApply);
+
+  const filters = document.querySelector<HTMLElement>('[data-cr-filters]');
+  const jobs = Array.from(document.querySelectorAll<HTMLElement>('[data-cr-jobs] > li'));
+  const empty = document.querySelector<HTMLElement>('[data-cr-empty]');
+  const tabs = Array.from(filters?.querySelectorAll<HTMLButtonElement>('[data-filter]') || []);
+
+  const setFilter = (value: string) => {
+    tabs.forEach((tab) => {
+      const on = tab.dataset.filter === value;
+      tab.classList.toggle('is-active', on);
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.tabIndex = on ? 0 : -1;
+    });
+
+    let visible = 0;
+    jobs.forEach((job) => {
+      const show = value === 'All' || job.dataset.niche === value;
+      job.hidden = !show;
+      if (show) visible += 1;
+    });
+    if (empty) empty.hidden = visible > 0;
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => setFilter(tab.dataset.filter || 'All'));
+  });
+
+  filters?.addEventListener('keydown', (event) => {
+    const current = tabs.findIndex((t) => t.classList.contains('is-active'));
+    if (current < 0) return;
+    let next = current;
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (current + 1) % tabs.length;
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (current - 1 + tabs.length) % tabs.length;
+    else return;
+    event.preventDefault();
+    tabs[next].focus();
+    setFilter(tabs[next].dataset.filter || 'All');
+  });
+</script>

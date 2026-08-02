@@ -1,82 +1,187 @@
----
+﻿---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { wa, site } from '../data/site';
 import '../styles/global.css';
+import '../styles/company-page.css';
+
+const arc = [
+  {
+    n: '01',
+    title: 'The problem',
+    text: 'Floors burned seats on openers and tire-kickers while closers waited for conversations worth having.',
+  },
+  {
+    n: '02',
+    title: 'The build',
+    text: 'Humanized voices, locked first questions, adaptive follow-ups, and warm handoffs into dialers teams already run.',
+  },
+  {
+    n: '03',
+    title: 'Today',
+    text: 'Inbound and outbound teams across insurance, dispatch, and sales — supported from ZamZama Plaza.',
+  },
+];
+
+const principles = [
+  {
+    n: '01',
+    title: 'Floor-first',
+    text: 'If it does not survive a live campaign morning, it does not ship.',
+  },
+  {
+    n: '02',
+    title: 'Honest qualification',
+    text: 'Filter noise. Never invent interest. Optimize for cleaner handoffs.',
+  },
+  {
+    n: '03',
+    title: 'Close enough to care',
+    text: 'WhatsApp reaches the builders in Rawalpindi — not a ticket queue abroad.',
+  },
+];
 ---
 
-<BaseLayout title="Company" description="About Cryzel — building secure, seamless financial and campaign tools.">
+<BaseLayout
+  title="Company | Dialer Bot"
+  description="About Dialer Bot — AI voice bots from Office 8, ZamZama Plaza, Pakistan Town Phase 2, Rawalpindi."
+>
   <Header slot="header" />
 
-  <section class="page-hero">
-    <div class="container">
-      <h1>Company</h1>
-      <p>We help teams capture attention and convert it into lasting growth.</p>
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a><span>/</span><span>Company</span>
-      </nav>
-    </div>
-  </section>
+  <main class="co">
+    <header class="co-mast">
+      <div class="co-shell co-mast__grid">
+        <div class="co-mast__copy">
+          <nav class="co-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Company</span>
+          </nav>
+          <p class="co-brand">Dialer Bot</p>
+          <h1>Built beside the dialers, not above them</h1>
+          <p class="co-deck">
+            We protect agent time — greet, ask, confirm, then warm a seat. From Office 8 in Rawalpindi, on
+            WhatsApp whenever the floor needs us.
+          </p>
+          <div class="co-actions">
+            <a class="co-btn co-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
+              WhatsApp the team
+            </a>
+            <a class="co-btn co-btn--ghost" href="/careers">See careers</a>
+          </div>
+        </div>
 
-  <section class="section">
-    <div class="container" style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:3rem;align-items:center">
-      <div>
-        <p class="section-label" style="text-align:left">Our mission</p>
-        <h2 style="font-size:clamp(1.75rem,3vw,2.5rem);letter-spacing:-0.02em;margin-bottom:1rem">
-          Simplicity and adaptability for modern businesses
-        </h2>
-        <p style="color:var(--accent-3);margin-bottom:1rem">
-          Cryzel emphasizes flexible design and practical tooling for personal brands, portfolios,
-          magazines, and growth-focused companies. This static frontend preserves the Cryzel look —
-          deep greens, lime accents, and Manrope typography — without WordPress.
-        </p>
-        <p style="color:var(--accent-3);margin-bottom:1.5rem">
-          From secure financial workflows to result-driven campaigns, we build experiences that feel
-          calm, clear, and ready to ship.
-        </p>
-        <a class="btn btn-dark" href="/contact">Work with us</a>
+        <aside class="co-mast__aside" aria-label="Headquarters">
+          <div class="co-hq">
+            <p class="co-hq__label">Headquarters</p>
+            <address>
+              {site.address.line1}<br />
+              {site.address.line2}<br />
+              {site.address.city}
+            </address>
+            <dl>
+              <div>
+                <dt>WhatsApp</dt>
+                <dd>
+                  <a href={wa.general} target="_blank" rel="noopener noreferrer">{site.phoneDisplay}</a>
+                </dd>
+              </div>
+              <div>
+                <dt>Email</dt>
+                <dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+              </div>
+              <div>
+                <dt>Web</dt>
+                <dd>{site.domain}</dd>
+              </div>
+            </dl>
+          </div>
+        </aside>
       </div>
-      <img
-        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=80"
-        alt="Cryzel team collaborating"
-        width="640"
-        height="480"
-        style="border-radius:var(--radius);width:100%;height:420px;object-fit:cover"
-      />
-    </div>
-  </section>
+    </header>
 
-  <section class="section" id="careers" style="background:var(--accent-6)">
-    <div class="container">
-      <p class="section-label">Careers</p>
-      <h2 class="section-title">Join the Cryzel team</h2>
-      <div class="cards-3">
-        <article class="card">
-          <h3>Product Designer</h3>
-          <p>Shape calm, high-clarity interfaces for marketers and finance teams.</p>
-        </article>
-        <article class="card">
-          <h3>Full-Stack Engineer</h3>
-          <p>Build reliable APIs and delightful product surfaces at scale.</p>
-        </article>
-        <article class="card">
-          <h3>Customer Success</h3>
-          <p>Help customers launch funnels and grow with confidence.</p>
-        </article>
+    <section class="co-section" aria-labelledby="co-story-title">
+      <div class="co-shell co-story">
+        <div class="co-story__copy">
+          <p class="co-kicker">Our story</p>
+          <h2 id="co-story-title">From noisy floors to cleaner handoffs</h2>
+          <p>
+            Dialer Bot was shaped beside real calling teams — ACA and final expense books, health insurance
+            blitzes, truck dispatch desks, and inbound lines that rang whether anyone was ready.
+          </p>
+          <p>
+            The pattern was always the same: talent stuck on intake, closers underused, supervisors juggling pace
+            with too few hands. We did not set out to replace agents. We set out to protect their time.
+          </p>
+          <p>
+            That idea — simple on a slide, hard on a live dialer — is still the center of every release we ship
+            from Rawalpindi.
+          </p>
+        </div>
+        <figure class="co-story__media">
+          <img src="/images/cryzel-company-05.webp" alt="" width="640" height="520" />
+          <figcaption>
+            <strong>Office 8</strong>
+            <span>ZamZama Plaza · Rawalpindi</span>
+          </figcaption>
+        </figure>
       </div>
-      <p style="text-align:center;margin-top:2rem">
-        <a class="btn btn-dark" href="/contact">View openings</a>
-      </p>
-    </div>
-  </section>
+    </section>
+
+    <section class="co-section co-section--tint" aria-labelledby="co-arc-title">
+      <div class="co-shell">
+        <div class="co-section__head">
+          <p class="co-kicker">How we got here</p>
+          <h2 id="co-arc-title">A short arc. A long floor day.</h2>
+        </div>
+        <ol class="co-arc">
+          {
+            arc.map((item) => (
+              <li>
+                <span>{item.n}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="co-section" aria-labelledby="co-principles-title">
+      <div class="co-shell">
+        <div class="co-section__head">
+          <p class="co-kicker">Operating principles</p>
+          <h2 id="co-principles-title">Three commitments on every bot</h2>
+        </div>
+        <ul class="co-principles">
+          {
+            principles.map((item) => (
+              <li>
+                <span>{item.n}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="co-close">
+      <div class="co-shell co-close__inner">
+        <div>
+          <p class="co-brand co-brand--on-dark">Dialer Bot</p>
+          <h2>Come by ZamZama Plaza — or just WhatsApp</h2>
+          <p>Office 8 is open for serious floors. Remote teams get the same direct line.</p>
+        </div>
+        <a class="co-btn co-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
+          Chat on WhatsApp
+        </a>
+      </div>
+    </section>
+  </main>
 
   <Footer slot="footer" />
 </BaseLayout>
-
-<style>
-  @media (max-width: 900px) {
-    .container[style*='grid-template-columns'] {
-      grid-template-columns: 1fr !important;
-    }
-  }
-</style>

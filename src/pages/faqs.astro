@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { wa, site } from '../data/site';
+import '../styles/global.css';
+import '../styles/faqs-page.css';
+
+const faqs = [
+  {
+    id: 'what',
+    topic: 'Product',
+    q: 'What is Dialer Bot?',
+    a: 'An AI voice bot platform that qualifies inbound and outbound calls for call centers, truck dispatch, ACA, FE, HI, and similar floors — then warms handoffs to human agents.',
+  },
+  {
+    id: 'replace',
+    topic: 'Product',
+    q: 'Does it replace agents?',
+    a: 'No. It clears openers and tire-kickers so agents spend time on closable conversations.',
+  },
+  {
+    id: 'lock',
+    topic: 'Product',
+    q: 'Can we lock the first questions?',
+    a: 'Yes. First questions can be hardcoded for compliance and QA, with adaptive follow-ups after intent forms.',
+  },
+  {
+    id: 'vault',
+    topic: 'Product',
+    q: 'Do you store recordings?',
+    a: 'Yes — searchable vault for ops review. Retention rules can be tuned on enterprise plans.',
+  },
+  {
+    id: 'price',
+    topic: 'Pricing',
+    q: 'How much does it cost?',
+    a: `Starter pricing is $${site.pricePerBot} USD per bot. Multi-bot floors and custom compliance are quoted as enterprise on WhatsApp.`,
+  },
+  {
+    id: 'dialer',
+    topic: 'Ops',
+    q: 'Which dialers do you support?',
+    a: 'We connect to dialers and SIP paths calling teams already run. Confirm your stack on WhatsApp before you buy.',
+  },
+  {
+    id: 'live',
+    topic: 'Ops',
+    q: 'How fast can we go live?',
+    a: 'A focused campaign pack moves quickly once dialer access and openers are clear.',
+  },
+  {
+    id: 'where',
+    topic: 'Company',
+    q: 'Where are you based?',
+    a: `Office 8, ZamZama Plaza, Pakistan Town Phase 2, Rawalpindi. WhatsApp ${site.phoneDisplay} · ${site.email}.`,
+  },
+];
+
+const topics = ['All', ...Array.from(new Set(faqs.map((f) => f.topic)))];
+---
+
+<BaseLayout
+  title="FAQs | Dialer Bot"
+  description="Frequently asked questions about Dialer Bot — pricing, dialers, qualification, vault, and support."
+>
+  <Header slot="header" />
+
+  <main class="fq">
+    <header class="fq-mast">
+      <div class="fq-shell fq-mast__grid">
+        <div class="fq-mast__copy">
+          <nav class="fq-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>FAQs</span>
+          </nav>
+          <p class="fq-brand">Dialer Bot</p>
+          <h1>Straight answers for floors that already dial</h1>
+          <p class="fq-deck">
+            Pricing, product, ops, and where we sit. If your question is not here, WhatsApp it — we reply on the same
+            thread.
+          </p>
+          <div class="fq-actions">
+            <a class="fq-btn fq-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
+              Ask on WhatsApp
+            </a>
+            <a class="fq-btn fq-btn--ghost" href="/pricing">View pricing</a>
+          </div>
+        </div>
+
+        <aside class="fq-mast__aside" aria-label="Browse by topic">
+          <div class="fq-topics" data-fq-topics>
+            <p class="fq-topics__label">Browse by topic</p>
+            <div class="fq-topics__grid" role="tablist" aria-label="FAQ topics">
+              {
+                topics.map((t, i) => (
+                  <button
+                    type="button"
+                    class:list={['fq-topic', { 'is-active': i === 0 }]}
+                    role="tab"
+                    aria-selected={i === 0 ? 'true' : 'false'}
+                    data-topic={t}
+                    tabindex={i === 0 ? 0 : -1}
+                  >
+                    <span class="fq-topic__name">{t}</span>
+                    <span class="fq-topic__count">
+                      {t === 'All' ? faqs.length : faqs.filter((f) => f.topic === t).length}
+                    </span>
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section class="fq-section" aria-labelledby="fq-list-title">
+      <div class="fq-shell">
+        <div class="fq-section__head">
+          <p class="fq-kicker">Answers</p>
+          <h2 id="fq-list-title">
+            <span data-fq-heading>All questions</span>
+          </h2>
+        </div>
+
+        <div class="fq-list" data-fq-list>
+          {
+            faqs.map((item, i) => (
+              <details class="fq-item" data-topic={item.topic} name="fq-accordion" open={i === 0}>
+                <summary>
+                  <span class="fq-item__topic">{item.topic}</span>
+                  <span class="fq-item__q">{item.q}</span>
+                  <span class="fq-item__icon" aria-hidden="true" />
+                </summary>
+                <div class="fq-item__body">
+                  <p>{item.a}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+        <p class="fq-empty" data-fq-empty hidden>Nothing in that topic — try All, or ask on WhatsApp.</p>
+      </div>
+    </section>
+
+    <section class="fq-close">
+      <div class="fq-shell fq-close__inner">
+        <div>
+          <p class="fq-brand fq-brand--on-dark">Dialer Bot</p>
+          <h2>Still unsure?</h2>
+          <p>Send your dialer name and campaign type — we reply with fit and price lane.</p>
+        </div>
+        <a class="fq-btn fq-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
+          WhatsApp us
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  const topicsRoot = document.querySelector<HTMLElement>('[data-fq-topics]');
+  const tabs = Array.from(topicsRoot?.querySelectorAll<HTMLButtonElement>('[data-topic]') || []);
+  const items = Array.from(document.querySelectorAll<HTMLDetailsElement>('[data-fq-list] > details'));
+  const empty = document.querySelector<HTMLElement>('[data-fq-empty]');
+  const heading = document.querySelector<HTMLElement>('[data-fq-heading]');
+
+  const setTopic = (topic: string) => {
+    tabs.forEach((tab) => {
+      const on = tab.dataset.topic === topic;
+      tab.classList.toggle('is-active', on);
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.tabIndex = on ? 0 : -1;
+    });
+
+    let visible = 0;
+    let first: HTMLDetailsElement | null = null;
+    items.forEach((item) => {
+      const show = topic === 'All' || item.dataset.topic === topic;
+      item.hidden = !show;
+      if (!show) item.open = false;
+      else {
+        visible += 1;
+        if (!first) first = item;
+      }
+    });
+
+    if (first) {
+      items.forEach((item) => {
+        if (!item.hidden) item.open = item === first;
+      });
+    }
+
+    if (heading) heading.textContent = topic === 'All' ? 'All questions' : `${topic} questions`;
+    if (empty) empty.hidden = visible > 0;
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => setTopic(tab.dataset.topic || 'All'));
+  });
+
+  topicsRoot?.querySelector('.fq-topics__grid')?.addEventListener('keydown', (event) => {
+    const e = event as KeyboardEvent;
+    const current = tabs.findIndex((t) => t.classList.contains('is-active'));
+    if (current < 0) return;
+    let next = current;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (current + 1) % tabs.length;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (current - 1 + tabs.length) % tabs.length;
+    else return;
+    e.preventDefault();
+    tabs[next].focus();
+    setTopic(tabs[next].dataset.topic || 'All');
+  });
+</script>

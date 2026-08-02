@@ -3,46 +3,169 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { posts } from '../../data/posts';
+import { wa } from '../../data/site';
 import '../../styles/global.css';
+import '../../styles/blog-page.css';
+
+const [featured, ...rest] = posts;
+const tags = ['All', ...Array.from(new Set(posts.map((p) => p.tag)))];
+
+function formatDate(iso: string) {
+  return new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
 ---
 
-<BaseLayout title="Insights" description="Cryzel blog — funnel strategy, email campaigns, and growth insights.">
+<BaseLayout
+  title="Insights | Dialer Bot"
+  description="Dialer Bot insights from live dialing floors — warm handoff, opener packs, pace, dispatch, vault, and pricing."
+>
   <Header slot="header" />
 
-  <section class="page-hero">
-    <div class="container">
-      <h1>Insights</h1>
-      <p>Ideas for building funnels that convert and customers that stay.</p>
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a><span>/</span><span>Insights</span>
-      </nav>
-    </div>
-  </section>
+  <main class="bl">
+    <header class="bl-mast">
+      <div class="bl-shell">
+        <div class="bl-mast__top">
+          <nav class="bl-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Insights</span>
+          </nav>
+          <p class="bl-brand">Dialer Bot</p>
+        </div>
 
-  <section class="section">
-    <div class="container">
-      <div class="blog-grid">
-        {
-          posts.map((post) => (
-            <article class="blog-card">
-              <a href={`/blog/${post.slug}`}>
-                <img src={post.image} alt="" width="600" height="375" loading="lazy" />
-              </a>
-              <div class="blog-card__body">
-                <p class="blog-card__meta">
-                  {post.date} · {post.author}
-                </p>
-                <h3>
-                  <a href={`/blog/${post.slug}`}>{post.title}</a>
-                </h3>
-                <p>{post.excerpt}</p>
-              </div>
-            </article>
-          ))
-        }
+        <div class="bl-mast__title">
+          <h1>Insights</h1>
+          <p class="bl-deck">
+            Notes from live dialing floors — qualification, handoff, pace, and what actually survives QA week.
+          </p>
+        </div>
+
+        <div class="bl-mast__bar">
+          <div class="bl-filters" data-bl-filters role="tablist" aria-label="Filter by topic">
+            {
+              tags.map((t, i) => (
+                <button
+                  type="button"
+                  class:list={['bl-filter', { 'is-active': i === 0 }]}
+                  role="tab"
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  data-tag={t}
+                  tabindex={i === 0 ? 0 : -1}
+                >
+                  {t}
+                </button>
+              ))
+            }
+          </div>
+          <a class="bl-btn bl-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
+            Ask a question
+          </a>
+        </div>
       </div>
-    </div>
-  </section>
+    </header>
+
+    <section class="bl-section">
+      <div class="bl-shell">
+        {
+          featured && (
+            <a
+              class="bl-feature"
+              href={`/blog/${featured.slug}`}
+              data-tag={featured.tag}
+              data-bl-item
+            >
+              <img src={featured.image} alt="" width="720" height="480" />
+              <div class="bl-feature__copy">
+                <span>{featured.tag}</span>
+                <h2>{featured.title}</h2>
+                <p>{featured.excerpt}</p>
+                <em>
+                  {formatDate(featured.date)} · {featured.author}
+                </em>
+              </div>
+            </a>
+          )
+        }
+
+        <ul class="bl-grid" data-bl-list>
+          {
+            rest.map((post) => (
+              <li data-tag={post.tag} data-bl-item>
+                <a href={`/blog/${post.slug}`}>
+                  <img src={post.image} alt="" width="640" height="400" loading="lazy" />
+                  <div class="bl-grid__copy">
+                    <span class="bl-grid__tag">{post.tag}</span>
+                    <h3 class="bl-grid__title">{post.title}</h3>
+                    <p class="bl-grid__meta">
+                      {formatDate(post.date)} · {post.author}
+                    </p>
+                  </div>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="bl-empty" data-bl-empty hidden>No posts in that topic yet.</p>
+      </div>
+    </section>
+
+    <section class="bl-close">
+      <div class="bl-shell bl-close__inner">
+        <div>
+          <p class="bl-brand bl-brand--on-dark">Dialer Bot</p>
+          <h2>Got a floor question not covered here?</h2>
+          <p>WhatsApp the campaign type and dialer — we answer from the same builders who ship the bots.</p>
+        </div>
+        <a class="bl-btn bl-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
+          WhatsApp us
+        </a>
+      </div>
+    </section>
+  </main>
 
   <Footer slot="footer" />
 </BaseLayout>
+
+<script>
+  const filters = document.querySelector<HTMLElement>('[data-bl-filters]');
+  const tabs = Array.from(filters?.querySelectorAll<HTMLButtonElement>('[data-tag]') || []);
+  const items = Array.from(document.querySelectorAll<HTMLElement>('[data-bl-item]'));
+  const empty = document.querySelector<HTMLElement>('[data-bl-empty]');
+
+  const setTag = (tag: string) => {
+    tabs.forEach((tab) => {
+      const on = tab.dataset.tag === tag;
+      tab.classList.toggle('is-active', on);
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.tabIndex = on ? 0 : -1;
+    });
+
+    let visible = 0;
+    items.forEach((item) => {
+      const show = tag === 'All' || item.dataset.tag === tag;
+      item.hidden = !show;
+      if (show) visible += 1;
+    });
+    if (empty) empty.hidden = visible > 0;
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => setTag(tab.dataset.tag || 'All'));
+  });
+
+  filters?.addEventListener('keydown', (event) => {
+    const current = tabs.findIndex((t) => t.classList.contains('is-active'));
+    if (current < 0) return;
+    let next = current;
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (current + 1) % tabs.length;
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (current - 1 + tabs.length) % tabs.length;
+    else return;
+    event.preventDefault();
+    tabs[next].focus();
+    setTag(tabs[next].dataset.tag || 'All');
+  });
+</script>

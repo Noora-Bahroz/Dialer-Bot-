@@ -1,0 +1,85 @@
+/* Fixed WhatsApp launcher — bottom right, icon only */
+
+.wa-float {
+  --wa-green: #1fa855;
+  --wa-green-deep: #128c3e;
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right, 0px));
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  left: auto;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: 14px;
+  background: var(--wa-green);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 12px 28px rgba(18, 140, 62, 0.28);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wa-float:hover {
+  background: var(--wa-green-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(18, 140, 62, 0.34);
+}
+
+.wa-float:focus-visible {
+  outline: 2px solid #dbfe7a;
+  outline-offset: 3px;
+}
+
+.wa-float__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 rgba(31, 168, 85, 0.45);
+  animation: wa-float-pulse 2s ease infinite;
+  pointer-events: none;
+}
+
+.wa-float__icon {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+}
+
+.wa-float__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes wa-float-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(31, 168, 85, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(31, 168, 85, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(31, 168, 85, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-float__pulse {
+    animation: none;
+  }
+
+  .wa-float:hover {
+    transform: none;
+  }
+}

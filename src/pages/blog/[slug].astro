@@ -3,7 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { posts, getPost } from '../../data/posts';
+import { wa } from '../../data/site';
 import '../../styles/global.css';
+import '../../styles/blog-page.css';
 
 export function getStaticPaths() {
   return posts.map((post) => ({ params: { slug: post.slug } }));
@@ -12,36 +14,141 @@ export function getStaticPaths() {
 const { slug } = Astro.params;
 const post = getPost(slug!);
 if (!post) return Astro.redirect('/404');
+
+const others = posts.filter((p) => p.slug !== post.slug).slice(0, 3);
+
+function formatDate(iso: string) {
+  return new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
+const headings = [...post.content.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1]);
 ---
 
-<BaseLayout title={post.title} description={post.excerpt}>
+<BaseLayout title={`${post.title} | Dialer Bot`} description={post.excerpt}>
   <Header slot="header" />
 
-  <section class="page-hero">
-    <div class="container">
-      <h1>{post.title}</h1>
-      <p>{post.date} · by {post.author}</p>
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a><span>/</span><a href="/blog">Insights</a><span>/</span><span>{post.title}</span>
+  <main class="bl bl--post">
+    <div class="bl-shell bl-post">
+      <nav class="bl-crumb bl-post__crumb" aria-label="Breadcrumb">
+        <a href="/blog">← Insights</a>
+        <span aria-hidden="true">/</span>
+        <span>{post.tag}</span>
       </nav>
-    </div>
-  </section>
 
-  <section class="section">
-    <div class="container">
-      <img
-        src={post.image}
-        alt=""
-        width="1000"
-        height="560"
-        style="width:100%;max-width:900px;margin:0 auto 2rem;border-radius:var(--radius);aspect-ratio:16/9;object-fit:cover"
-      />
-      <article class="prose" set:html={post.content} />
-      <p style="text-align:center;margin-top:2rem">
-        <a class="btn btn-dark" href="/blog">← Back to Insights</a>
-      </p>
+      <figure class="bl-post__cover">
+        <img src={post.image} alt="" width="1200" height="640" />
+      </figure>
+
+      <div class="bl-post__layout">
+        <article class="bl-post__main">
+          <header class="bl-post__header">
+            <p class="bl-article-kicker">{post.tag}</p>
+            <h1>{post.title}</h1>
+            <p class="bl-article-deck">{post.excerpt}</p>
+            <p class="bl-post__meta">
+              <strong>{post.author}</strong>
+              <span aria-hidden="true">·</span>
+              <time datetime={post.date}>{formatDate(post.date)}</time>
+              <span aria-hidden="true">·</span>
+              <span>{post.readMinutes} min read</span>
+            </p>
+          </header>
+
+          <div class="bl-article__body" set:html={post.content} />
+
+          <footer class="bl-article__foot">
+            <div>
+              <p class="bl-kicker">Next step</p>
+              <h2>Want this on your floor?</h2>
+              <p>WhatsApp campaign type and dialer stack — same builders who ship the bots.</p>
+            </div>
+            <div class="bl-article__cta">
+              <a class="bl-btn bl-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
+                WhatsApp Dialer Bot
+              </a>
+              <a class="bl-btn bl-btn--ghost" href="/features">View features</a>
+            </div>
+          </footer>
+        </article>
+
+        <aside class="bl-post__aside" aria-label="Article sidebar">
+          <div class="bl-post__aside-inner">
+            <div class="bl-post__panel">
+              <p class="bl-post__panel-label">In this piece</p>
+              {
+                headings.length > 0 ? (
+                  <ol class="bl-post__toc">
+                    {headings.map((h) => (
+                      <li>{h}</li>
+                    ))}
+                  </ol>
+                ) : (
+                  <p class="bl-post__panel-note">{post.tag} · {post.readMinutes} min</p>
+                )
+              }
+            </div>
+
+            <div class="bl-post__panel bl-post__panel--cta">
+              <p class="bl-post__panel-label">Talk to Dialer Bot</p>
+              <p class="bl-post__panel-note">Ask about this campaign type on WhatsApp.</p>
+              <a class="bl-btn bl-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
+                Open WhatsApp
+              </a>
+            </div>
+
+            {
+              others.length > 0 && (
+                <div class="bl-post__panel">
+                  <p class="bl-post__panel-label">Related</p>
+                  <ul class="bl-post__related">
+                    {others.slice(0, 3).map((p) => (
+                      <li>
+                        <a href={`/blog/${p.slug}`}>
+                          <span>{p.tag}</span>
+                          <strong>{p.title}</strong>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            }
+          </div>
+        </aside>
+      </div>
     </div>
-  </section>
+
+    {
+      others.length > 0 && (
+        <section class="bl-section bl-section--tint" aria-labelledby="bl-more-title">
+          <div class="bl-shell">
+            <div class="bl-section__head">
+              <p class="bl-kicker">Keep reading</p>
+              <h2 id="bl-more-title">More from the floor</h2>
+            </div>
+            <ul class="bl-grid bl-grid--compact">
+              {others.map((p) => (
+                <li>
+                  <a href={`/blog/${p.slug}`}>
+                    <img src={p.image} alt="" width="640" height="400" loading="lazy" />
+                    <div class="bl-grid__copy">
+                      <span class="bl-grid__tag">{p.tag}</span>
+                      <h3 class="bl-grid__title">{p.title}</h3>
+                      <p class="bl-grid__meta">{formatDate(p.date)}</p>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )
+    }
+  </main>
 
   <Footer slot="footer" />
 </BaseLayout>

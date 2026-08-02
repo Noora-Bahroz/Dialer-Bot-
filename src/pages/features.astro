@@ -2,75 +2,198 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { wa, site } from '../data/site';
 import '../styles/global.css';
+import '../styles/features-page.css';
 
-const items = [
+const matrix = [
   {
-    icon: '/images/cryzel-mail-open-love.svg',
-    title: 'Campaign builder',
-    text: 'Design visually engaging emails and landing flows with reusable blocks.',
+    n: '01',
+    title: 'Intent scoring',
+    text: 'Every answer moves a live score. Soft maybes stay with the bot; hard yeses transfer warm.',
   },
   {
-    icon: '/images/cryzel-target-02.svg',
-    title: 'Audience targeting',
-    text: 'Segment by behavior, plan, and lifecycle stage for precise messaging.',
+    n: '02',
+    title: 'Opener packs',
+    text: 'Version ACA, FE, HI, and dispatch openers. A/B packs, freeze winners, retire duds.',
   },
   {
-    icon: '/images/cryzel-computer-dollar.svg',
-    title: 'Revenue attribution',
-    text: 'Connect campaigns to outcomes so finance and marketing share one truth.',
+    n: '03',
+    title: 'Compliance gates',
+    text: 'Consent, quiet hours, and DNC checks run before the pitch — bad calls never hit a seat.',
   },
   {
-    icon: '/images/cryzel-clock.svg',
-    title: 'Automated journeys',
-    text: 'Trigger follow-ups from product events without manual busywork.',
+    n: '04',
+    title: 'Voice roster',
+    text: 'Swap language and voice per campaign without rewriting qualification logic.',
   },
   {
-    icon: '/images/cryzel-discover-circle.svg',
-    title: 'Experimentation',
-    text: 'Test subject lines, offers, and layouts with clear winner reporting.',
+    n: '05',
+    title: 'Transcript vault',
+    text: 'Searchable audio and text so ops find ZIP or intent labels in seconds.',
   },
   {
-    icon: '/images/cryzel-laptop-charging.svg',
-    title: 'Integrations',
-    text: 'Sync CRM, billing, and analytics so every tool stays in step.',
+    n: '06',
+    title: 'Affinity routing',
+    text: 'Warm handoffs prefer the seat that already owns that book of business.',
+  },
+  {
+    n: '07',
+    title: 'Disposition hooks',
+    text: 'Push qualified, callback, DNC, and dead into CRM the moment the bot decides.',
+  },
+  {
+    n: '08',
+    title: 'Pace governor',
+    text: 'Cap concurrent bots to dialer RPM and throttle when agent seats saturate.',
+  },
+];
+
+const modules = [
+  {
+    kicker: 'Qualification',
+    title: 'Hardcoded first questions. Flexible follow-ups.',
+    body: 'Turns one through three stay locked for QA and compliance. After intent starts to form, Dialer Bot clarifies hesitation and only escalates when the score crosses your handoff threshold.',
+    items: ['Script lock on early turns', 'Adaptive clarification loops', 'Configurable handoff score'],
+  },
+  {
+    kicker: 'Operations',
+    title: 'Built for people who live in dialers.',
+    body: 'Supervisors monitor live status and pull vault clips without leaving the ops rhythm they already have. Agents inherit context — what was asked, what was confirmed, why the lead is worth time.',
+    items: ['Live monitoring hooks', 'Warm context on transfer', 'Seat-level affinity rules'],
+  },
+  {
+    kicker: 'Reliability',
+    title: 'When the line matters, the bot stays on it.',
+    body: 'Health checks and graceful degrade paths keep qualification running when a trunk or model endpoint hiccups — with alerts before the floor feels dead air.',
+    items: ['Endpoint health pings', 'Failover routing', 'Ops-facing alert hooks'],
   },
 ];
 ---
 
-<BaseLayout title="Features" description="Explore Cryzel funnel, automation, and reporting features.">
+<BaseLayout
+  title="Features | Dialer Bot"
+  description="Dialer Bot features — intent scoring, opener packs, compliance, vault, routing, and pace control for calling floors."
+>
   <Header slot="header" />
 
-  <section class="page-hero">
-    <div class="container">
-      <h1>Features</h1>
-      <p>Essential tools for driving funnel conversions and lasting customer growth.</p>
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a><span>/</span><span>Features</span>
-      </nav>
-    </div>
-  </section>
+  <main class="fx">
+    <!-- Masthead: single composition, brand-led -->
+    <header class="fx-mast">
+      <div class="fx-shell fx-mast__grid">
+        <div class="fx-mast__copy">
+          <nav class="fx-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Features</span>
+          </nav>
+          <p class="fx-brand">Dialer Bot</p>
+          <h1>Platform features for floors that already dial</h1>
+          <p class="fx-deck">
+            The controls under qualification — scoring, scripting, compliance, vault, routing, and pace.
+            Starter bots from ${site.pricePerBot}.
+          </p>
+          <div class="fx-actions">
+            <a class="fx-btn fx-btn--solid" href={wa.start} target="_blank" rel="noopener noreferrer">
+              WhatsApp to start
+            </a>
+            <a class="fx-btn fx-btn--ghost" href="/pricing">View pricing</a>
+          </div>
+        </div>
 
-  <section class="section">
-    <div class="container">
-      <div class="cards-3">
-        {
-          items.map((item) => (
-            <article class="card">
-              <img class="card-icon" src={item.icon} alt="" width="48" height="48" />
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
-            </article>
-          ))
-        }
+        <aside class="fx-mast__aside" aria-label="Feature snapshot">
+          <div class="fx-snapshot">
+            <div class="fx-snapshot__row">
+              <span>Surface</span>
+              <strong>Qualification layer</strong>
+            </div>
+            <div class="fx-snapshot__row">
+              <span>Modules</span>
+              <strong>8 core controls</strong>
+            </div>
+            <div class="fx-snapshot__row">
+              <span>Handoff</span>
+              <strong>Warm · scored</strong>
+            </div>
+            <div class="fx-snapshot__row">
+              <span>Sales path</span>
+              <strong>WhatsApp</strong>
+            </div>
+          </div>
+        </aside>
       </div>
-      <div class="cta-band" style="margin-top:3rem">
-        <h2>See Cryzel in action</h2>
-        <p>Start free and explore the full feature set with your team.</p>
-        <a class="btn" href="/contact">Get Started for Free</a>
+    </header>
+
+    <!-- Symmetric capability matrix -->
+    <section class="fx-section" aria-labelledby="fx-matrix-title">
+      <div class="fx-shell">
+        <div class="fx-section__head">
+          <p class="fx-kicker">Capability matrix</p>
+          <h2 id="fx-matrix-title">Eight controls. One qualification layer.</h2>
+          <p class="fx-section__deck">
+            Equal weight, equal cells — every module ops can actually configure.
+          </p>
+        </div>
+
+        <ul class="fx-matrix">
+          {
+            matrix.map((item) => (
+              <li class="fx-matrix__cell">
+                <span class="fx-matrix__n">{item.n}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </li>
+            ))
+          }
+        </ul>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- Detail modules: same column rhythm every time -->
+    <section class="fx-section fx-section--tint" aria-labelledby="fx-modules-title">
+      <div class="fx-shell">
+        <div class="fx-section__head">
+          <p class="fx-kicker">How it holds together</p>
+          <h2 id="fx-modules-title">Three layers behind the matrix</h2>
+        </div>
+
+        <div class="fx-modules">
+          {
+            modules.map((mod) => (
+              <article class="fx-module">
+                <div class="fx-module__label">
+                  <p class="fx-kicker">{mod.kicker}</p>
+                </div>
+                <div class="fx-module__body">
+                  <h3>{mod.title}</h3>
+                  <p>{mod.body}</p>
+                  <ul>
+                    {mod.items.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing bar -->
+    <section class="fx-close">
+      <div class="fx-shell fx-close__inner">
+        <div>
+          <p class="fx-brand fx-brand--on-dark">Dialer Bot</p>
+          <h2>Ready to map this to your dialer?</h2>
+          <p>Send campaign type and dialer name. We reply with fit and go-live scope.</p>
+        </div>
+        <a class="fx-btn fx-btn--lime" href={wa.start} target="_blank" rel="noopener noreferrer">
+          Chat on WhatsApp
+        </a>
+      </div>
+    </section>
+  </main>
 
   <Footer slot="footer" />
 </BaseLayout>

@@ -1,9 +1,11 @@
 ---
+import { wa } from '../data/site';
+
 const links = [
-  { href: '/#features', label: 'Features' },
-  { href: '/#company', label: 'Company' },
-  { href: '/#pricing', label: 'Pricing' },
-  { href: '/#contact', label: 'Contact' },
+  { href: '/features', label: 'Features' },
+  { href: '/company', label: 'Company' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/contact', label: 'Contact' },
 ];
 ---
 
@@ -31,7 +33,9 @@ const links = [
     </nav>
 
     <div class="header-actions">
-      <a class="btn header-cta hide-on-mobile" href="/#contact">Get Started</a>
+      <a class="btn header-cta hide-on-mobile" href={wa.start} target="_blank" rel="noopener noreferrer">
+        WhatsApp Us
+      </a>
       <button class="menu-toggle" type="button" aria-label="Open menu" data-nav-toggle>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"></path>

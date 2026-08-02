@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { wa, site } from '../data/site';
+import '../styles/global.css';
+import '../styles/changelog-page.css';
+
+const entries = [
+  {
+    version: '0.4.0',
+    date: 'Aug 2, 2026',
+    year: '2026',
+    title: 'Marketing site & floor messaging',
+    items: [
+      'Launched dialerbot.online with Dialer Bot brand and WhatsApp CTAs.',
+      'Documented $35/bot starter lane and enterprise quoting.',
+    ],
+  },
+  {
+    version: '0.3.2',
+    date: 'Jul 18, 2026',
+    year: '2026',
+    title: 'Affinity routing polish',
+    items: [
+      'Warm handoff prefers seats tagged to the same campaign book.',
+      'Transfer context includes ZIP, intent label, and last bot turn.',
+    ],
+  },
+  {
+    version: '0.3.0',
+    date: 'Jun 30, 2026',
+    year: '2026',
+    title: 'Opener pack studio',
+    items: ['A/B opener packs without full redeploy.', 'Freeze winners; archive underperformers.'],
+  },
+  {
+    version: '0.2.0',
+    date: 'Apr 9, 2026',
+    year: '2026',
+    title: 'Transcript vault',
+    items: ['Searchable transcripts alongside audio.', 'Disposition webhooks for CRM sync.'],
+  },
+  {
+    version: '0.1.0',
+    date: 'Feb 14, 2026',
+    year: '2026',
+    title: 'First live floors',
+    items: ['Hardcoded openers + adaptive follow-ups.', 'Humanized voices for inbound and outbound.'],
+  },
+];
+
+const latest = entries[0];
+---
+
+<BaseLayout
+  title="Changelog | Dialer Bot"
+  description="Dialer Bot product changelog — releases for qualification, routing, vault, and floor tooling."
+>
+  <Header slot="header" />
+
+  <main class="cl">
+    <header class="cl-mast">
+      <div class="cl-shell">
+        <div class="cl-mast__top">
+          <nav class="cl-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Changelog</span>
+          </nav>
+          <p class="cl-brand">Dialer Bot</p>
+        </div>
+
+        <div class="cl-mast__title">
+          <h1>Changelog</h1>
+          <p class="cl-deck">
+            What shipped for floors — routing, vault, opener packs, and the site you are on. Latest is
+            {latest.version}.
+          </p>
+        </div>
+
+        <div class="cl-latest">
+          <div>
+            <p class="cl-latest__label">Latest</p>
+            <p class="cl-latest__ver">{latest.version}</p>
+          </div>
+          <div>
+            <p class="cl-latest__label">Released</p>
+            <p class="cl-latest__val">{latest.date}</p>
+          </div>
+          <div class="cl-latest__span">
+            <p class="cl-latest__label">Focus</p>
+            <p class="cl-latest__val">{latest.title}</p>
+          </div>
+          <a class="cl-btn cl-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
+            Request a feature
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <section class="cl-section">
+      <div class="cl-shell cl-layout">
+        <nav class="cl-rail" aria-label="Versions" data-cl-rail>
+          <p class="cl-rail__label">Versions</p>
+          <ol>
+            {
+              entries.map((e, i) => (
+                <li>
+                  <a href={`#v-${e.version.replace(/\./g, '-')}`} data-cl-link={e.version} class:list={[{ 'is-active': i === 0 }]}>
+                    <span>{e.version}</span>
+                    <em>{e.date}</em>
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+
+        <div class="cl-feed" data-cl-feed>
+          {
+            entries.map((e) => (
+              <article class="cl-entry" id={`v-${e.version.replace(/\./g, '-')}`} data-cl-entry={e.version}>
+                <header>
+                  <span class="cl-entry__ver">{e.version}</span>
+                  <time datetime={e.date}>{e.date}</time>
+                </header>
+                <h2>{e.title}</h2>
+                <ul>
+                  {e.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="cl-close">
+      <div class="cl-shell cl-close__inner">
+        <div>
+          <p class="cl-brand cl-brand--on-dark">Dialer Bot</p>
+          <h2>Want something on the next cut?</h2>
+          <p>Message dialer type and the gap — we route feature asks straight to the builders at {site.domain}.</p>
+        </div>
+        <a class="cl-btn cl-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
+          WhatsApp a request
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-cl-link]'));
+  const entries = Array.from(document.querySelectorAll<HTMLElement>('[data-cl-entry]'));
+
+  const setActive = (version: string) => {
+    links.forEach((link) => {
+      link.classList.toggle('is-active', link.dataset.clLink === version);
+    });
+  };
+
+  if ('IntersectionObserver' in window && entries.length) {
+    const io = new IntersectionObserver(
+      (entriesIo) => {
+        const visible = entriesIo
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target instanceof HTMLElement && visible.target.dataset.clEntry) {
+          setActive(visible.target.dataset.clEntry);
+        }
+      },
+      { rootMargin: '-20% 0px -55% 0px', threshold: [0.15, 0.4, 0.7] },
+    );
+    entries.forEach((el) => io.observe(el));
+  }
+
+  setActive(entries[0]?.dataset.clEntry || '');
+</script>

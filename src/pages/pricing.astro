@@ -2,70 +2,484 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { wa, site } from '../data/site';
 import '../styles/global.css';
+import '../styles/pricing-page.css';
+
+const included = [
+  { n: '01', title: 'Bot instance', text: 'One AI voice bot ready for a single campaign lane.' },
+  { n: '02', title: 'Opener pack', text: 'Campaign opener setup for your vertical — ACA, FE, HI, dispatch, and more.' },
+  { n: '03', title: 'Intent + handoff', text: 'Live scoring and warm transfer into seats you already run.' },
+  { n: '04', title: 'Transcript vault', text: 'Searchable audio and text for ops and QA.' },
+  { n: '05', title: 'Dialer / SIP', text: 'Connection support so the bot keeps pace with your floor.' },
+  { n: '06', title: 'WhatsApp onboard', text: 'Direct line to the builders — not a ticket queue.' },
+];
+
+const enterprise = [
+  'Multi-bot & multi-campaign floors',
+  'Custom compliance matrices',
+  'Seat affinity routing',
+  'Priority tuning & support',
+  'Volume / SLA discussions',
+  'Floor workshops',
+];
+
+const steps = [
+  {
+    n: '01',
+    title: 'Message the floor facts',
+    text: 'Dialer type, seat count, and campaign list — enough for us to place you in starter or enterprise.',
+  },
+  {
+    n: '02',
+    title: 'Lock the lane',
+    text: `We confirm scope, opener pack, and handoff rules. Starter is $${site.pricePerBot}/bot. Enterprise is a WhatsApp quote.`,
+  },
+  {
+    n: '03',
+    title: 'Go live',
+    text: 'Connect SIP / dialer, tune pace, and ship. Support stays on the same WhatsApp thread.',
+  },
+];
 ---
 
-<BaseLayout title="Pricing" description="Simple Cryzel pricing plans for teams of every size.">
+<BaseLayout
+  title="Pricing | Dialer Bot"
+  description={`Dialer Bot pricing — $${site.pricePerBot} per bot. Enterprise on WhatsApp.`}
+>
   <Header slot="header" />
 
-  <section class="page-hero">
-    <div class="container">
-      <h1>Pricing</h1>
-      <p>Transparent plans that scale as your funnel grows.</p>
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a><span>/</span><span>Pricing</span>
-      </nav>
-    </div>
-  </section>
+  <main class="pr">
+    <header class="pr-mast">
+      <div class="pr-shell pr-mast__grid">
+        <div class="pr-mast__copy">
+          <nav class="pr-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Pricing</span>
+          </nav>
+          <p class="pr-brand">Dialer Bot</p>
+          <h1>One clear price. Room to grow on WhatsApp.</h1>
+          <p class="pr-deck">
+            Starter is ${site.pricePerBot} USD per bot — qualification, vault, and warm handoff for one campaign
+            lane. Multi-bot floors and custom rules are quoted directly, not buried in a public matrix.
+          </p>
+          <div class="pr-actions">
+            <a class="pr-btn pr-btn--solid" href={wa.start} target="_blank" rel="noopener noreferrer">
+              Buy via WhatsApp
+            </a>
+            <a class="pr-btn pr-btn--ghost" href={wa.enterprise} target="_blank" rel="noopener noreferrer">
+              Enterprise quote
+            </a>
+          </div>
+        </div>
 
-  <section class="section">
-    <div class="container">
-      <div class="pricing-grid">
-        <article class="price-card">
-          <h3>Standard</h3>
-          <p class="desc">Perfect for trying out the core features</p>
-          <div class="amount"><strong>$39</strong> <span>Monthly</span></div>
-          <p><strong>Included Features</strong></p>
-          <hr />
-          <ul>
-            <li>Basic Reporting</li>
-            <li>Standard Personalization</li>
-            <li>Basic Segmentation</li>
-            <li>Standard Support (Email)</li>
-          </ul>
-          <a class="btn btn-dark" href="/contact">Get Started for Free</a>
-        </article>
-        <article class="price-card featured">
-          <h3>Business</h3>
-          <p class="desc">Perfect for growing teams that need more control</p>
-          <div class="amount"><strong>$59</strong> <span>Monthly</span></div>
-          <p><strong>Included Features</strong></p>
-          <hr />
-          <ul>
-            <li>Advanced Reporting</li>
-            <li>Dynamic Personalization</li>
-            <li>Advanced Segmentation</li>
-            <li>Priority Support</li>
-          </ul>
-          <a class="btn" href="/contact">Get Started for Free</a>
-        </article>
-        <article class="price-card">
-          <h3>Enterprise</h3>
-          <p class="desc">For organizations that need scale and security</p>
-          <div class="amount"><strong>$99</strong> <span>Monthly</span></div>
-          <p><strong>Included Features</strong></p>
-          <hr />
-          <ul>
-            <li>Custom Reporting</li>
-            <li>SSO & advanced security</li>
-            <li>Dedicated success manager</li>
-            <li>SLA-backed support</li>
-          </ul>
-          <a class="btn btn-dark" href="/contact">Contact Sales</a>
-        </article>
+        <aside class="pr-mast__aside" aria-label="Plan picker">
+          <div class="pr-dial" data-pr-dial data-plan="starter">
+            <div class="pr-dial__tabs" role="tablist" aria-label="Choose a plan">
+              <button
+                type="button"
+                class="pr-dial__tab is-active"
+                role="tab"
+                aria-selected="true"
+                data-plan-tab="starter"
+                id="pr-tab-starter"
+              >
+                Starter
+              </button>
+              <button
+                type="button"
+                class="pr-dial__tab"
+                role="tab"
+                aria-selected="false"
+                data-plan-tab="enterprise"
+                id="pr-tab-enterprise"
+              >
+                Enterprise
+              </button>
+            </div>
+
+            <div
+              class="pr-dial__panel is-active"
+              role="tabpanel"
+              data-plan-panel="starter"
+              aria-labelledby="pr-tab-starter"
+            >
+              <p class="pr-dial__amt">
+                <span class="pr-dial__currency">$</span>
+                <span class="pr-dial__num" data-pr-count>{site.pricePerBot}</span>
+              </p>
+              <p class="pr-dial__unit">USD / bot</p>
+
+              <div class="pr-rail" data-pr-rail>
+                <p class="pr-rail__label">Tap to preview coverage</p>
+                <div class="pr-rail__track" role="tablist" aria-label="Starter coverage">
+                  <button
+                    type="button"
+                    class="pr-rail__node is-active"
+                    role="tab"
+                    aria-selected="true"
+                    data-rail-i="0"
+                    data-rail-text="One campaign lane — ACA, FE, HI, dispatch, or inbound."
+                  >
+                    <span class="pr-rail__n">1</span>
+                    <span class="pr-rail__t">Lane</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="pr-rail__node"
+                    role="tab"
+                    aria-selected="false"
+                    data-rail-i="1"
+                    tabindex="-1"
+                    data-rail-text="Full qualification with locked early questions and live intent score."
+                  >
+                    <span class="pr-rail__n">2</span>
+                    <span class="pr-rail__t">Qualify</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="pr-rail__node"
+                    role="tab"
+                    aria-selected="false"
+                    data-rail-i="2"
+                    tabindex="-1"
+                    data-rail-text="Warm handoff into the seat that should close — with context."
+                  >
+                    <span class="pr-rail__n">3</span>
+                    <span class="pr-rail__t">Handoff</span>
+                  </button>
+                </div>
+                <p class="pr-rail__detail" data-rail-detail aria-live="polite">
+                  One campaign lane — ACA, FE, HI, dispatch, or inbound.
+                </p>
+              </div>
+
+              <a
+                class="pr-btn pr-btn--solid pr-dial__cta"
+                href={wa.start}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-plan-cta="starter"
+              >
+                WhatsApp to buy
+              </a>
+            </div>
+
+            <div
+              class="pr-dial__panel"
+              role="tabpanel"
+              data-plan-panel="enterprise"
+              aria-labelledby="pr-tab-enterprise"
+              hidden
+            >
+              <p class="pr-dial__amt pr-dial__amt--lite">
+                <span class="pr-dial__talk">Custom</span>
+              </p>
+              <p class="pr-dial__unit">Quoted on WhatsApp</p>
+
+              <div class="pr-rail" data-pr-rail>
+                <p class="pr-rail__label">Tap to preview coverage</p>
+                <div class="pr-rail__track" role="tablist" aria-label="Enterprise coverage">
+                  <button
+                    type="button"
+                    class="pr-rail__node is-active"
+                    role="tab"
+                    aria-selected="true"
+                    data-rail-i="0"
+                    data-rail-text="Multi-bot and multi-campaign floors under one ops rhythm."
+                  >
+                    <span class="pr-rail__n">1</span>
+                    <span class="pr-rail__t">Floors</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="pr-rail__node"
+                    role="tab"
+                    aria-selected="false"
+                    data-rail-i="1"
+                    tabindex="-1"
+                    data-rail-text="Custom compliance matrices, affinity routing, and SLAs."
+                  >
+                    <span class="pr-rail__n">2</span>
+                    <span class="pr-rail__t">Rules</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="pr-rail__node"
+                    role="tab"
+                    aria-selected="false"
+                    data-rail-i="2"
+                    tabindex="-1"
+                    data-rail-text="Priority tuning with floor workshops when you need hands on."
+                  >
+                    <span class="pr-rail__n">3</span>
+                    <span class="pr-rail__t">Support</span>
+                  </button>
+                </div>
+                <p class="pr-rail__detail" data-rail-detail aria-live="polite">
+                  Multi-bot and multi-campaign floors under one ops rhythm.
+                </p>
+              </div>
+
+              <a
+                class="pr-btn pr-btn--lime pr-dial__cta"
+                href={wa.enterprise}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-plan-cta="enterprise"
+              >
+                Get enterprise quote
+              </a>
+            </div>
+          </div>
+        </aside>
       </div>
-    </div>
-  </section>
+    </header>
+
+    <section class="pr-section" aria-labelledby="pr-lanes-title">
+      <div class="pr-shell">
+        <div class="pr-section__head">
+          <p class="pr-kicker">Lanes</p>
+          <h2 id="pr-lanes-title">Starter clarity. Enterprise when the floor needs it.</h2>
+        </div>
+
+        <div class="pr-lanes">
+          <article class="pr-lane pr-lane--starter">
+            <header>
+              <p class="pr-kicker">Starter</p>
+              <h3>Per bot</h3>
+              <p class="pr-lane__price">
+                <strong>${site.pricePerBot}</strong>
+                <span>USD / bot</span>
+              </p>
+            </header>
+            <p class="pr-lane__lede">
+              Best when you need one bot on one book — ACA, FE, HI, dispatch, or inbound reception — without a
+              custom compliance matrix.
+            </p>
+            <a class="pr-btn pr-btn--solid" href={wa.start} target="_blank" rel="noopener noreferrer">
+              WhatsApp to buy
+            </a>
+          </article>
+
+          <article class="pr-lane pr-lane--enterprise">
+            <header>
+              <p class="pr-kicker pr-kicker--lime">Enterprise</p>
+              <h3>Custom floor</h3>
+              <p class="pr-lane__price pr-lane__price--lite">
+                <strong>Talk to us</strong>
+                <span>WhatsApp quote</span>
+              </p>
+            </header>
+            <ul>
+              {enterprise.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+            <a class="pr-btn pr-btn--lime" href={wa.enterprise} target="_blank" rel="noopener noreferrer">
+              WhatsApp enterprise
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="pr-section pr-section--tint" aria-labelledby="pr-include-title">
+      <div class="pr-shell">
+        <div class="pr-section__head">
+          <p class="pr-kicker">In every starter</p>
+          <h2 id="pr-include-title">What ${site.pricePerBot} actually covers</h2>
+        </div>
+        <ul class="pr-include">
+          {
+            included.map((item) => (
+              <li>
+                <span>{item.n}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="pr-section" aria-labelledby="pr-steps-title">
+      <div class="pr-shell">
+        <div class="pr-section__head">
+          <p class="pr-kicker">How buying works</p>
+          <h2 id="pr-steps-title">Three messages. Then live.</h2>
+        </div>
+        <ol class="pr-steps">
+          {
+            steps.map((item) => (
+              <li>
+                <span>{item.n}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="pr-close">
+      <div class="pr-shell pr-close__inner">
+        <div>
+          <p class="pr-brand pr-brand--on-dark">Dialer Bot</p>
+          <h2>Unsure which lane you are?</h2>
+          <p>Send dialer type, seat count, and campaign list. We will say starter or enterprise in one reply.</p>
+        </div>
+        <a class="pr-btn pr-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
+          Ask on WhatsApp
+        </a>
+      </div>
+    </section>
+  </main>
 
   <Footer slot="footer" />
 </BaseLayout>
+
+<script>
+  function initCoverageRail(rail: HTMLElement) {
+    const nodes = Array.from(rail.querySelectorAll<HTMLButtonElement>('[data-rail-i]'));
+    const detail = rail.querySelector<HTMLElement>('[data-rail-detail]');
+    const copy = nodes.map((node) => node.dataset.railText || '');
+
+    let index = 0;
+    let timer: number | undefined;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const setIndex = (i: number, user = false) => {
+      index = (i + nodes.length) % nodes.length;
+      nodes.forEach((node, ni) => {
+        const on = ni === index;
+        node.classList.toggle('is-active', on);
+        node.setAttribute('aria-selected', on ? 'true' : 'false');
+        node.tabIndex = on ? 0 : -1;
+      });
+      rail.style.setProperty('--pr-rail-progress', String(index / Math.max(1, nodes.length - 1)));
+      if (detail && copy[index]) {
+        detail.classList.remove('is-swap');
+        void detail.offsetWidth;
+        detail.textContent = copy[index];
+        detail.classList.add('is-swap');
+      }
+      if (user) restart();
+    };
+
+    const restart = () => {
+      if (reduce) return;
+      window.clearInterval(timer);
+      timer = window.setInterval(() => setIndex(index + 1), 3200);
+    };
+
+    nodes.forEach((node) => {
+      node.addEventListener('click', () => setIndex(Number(node.dataset.railI || 0), true));
+    });
+
+    rail.querySelector('.pr-rail__track')?.addEventListener('keydown', (event) => {
+      const e = event as KeyboardEvent;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        setIndex(index + 1, true);
+        nodes[index]?.focus();
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        setIndex(index - 1, true);
+        nodes[index]?.focus();
+      }
+    });
+
+    setIndex(0);
+    restart();
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        const visible = entries.some((entry) => entry.isIntersecting);
+        if (!visible) window.clearInterval(timer);
+        else restart();
+      });
+      io.observe(rail);
+    }
+  }
+
+  function initPriceDial(root: HTMLElement) {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-plan-tab]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-plan-panel]'));
+    const countEl = root.querySelector<HTMLElement>('[data-pr-count]');
+    const target = Number(countEl?.textContent?.trim() || '35');
+
+    const setPlan = (plan: string) => {
+      root.dataset.plan = plan;
+      tabs.forEach((tab) => {
+        const on = tab.dataset.planTab === plan;
+        tab.classList.toggle('is-active', on);
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        tab.tabIndex = on ? 0 : -1;
+      });
+      panels.forEach((panel) => {
+        const on = panel.dataset.planPanel === plan;
+        panel.classList.toggle('is-active', on);
+        panel.hidden = !on;
+      });
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => setPlan(tab.dataset.planTab || 'starter'));
+    });
+
+    root.querySelector('.pr-dial__tabs')?.addEventListener('keydown', (event) => {
+      const e = event as KeyboardEvent;
+      const current = tabs.findIndex((t) => t.classList.contains('is-active'));
+      if (current < 0) return;
+      let next = current;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (current + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (current - 1 + tabs.length) % tabs.length;
+      else return;
+      e.preventDefault();
+      tabs[next].focus();
+      setPlan(tabs[next].dataset.planTab || 'starter');
+    });
+
+    if (countEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let started = false;
+      const run = () => {
+        if (started) return;
+        started = true;
+        const duration = 700;
+        const start = performance.now();
+        countEl.textContent = '0';
+        const tick = (now: number) => {
+          const t = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          countEl.textContent = String(Math.round(eased * target));
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              run();
+              io.disconnect();
+            }
+          },
+          { threshold: 0.4 },
+        );
+        io.observe(root);
+      } else {
+        run();
+      }
+    }
+
+    root.querySelectorAll<HTMLElement>('[data-pr-rail]').forEach(initCoverageRail);
+    setPlan(root.dataset.plan || 'starter');
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-pr-dial]').forEach(initPriceDial);
+</script>

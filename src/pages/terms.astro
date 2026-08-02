@@ -1,0 +1,184 @@
+﻿---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site, wa } from '../data/site';
+import '../styles/global.css';
+import '../styles/legal-page.css';
+
+const updated = 'August 2, 2026';
+
+const sections = [
+  {
+    id: 'agreement',
+    n: '01',
+    title: 'Agreement',
+    body: `By using ${site.domain}, contacting us, or purchasing bots, you agree to these Terms with Dialer Bot (${site.address.line1}, ${site.address.city}).`,
+  },
+  {
+    id: 'services',
+    n: '02',
+    title: 'Services & fees',
+    body: `Dialer Bot provides AI voice bots for qualification and warm handoff. Starter bots are $${site.pricePerBot} USD per bot unless otherwise agreed. Enterprise pricing is custom.`,
+  },
+  {
+    id: 'responsibilities',
+    n: '03',
+    title: 'Customer responsibilities',
+    bullets: [
+      'Lawful rights to numbers, lists, and dialer access you connect.',
+      'Responsibility for scripts, consent, quiet hours, and industry rules.',
+      'No fraud, harassment, or illegal solicitation.',
+    ],
+  },
+  {
+    id: 'liability',
+    n: '04',
+    title: 'Liability',
+    body: 'Service depends on carriers, dialers, and model providers. To the fullest extent allowed by law, Dialer Bot is not liable for indirect damages or campaign underperformance. Aggregate liability is limited to fees paid in the three months before the claim.',
+  },
+  {
+    id: 'law',
+    n: '05',
+    title: 'Governing law',
+    body: 'Governed by laws applicable in Pakistan. Courts in Rawalpindi / Islamabad have jurisdiction unless a signed enterprise agreement says otherwise.',
+  },
+];
+---
+
+<BaseLayout
+  title="Terms & Conditions | Dialer Bot"
+  description={`Terms and Conditions for Dialer Bot (${site.domain}). Updated ${updated}.`}
+>
+  <Header slot="header" />
+
+  <main class="lg">
+    <header class="lg-mast">
+      <div class="lg-shell">
+        <div class="lg-mast__top">
+          <nav class="lg-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Terms</span>
+          </nav>
+          <p class="lg-brand">Dialer Bot</p>
+        </div>
+
+        <div class="lg-mast__title">
+          <h1>Terms &amp; Conditions</h1>
+          <p class="lg-deck">
+            The rules for using {site.domain}, buying bots, and working with our floor team — compact, not theatrical.
+          </p>
+        </div>
+
+        <dl class="lg-meta">
+          <div>
+            <dt>Updated</dt>
+            <dd>{updated}</dd>
+          </div>
+          <div>
+            <dt>Operator</dt>
+            <dd>{site.domain}</dd>
+          </div>
+          <div>
+            <dt>Starter</dt>
+            <dd>${site.pricePerBot} USD / bot</dd>
+          </div>
+          <div>
+            <dt>Enterprise</dt>
+            <dd>
+              <a href={wa.enterprise} target="_blank" rel="noopener noreferrer">WhatsApp quote</a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="lg-section">
+      <div class="lg-shell lg-layout">
+        <nav class="lg-toc" aria-label="On this page">
+          <p class="lg-toc__label">On this page</p>
+          <ol>
+            {
+              sections.map((s) => (
+                <li>
+                  <a href={`#${s.id}`} data-lg-link={s.id}>
+                    <span>{s.n}</span>
+                    {s.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+          <a class="lg-toc__wa" href={wa.enterprise} target="_blank" rel="noopener noreferrer">
+            Need an MSA? WhatsApp
+          </a>
+        </nav>
+
+        <article class="lg-body">
+          {
+            sections.map((s) => (
+              <section class="lg-block" id={s.id} data-lg-block={s.id}>
+                <header>
+                  <span>{s.n}</span>
+                  <h2>{s.title}</h2>
+                </header>
+                {s.body && <p>{s.body}</p>}
+                {s.bullets && (
+                  <ul>
+                    {s.bullets.map((b) => (
+                      <li>{b}</li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))
+          }
+        </article>
+      </div>
+    </section>
+
+    <section class="lg-close">
+      <div class="lg-shell lg-close__inner">
+        <div>
+          <p class="lg-brand lg-brand--on-dark">Dialer Bot</p>
+          <h2>Need a custom MSA?</h2>
+          <p>Enterprise floors get agreement terms on WhatsApp — not a one-size PDF dump.</p>
+        </div>
+        <a class="lg-btn lg-btn--lime" href={wa.enterprise} target="_blank" rel="noopener noreferrer">
+          WhatsApp enterprise
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-lg-link]'));
+  const blocks = Array.from(document.querySelectorAll<HTMLElement>('[data-lg-block]'));
+
+  const setActive = (id: string) => {
+    links.forEach((link) => {
+      link.classList.toggle('is-active', link.dataset.lgLink === id);
+    });
+  };
+
+  if ('IntersectionObserver' in window && blocks.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target instanceof HTMLElement && visible.target.dataset.lgBlock) {
+          setActive(visible.target.dataset.lgBlock);
+        }
+      },
+      { rootMargin: '-20% 0px -55% 0px', threshold: [0.1, 0.4, 0.7] },
+    );
+    blocks.forEach((b) => io.observe(b));
+  }
+
+  setActive(blocks[0]?.dataset.lgBlock || 'agreement');
+</script>

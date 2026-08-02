@@ -1,4 +1,6 @@
 ---
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+
 interface Props {
   title: string;
   description?: string;
@@ -47,6 +49,7 @@ const pageTitle = title.includes('Dialer Bot') ? title : `${title} | Dialer Bot`
       <slot />
     </main>
     <slot name="footer" />
+    <WhatsAppFloat />
 
     <script>
       import Lenis from 'lenis';
