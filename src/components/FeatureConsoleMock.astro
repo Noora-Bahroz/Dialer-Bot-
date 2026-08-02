@@ -1,0 +1,541 @@
+---
+/**
+ * Enterprise-grade section visuals — clickable chrome, not functional.
+ */
+interface Props {
+  variant: 'inbound' | 'outbound' | 'dialer' | 'backend' | 'motive';
+}
+
+const { variant } = Astro.props;
+
+const ringing = [
+  { name: 'Casey Ng', line: '+1 •••-2201' },
+  { name: 'Sam Ortiz', line: '+1 •••-8842' },
+];
+
+const qualifying = [
+  { name: 'Jordan Lee', step: 'Callback number', progress: 65 },
+  { name: 'Priya Shah', step: 'Service type', progress: 40 },
+];
+
+const routing = [
+  { name: 'Ava Brooks', dest: 'Sales · 2' },
+  { name: 'Leo Park', dest: 'Dispatch · 4' },
+];
+
+const seatLanes = [
+  { id: 'A', seats: ['bot', 'bot', 'bot', 'idle', 'bot', 'agent'] },
+  { id: 'B', seats: ['bot', 'idle', 'bot', 'bot', 'bot', 'idle'] },
+  { id: 'C', seats: ['agent', 'bot', 'bot', 'idle', 'bot', 'bot'] },
+];
+
+const seatCols = [1, 2, 3, 4, 5, 6];
+
+const allSeats = seatLanes.flatMap((l) => l.seats);
+const seatCounts = {
+  bot: allSeats.filter((s) => s === 'bot').length,
+  agent: allSeats.filter((s) => s === 'agent').length,
+  idle: allSeats.filter((s) => s === 'idle').length,
+  total: allSeats.length,
+};
+
+const voices = [
+  { name: 'Sofia', meta: 'en-US · female', on: true },
+  { name: 'Marcus', meta: 'en-US · male', on: false },
+  { name: 'Amelia', meta: 'en-GB · clear', on: false },
+];
+
+const campaigns = [
+  { code: 'ACA', name: 'Open Enrollment', status: 'Live', qual: '128', xfer: '41', rate: '32%', dials: '1,842', bar: 78, tone: 'aca' },
+  { code: 'FE', name: 'Final Expense', status: 'Paused', qual: '62', xfer: '19', rate: '31%', dials: '940', bar: 54, tone: 'fe' },
+  { code: 'HI', name: 'Health Insurance', status: 'Live', qual: '44', xfer: '11', rate: '25%', dials: '612', bar: 41, tone: 'hi' },
+  { code: 'TD', name: 'Truck Dispatch', status: 'Live', qual: '37', xfer: '22', rate: '59%', dials: '488', bar: 66, tone: 'td' },
+];
+
+---
+
+{
+  variant === 'inbound' && (
+    <div class="ent ent-rx" data-viz aria-label="Inbound receptionist board">
+      <div class="ent-toolbar">
+        <div>
+          <p class="ent-kicker">Inbound</p>
+          <h3>Reception board</h3>
+        </div>
+        <div class="ent-toolbar-actions">
+          <span class="ent-status live">Answering</span>
+          <button type="button" class="ent-btn solid" data-mock>Take next</button>
+        </div>
+      </div>
+
+      <div class="ent-kpi-row rx-kpis">
+        <button type="button" class="ent-kpi" data-mock>
+          <span>Answered</span>
+          <strong>186</strong>
+        </button>
+        <button type="button" class="ent-kpi" data-mock>
+          <span>Avg qualify</span>
+          <strong>0:48</strong>
+        </button>
+        <button type="button" class="ent-kpi" data-mock>
+          <span>Routed</span>
+          <strong>71%</strong>
+        </button>
+      </div>
+
+      <div class="rx-board">
+        <div class="rx-col">
+          <div class="rx-col-h"><span>Ringing</span><em>{ringing.length}</em></div>
+          {ringing.map((c) => (
+            <button type="button" class="rx-card" data-mock>
+              <strong>{c.name}</strong>
+              <em>{c.line}</em>
+            </button>
+          ))}
+        </div>
+        <div class="rx-col is-active">
+          <div class="rx-col-h"><span>Qualifying</span><em>{qualifying.length}</em></div>
+          {qualifying.map((c) => (
+            <button type="button" class="rx-card is-on" data-mock>
+              <strong>{c.name}</strong>
+              <em>{c.step}</em>
+              <div class="rx-progress"><i style={`width:${c.progress}%`} /></div>
+            </button>
+          ))}
+        </div>
+        <div class="rx-col">
+          <div class="rx-col-h"><span>Route ready</span><em>{routing.length}</em></div>
+          {routing.map((c) => (
+            <button type="button" class="rx-card" data-mock>
+              <strong>{c.name}</strong>
+              <em>{c.dest}</em>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="rx-footer">
+        <div>
+          <strong>Bot asking Jordan</strong>
+          <em>“What’s the best number to reach you on?”</em>
+        </div>
+        <div class="rx-footer-actions">
+          <button type="button" class="ent-btn quiet" data-mock>Hold</button>
+          <button type="button" class="ent-btn solid" data-mock>Route · Dispatch</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+{
+  variant === 'outbound' && (
+    <div class="ent ent-outbound" data-viz aria-label="Outbound campaign table">
+      <div class="ent-toolbar">
+        <div>
+          <p class="ent-kicker">Outbound</p>
+          <h3>Campaign bots</h3>
+        </div>
+        <div class="ent-toolbar-actions">
+          <button type="button" class="ent-btn quiet" data-mock>Filter</button>
+          <button type="button" class="ent-btn solid" data-mock>Launch</button>
+        </div>
+      </div>
+
+      <div class="ent-kpi-row out-kpis">
+        <button type="button" class="ent-kpi" data-mock>
+          <span>Dials today</span>
+          <strong>4,283</strong>
+        </button>
+        <button type="button" class="ent-kpi" data-mock>
+          <span>Qualified</span>
+          <strong>300</strong>
+        </button>
+        <button type="button" class="ent-kpi" data-mock>
+          <span>Live bots</span>
+          <strong>18</strong>
+        </button>
+      </div>
+
+      <div class="ent-table-wrap out-table">
+        <table class="ent-table">
+          <thead>
+            <tr>
+              <th>Campaign</th>
+              <th>Status</th>
+              <th>Dials</th>
+              <th>Qualified</th>
+              <th>Transfers</th>
+              <th>Rate</th>
+              <th>Pace</th>
+            </tr>
+          </thead>
+          <tbody>
+            {campaigns.map((c, i) => (
+              <tr class:list={[{ 'is-on': i === 0 }]}>
+                <td>
+                  <button type="button" data-mock>
+                    <span class={`ent-code tone-${c.tone}`}>{c.code}</span>
+                    <strong>{c.name}</strong>
+                  </button>
+                </td>
+                <td>
+                  <span class:list={['ent-pill', { on: c.status === 'Live', off: c.status !== 'Live' }]}>
+                    {c.status}
+                  </span>
+                </td>
+                <td>{c.dials}</td>
+                <td>{c.qual}</td>
+                <td>{c.xfer}</td>
+                <td>{c.rate}</td>
+                <td>
+                  <div class="ent-mini-bar" aria-hidden="true">
+                    <i style={`width:${c.bar}%`} />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="out-detail">
+        <div class="out-detail-main">
+          <span class="ent-code tone-aca">ACA</span>
+          <div>
+            <strong>Open Enrollment</strong>
+            <em>Script: subsidy gate v3 · humanized voice · self-paced</em>
+          </div>
+        </div>
+        <div class="out-detail-actions">
+          <button type="button" class="ent-btn quiet" data-mock>Edit script</button>
+          <button type="button" class="ent-btn solid" data-mock>Monitor</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+{
+  variant === 'dialer' && (
+    <div class="ent ent-sync" data-viz aria-label="Dialer pace and seat map">
+      <div class="ent-toolbar">
+        <div>
+          <p class="ent-kicker">Dialer sync</p>
+          <h3>Self-paced seats</h3>
+        </div>
+        <div class="ent-toolbar-actions">
+          <span class="ent-status live">Connected</span>
+          <button type="button" class="ent-btn quiet" data-mock>Configure</button>
+        </div>
+      </div>
+
+      <div class="sync-pipe" role="presentation">
+        <button type="button" class="sync-node" data-mock>
+          <span>Dialer</span>
+          <strong>Vicidial</strong>
+        </button>
+        <i class="sync-pipe-line" aria-hidden="true" />
+        <button type="button" class="sync-node is-on" data-mock>
+          <span>Bot layer</span>
+          <strong>{seatCounts.bot} live</strong>
+        </button>
+        <i class="sync-pipe-line" aria-hidden="true" />
+        <button type="button" class="sync-node" data-mock>
+          <span>Agents</span>
+          <strong>{seatCounts.agent} closers</strong>
+        </button>
+      </div>
+
+      <div class="sync-hero">
+        <button type="button" class="sync-pace" data-mock>
+          <div class="sync-pace-top">
+            <span>Live pace</span>
+            <em>matched · Vicidial</em>
+          </div>
+          <strong>1.0×</strong>
+          <div class="sync-meter" aria-hidden="true">
+            <i style={`width:68%`} />
+            <b style={`left:68%`} />
+          </div>
+        </button>
+        <div class="sync-side-stats">
+          <button type="button" data-mock><span>Handshake</span><strong>42ms</strong></button>
+          <button type="button" data-mock><span>Queue lag</span><strong>0.2s</strong></button>
+          <button type="button" data-mock><span>Ramp</span><strong>+6 seats</strong></button>
+          <button type="button" data-mock><span>Endpoint</span><strong>prod-east</strong></button>
+        </div>
+      </div>
+
+      <div class="sync-map-block">
+        <div class="sync-map-h">
+          <span>Floor map · {seatCounts.total} seats</span>
+          <div class="sync-counts">
+            <button type="button" data-mock><i class="bot" />{seatCounts.bot} bot</button>
+            <button type="button" data-mock><i class="agent" />{seatCounts.agent} agent</button>
+            <button type="button" data-mock><i class="idle" />{seatCounts.idle} idle</button>
+          </div>
+        </div>
+
+        <div class="sync-floor" role="group" aria-label="Seat grid">
+          <span class="sync-floor-corner" aria-hidden="true" />
+          {seatCols.map((col) => (
+            <span class="sync-floor-col">{col}</span>
+          ))}
+
+          {seatLanes.map((lane) => (
+            <div class="sync-floor-lane">
+              <span class="sync-floor-row">{lane.id}</span>
+              {lane.seats.map((kind, i) => (
+                <button
+                  type="button"
+                  class:list={['sync-seat', kind, { 'is-on': lane.id === 'A' && i === 0 }]}
+                  data-mock
+                  title={`Seat ${lane.id}${i + 1}`}
+                  aria-label={`Seat ${lane.id}${i + 1}, ${kind}`}
+                >
+                  <em>{lane.id}{i + 1}</em>
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="sync-footer">
+        <div>
+          <strong>Seat A1 · bot owning opener</strong>
+          <em>Dialer feeds pace · bots clear first contact · agents take warm only</em>
+        </div>
+        <button type="button" class="ent-btn solid" data-mock>View sync log</button>
+      </div>
+    </div>
+  )
+}
+
+{
+  variant === 'backend' && (
+    <div class="ent ent-studio" data-viz aria-label="Voice model and backend control">
+      <div class="ent-toolbar">
+        <div>
+          <p class="ent-kicker">Voice studio</p>
+          <h3>Voice · model · control</h3>
+        </div>
+        <div class="ent-toolbar-actions">
+          <span class="ent-status live">Healthy</span>
+          <button type="button" class="ent-btn quiet" data-mock>Test line</button>
+        </div>
+      </div>
+
+      <section class="studio-cast">
+        <div class="studio-cast-h">
+          <span>Humanized voices</span>
+          <button type="button" class="ent-link" data-mock>Browse library</button>
+        </div>
+        <div class="studio-voices">
+          {voices.map((v) => (
+            <button type="button" class:list={['studio-voice', { 'is-on': v.on }]} data-mock>
+              <span class="studio-avatar" aria-hidden="true">{v.name.slice(0, 1)}</span>
+              <span class="studio-voice-main">
+                <strong>{v.name}</strong>
+                <em>{v.meta}</em>
+              </span>
+              <span class="studio-voice-state">{v.on ? 'Active' : 'Ready'}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <div class="studio-grid">
+        <section class="studio-pane">
+          <header class="studio-pane-h">
+            <h4>Model</h4>
+            <span>Streaming</span>
+          </header>
+          <div class="studio-fields">
+            <button type="button" class="studio-field is-on" data-mock>
+              <span>Runtime</span>
+              <strong>Streaming LLM</strong>
+            </button>
+            <button type="button" class="studio-field" data-mock>
+              <span>Understanding</span>
+              <strong>Intent + entities</strong>
+            </button>
+            <button type="button" class="studio-field" data-mock>
+              <span>Barge-in</span>
+              <strong>Natural cutover</strong>
+            </button>
+          </div>
+        </section>
+
+        <section class="studio-pane">
+          <header class="studio-pane-h">
+            <h4>Script control</h4>
+            <span>Policy</span>
+          </header>
+          <div class="studio-toggles">
+            <button type="button" class="studio-toggle is-on" data-mock>
+              <span class="studio-switch" aria-hidden="true"><i /></span>
+              Hardcoded openers
+            </button>
+            <button type="button" class="studio-toggle is-on" data-mock>
+              <span class="studio-switch" aria-hidden="true"><i /></span>
+              Fine-tuned follow-ups
+            </button>
+            <button type="button" class="studio-toggle" data-mock>
+              <span class="studio-switch" aria-hidden="true"><i /></span>
+              Branch overrides
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <section class="studio-monitor">
+        <div class="studio-monitor-h">
+          <span>Backend · recording · QA</span>
+          <em>call_9182</em>
+        </div>
+        <div class="studio-log">
+          <button type="button" class="is-on" data-mock><time>14:02:19</time><strong>Intent classified</strong><em>subsidy_yes</em></button>
+          <button type="button" data-mock><time>14:02:41</time><strong>QA monitor</strong><em>pass</em></button>
+        </div>
+      </section>
+
+      <div class="studio-footer">
+        <div>
+          <strong>Custom control plane</strong>
+          <em>Swap voices, tune scripts, keep audit history in one place</em>
+        </div>
+        <button type="button" class="ent-btn solid" data-mock>See how it works</button>
+      </div>
+    </div>
+  )
+}
+
+{
+  variant === 'motive' && (
+    <div class="ent ent-motive" data-viz aria-label="Floor efficiency panel">
+      <div class="ent-toolbar">
+        <div>
+          <p class="ent-kicker">Floor impact</p>
+          <h3>First five minutes</h3>
+        </div>
+        <div class="ent-toolbar-actions">
+          <span class="ent-status live">Improving</span>
+          <button type="button" class="ent-btn quiet" data-mock>Last 7 days</button>
+        </div>
+      </div>
+
+      <div class="ent-kpi-row motive-kpis">
+        <button type="button" class="ent-kpi" data-mock>
+          <span>Intake time</span>
+          <strong>−60%</strong>
+          <em>vs manual openers</em>
+        </button>
+        <button type="button" class="ent-kpi" data-mock>
+          <span>Seats on openers</span>
+          <strong>12 → 5</strong>
+          <em>7 seats freed</em>
+        </button>
+        <button type="button" class="ent-kpi" data-mock>
+          <span>Warm handoff</span>
+          <strong>41%</strong>
+          <em>of dialed volume</em>
+        </button>
+      </div>
+
+      <div class="motive-compare">
+        <button type="button" class="motive-card" data-mock>
+          <span class="motive-card-label">Before</span>
+          <strong>12 agents</strong>
+          <em>Burned on first contact</em>
+          <ul>
+            <li>Raw dials hit live seats</li>
+            <li>Tire-kickers consume time</li>
+            <li>Hold & hangups pile up</li>
+          </ul>
+        </button>
+        <button type="button" class="motive-card is-on" data-mock>
+          <span class="motive-card-label">With Dialer Bot</span>
+          <strong>5 agents</strong>
+          <em>Focused on closers only</em>
+          <ul>
+            <li>Bot owns questions 1–5</li>
+            <li>Warm leads only transfer</li>
+            <li>Same floor throughput</li>
+          </ul>
+        </button>
+      </div>
+
+      <div class="ent-panel motive-split">
+        <div class="ent-panel-h">
+          <span>Ownership split</span>
+          <span>Talk time share</span>
+        </div>
+        <div class="motive-stack" data-mock role="presentation">
+          <i class="bot" style="width:72%" />
+          <i class="agent" style="width:28%" />
+        </div>
+        <div class="motive-legend">
+          <button type="button" data-mock>
+            <span class="swatch bot" />
+            Bot clears
+            <strong>72%</strong>
+          </button>
+          <button type="button" data-mock>
+            <span class="swatch agent" />
+            Agent closes
+            <strong>28%</strong>
+          </button>
+        </div>
+      </div>
+
+      <div class="motive-footer">
+        <div>
+          <strong>Seat math that sticks</strong>
+          <em>Hardcoded openers first · qualify · then hand off</em>
+        </div>
+        <button type="button" class="ent-btn solid" data-mock>See breakdown</button>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  document.querySelectorAll('[data-viz]').forEach((root) => {
+    root.querySelectorAll('[data-mock]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        el.classList.add('is-pressed');
+        window.setTimeout(() => el.classList.remove('is-pressed'), 140);
+
+        const scopes =
+          '.ent-queue, .ent-list, .ent-flow, .ent-table tbody, .motive-compare, .rx-col, .sync-floor, .sync-side-stats, .sync-pipe, .sync-counts, .studio-voices, .studio-fields, .studio-toggles, .studio-log';
+        const scope = el.closest(scopes);
+        if (!scope) return;
+
+        let target = null;
+        if (scope.tagName === 'TBODY') {
+          target = el.closest('tr');
+        } else if (el.classList.contains('studio-toggle')) {
+          el.classList.toggle('is-on');
+          return;
+        } else if (
+          el.classList.contains('rx-card') ||
+          el.classList.contains('sync-seat') ||
+          el.classList.contains('sync-node') ||
+          el.classList.contains('studio-voice') ||
+          el.classList.contains('studio-field') ||
+          el.classList.contains('motive-card') ||
+          (el.tagName === 'BUTTON' && !el.classList.contains('ent-btn') && !el.classList.contains('ent-link'))
+        ) {
+          target = el;
+        }
+
+        if (!target) return;
+        scope.querySelectorAll('.is-on').forEach((n) => n.classList.remove('is-on'));
+        target.classList.add('is-on');
+      });
+    });
+  });
+</script>

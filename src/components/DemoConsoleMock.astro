@@ -1,0 +1,181 @@
+---
+/**
+ * Visual Dialer Bot console mock for marketing.
+ * Clickable UI chrome — no real call / navigation behavior.
+ */
+const pipeline = [
+  { n: '01', label: 'Rapport', state: 'done' },
+  { n: '02', label: 'Pitch + subsidy Q', state: 'active' },
+  { n: '03', label: 'Coverage gate 1', state: '' },
+  { n: '04', label: 'State confirm', state: '' },
+  { n: '05', label: 'Coverage gate 2', state: '' },
+  { n: '06', label: 'Transfer consent', state: '' },
+  { n: '07', label: 'Warm transfer', state: '' },
+];
+
+const fields = [
+  { label: 'Lead', value: 'Jordan Lee' },
+  { label: 'Rep', value: 'Alex' },
+  { label: 'State', value: 'Texas' },
+  { label: 'Intent', value: 'frustrated_calls' },
+  { label: 'Turn reason', value: 'speech_final · 0.97' },
+];
+
+const activity = [
+  { who: 'you', text: "I don't care what you people are saying." },
+  { who: 'bot', text: 'I hear you. Real quick — have you received that free health government subsidy yet?' },
+  { who: 'sys', text: 'Interrupted — TTS killed' },
+  { who: 'bot', text: "Hey Jordan, this is Alex with Americas Health. How are you doing today?" },
+  { who: 'you', text: 'Fine. What is this about?' },
+];
+
+const navItems = [
+  { label: 'Live demo', active: true },
+  { label: 'Campaigns', active: false },
+  { label: 'Transfers', active: false },
+  { label: 'QA review', active: false },
+];
+---
+
+<div class="demo-mock" data-demo-mock aria-label="Dialer Bot console preview">
+  <aside class="dm-rail">
+    <button type="button" class="dm-brand" data-mock-btn>
+      <span class="dm-mark" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 28 28" fill="none">
+          <path fill="#60d184" fill-rule="evenodd" d="M13.2 1.6c6.85 0 12.4 5.55 12.4 12.4S20.05 26.4 13.2 26.4c-2.9 0-5.56-1-7.66-2.67l1.9-2.1a9.55 9.55 0 1 0-.08-13.86l-1.9-2.1A12.35 12.35 0 0 1 13.2 1.6Zm0 5.35c3.9 0 7.05 3.15 7.05 7.05S17.1 21.05 13.2 21.05c-1.7 0-3.26-.6-4.5-1.6l1.85-2.05a4.15 4.15 0 1 0 0-5.5L8.7 9.55a6.98 6.98 0 0 1 4.5-2.6ZM13.2 11.15a2.85 2.85 0 1 1 0 5.7 2.85 2.85 0 0 1 0-5.7Z"></path>
+        </svg>
+      </span>
+      <span class="dm-brand-text">
+        <strong>Dialer Bot</strong>
+        <span>Voice ops</span>
+      </span>
+    </button>
+
+    <div class="dm-nav-label">Workspace</div>
+    <nav class="dm-nav">
+      {
+        navItems.map((item) => (
+          <button type="button" class:list={['dm-nav-item', { active: item.active }]} data-mock-nav>
+            <span class="dm-nav-dot" aria-hidden="true" />
+            {item.label}
+          </button>
+        ))
+      }
+    </nav>
+
+    <div class="dm-rail-foot">
+      <span class="dm-live-dot" aria-hidden="true"></span>
+      Demo environment
+    </div>
+  </aside>
+
+  <div class="dm-main">
+    <header class="dm-top">
+      <div>
+        <div class="dm-crumb">Objects <span>/</span> Voice call</div>
+        <h3>Gate → warm transfer</h3>
+        <p>Rapport first, then intro + subsidy question, then coverage gates.</p>
+      </div>
+      <div class="dm-actions">
+        <span class="dm-chip live">
+          <span class="dm-pulse" aria-hidden="true"></span>
+          Live
+        </span>
+        <button type="button" class="dm-btn dm-btn-primary" data-mock-btn>Start call</button>
+        <button type="button" class="dm-btn dm-btn-ghost" data-mock-btn>Hang up</button>
+      </div>
+    </header>
+
+    <div class="dm-fields">
+      {
+        fields.map((f) => (
+          <button type="button" class="dm-field" data-mock-btn>
+            <span>{f.label}</span>
+            <strong>{f.value}</strong>
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="dm-grid">
+      <div class="dm-col">
+        <div class="dm-panel">
+          <div class="dm-panel-h">
+            <h4>Pipeline</h4>
+            <span>pitch</span>
+          </div>
+          <ol class="dm-pipeline">
+            {
+              pipeline.map((step) => (
+                <li class={step.state || undefined}>
+                  <button type="button" data-mock-step>
+                    <span class="dm-step-n">{step.n}</span>
+                    {step.label}
+                  </button>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+
+        <div class="dm-panel">
+          <div class="dm-panel-h"><h4>Turn-taking</h4></div>
+          <div class="dm-prop"><span>Endpointing</span><strong>280ms</strong></div>
+          <div class="dm-prop"><span>Partial ASR</span><strong>“So”</strong></div>
+          <div class="dm-prop"><span>Decide latency</span><strong>2ms</strong></div>
+        </div>
+      </div>
+
+      <div class="dm-panel dm-activity">
+        <div class="dm-panel-h">
+          <h4>Activity</h4>
+          <span>Live transcript · newest first</span>
+        </div>
+        <ul class="dm-log">
+          {
+            activity.map((row) => (
+              <li class={`dm-${row.who}`}>
+                <button type="button" data-mock-btn>
+                  <span class="dm-who">{row.who}</span>
+                  <span class="dm-msg">{row.text}</span>
+                </button>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector('[data-demo-mock]');
+  if (root) {
+    root.querySelectorAll('[data-mock-btn], [data-mock-nav], [data-mock-step]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        el.classList.add('is-pressed');
+        window.setTimeout(() => el.classList.remove('is-pressed'), 160);
+      });
+    });
+
+    root.querySelectorAll('[data-mock-nav]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        root.querySelectorAll('[data-mock-nav]').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    root.querySelectorAll('[data-mock-step]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const li = btn.closest('li');
+        if (!li) return;
+        root.querySelectorAll('.dm-pipeline li').forEach((item) => {
+          item.classList.remove('active');
+          if (!item.classList.contains('done')) item.classList.remove('done');
+        });
+        li.classList.add('active');
+      });
+    });
+  }
+</script>
