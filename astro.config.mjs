@@ -3,6 +3,6 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   output: 'static',
-  site: 'https://cryzel.vercel.app',
+  site: 'https://dialerbot.online',
   trailingSlash: 'never',
 });
