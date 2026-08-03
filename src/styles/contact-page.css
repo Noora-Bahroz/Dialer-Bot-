@@ -1,4 +1,4 @@
-/* Contact page — same design language as Features/Company/Pricing, unique layout */
+/* Contact page â€” same design language as Features/Company/Pricing, unique layout */
 
 .ct {
   --ct-ink: #1e322d;
@@ -162,6 +162,8 @@
 
 /* Reach switcher */
 .ct-reach {
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--ct-line);
   border-radius: var(--ct-radius);
   background: rgba(255, 255, 255, 0.92);
@@ -223,7 +225,10 @@
 }
 
 .ct-reach__panel.is-active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
   animation: ct-in 0.28s ease both;
 }
 
@@ -262,14 +267,47 @@
 }
 
 .ct-reach__note {
-  margin: 0 0 1.1rem;
+  margin: 0 0 0.85rem;
   font-size: 0.9rem;
   line-height: 1.55;
   color: var(--ct-muted);
 }
 
+.ct-reach__tips {
+  list-style: none;
+  margin: 0 0 1.15rem;
+  padding: 0.75rem 0.85rem;
+  display: grid;
+  gap: 0.55rem;
+  flex: 1 1 auto;
+  border-radius: 10px;
+  border: 1px solid var(--ct-line);
+  background: rgba(30, 50, 45, 0.04);
+}
+
+.ct-reach__tips li {
+  position: relative;
+  padding-left: 1rem;
+  font-size: 0.875rem;
+  font-weight: 650;
+  line-height: 1.45;
+  color: var(--ct-ink);
+}
+
+.ct-reach__tips li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--ct-green);
+}
+
 .ct-reach__cta {
   width: 100%;
+  margin-top: auto;
 }
 
 /* Sections */
@@ -306,7 +344,7 @@
   font-weight: 750;
 }
 
-/* Channels — 3 cells */
+/* Channels â€” 3 cells */
 .ct-channels {
   list-style: none;
   margin: 0;
@@ -584,40 +622,6 @@
 }
 
 /* Close */
-.ct-close {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 60% 80% at 100% 50%, rgba(219, 254, 122, 0.16), transparent 55%),
-    var(--ct-deep);
-  color: #fff;
-  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
-}
-
-.ct-close__inner {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--ct-gap);
-  align-items: center;
-}
-
-.ct-close h2 {
-  margin: 0 0 0.45rem;
-  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
-  letter-spacing: -0.03em;
-  font-weight: 750;
-  color: #fff;
-}
-
-.ct-close p {
-  margin: 0;
-  max-width: 38rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
-}
-
 @keyframes ct-in {
   from {
     opacity: 0;
@@ -648,7 +652,6 @@
 @media (max-width: 960px) {
   .ct-mast__grid,
   .ct-brief,
-  .ct-close__inner,
   .ct-channels {
     grid-template-columns: 1fr;
   }

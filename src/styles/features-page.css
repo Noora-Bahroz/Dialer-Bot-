@@ -1,4 +1,4 @@
-/* Features page design system — standalone, not homepage clones */
+/* Features page design system â€” standalone, not homepage clones */
 
 .fx {
   --fx-ink: #1e322d;
@@ -160,49 +160,95 @@
   transform: translateY(-1px);
 }
 
-/* Snapshot panel — aligned to mast copy baseline */
+/* Snapshot — clean glass panel */
 .fx-snapshot {
-  display: grid;
-  gap: 0;
-  border: 1px solid var(--fx-line);
-  border-radius: var(--fx-radius);
-  background: rgba(255, 255, 255, 0.92);
-  overflow: hidden;
-  box-shadow: 0 18px 40px rgba(30, 50, 45, 0.08);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.25rem 1.25rem 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)),
+    rgba(12, 28, 23, 0.78);
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 20px 48px rgba(0, 0, 0, 0.28);
   animation: fx-in 0.65s ease 0.2s both;
 }
 
-.fx-snapshot__row {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 1rem;
-  align-items: baseline;
-  padding: 0.95rem 1.1rem;
-  border-bottom: 1px solid var(--fx-line);
-  transition: background 0.2s ease;
+.fx-snapshot__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.15rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.fx-snapshot__row:last-child {
-  border-bottom: 0;
-}
-
-.fx-snapshot__row:hover {
-  background: #f3faf6;
-}
-
-.fx-snapshot__row span {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+.fx-snapshot__label {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--fx-muted);
+  color: rgba(243, 247, 244, 0.55);
 }
 
-.fx-snapshot__row strong {
-  font-size: 0.9375rem;
-  font-weight: 700;
-  color: var(--fx-ink);
-  text-align: right;
+.fx-snapshot__badge {
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #102d23;
+  background: var(--fx-lime);
+}
+
+.fx-snapshot__grid {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.fx-snapshot__grid > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.45rem;
+  min-height: 5.5rem;
+  padding: 0.9rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.fx-snapshot__grid > div:hover {
+  background: rgba(219, 254, 122, 0.08);
+  border-color: rgba(219, 254, 122, 0.28);
+}
+
+.fx-snapshot__grid dt {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(219, 254, 122, 0.75);
+}
+
+.fx-snapshot__grid dd {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  color: #fff;
 }
 
 /* ---------- Sections ---------- */
@@ -248,7 +294,7 @@
   color: var(--fx-muted);
 }
 
-/* ---------- Matrix: 4×2 symmetric grid ---------- */
+/* ---------- Matrix: 4Ã—2 symmetric grid ---------- */
 .fx-matrix {
   list-style: none;
   margin: 0;
@@ -406,40 +452,6 @@
 }
 
 /* ---------- Close ---------- */
-.fx-close {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 60% 80% at 100% 50%, rgba(219, 254, 122, 0.16), transparent 55%),
-    var(--fx-deep);
-  color: #fff;
-  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
-}
-
-.fx-close__inner {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--fx-gap);
-  align-items: center;
-}
-
-.fx-close h2 {
-  margin: 0 0 0.45rem;
-  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
-  letter-spacing: -0.03em;
-  font-weight: 750;
-  color: #fff;
-}
-
-.fx-close p {
-  margin: 0;
-  max-width: 36rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
-}
-
 @keyframes fx-in {
   from {
     opacity: 0;
@@ -506,11 +518,6 @@
   .fx-module__body ul {
     grid-template-columns: 1fr;
   }
-
-  .fx-close__inner {
-    grid-template-columns: 1fr;
-    justify-items: start;
-  }
 }
 
 @media (max-width: 560px) {
@@ -528,12 +535,11 @@
     border-bottom: 0;
   }
 
-  .fx-snapshot__row {
+  .fx-snapshot__grid {
     grid-template-columns: 1fr;
-    gap: 0.25rem;
   }
 
-  .fx-snapshot__row strong {
-    text-align: left;
+  .fx-snapshot__grid > div {
+    min-height: 0;
   }
 }

@@ -1,4 +1,5 @@
 @import './footer.css';
+@import './reveal.css';
 
 :root {
   --base: #ffffff;
@@ -1454,6 +1455,34 @@ h4 {
 
 .service-media img {
   max-width: 80%;
+}
+
+@media (min-width: 1101px) {
+  .service-row {
+    position: sticky;
+    top: calc(var(--header-h) + 0.75rem + var(--stack-i, 0) * 0.85rem);
+    z-index: calc(10 + var(--stack-i, 0));
+    margin-bottom: var(--sp-40);
+    padding: var(--sp-50) var(--sp-40);
+    border: 1px solid rgba(25, 62, 57, 0.08);
+    border-radius: var(--radius-lg);
+    background: var(--base);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.8) inset,
+      0 18px 40px rgba(16, 45, 35, 0.06);
+  }
+
+  .service-row:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-row {
+    position: static;
+    top: auto;
+    z-index: auto;
+  }
 }
 
 /* ---------- Enterprise section visuals ---------- */
@@ -3679,47 +3708,6 @@ h4 {
   padding-top: var(--sp-30);
 }
 
-/* ---------- CTA (a5-tasks) ---------- */
-.cta-wrap {
-  padding-block: var(--sp-60) var(--sp-30);
-}
-
-.cta-band {
-  background: var(--accent-9);
-  border-radius: var(--radius);
-  padding: var(--sp-60) var(--sp-60) 0;
-  text-align: center;
-  overflow: hidden;
-}
-
-.cta-band h2 {
-  color: #fff;
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-}
-
-.cta-band > p {
-  color: #fff;
-  max-width: 46rem;
-  margin: 0.85rem auto 0;
-}
-
-.cta-actions {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-  margin-top: var(--sp-30);
-}
-
-.cta-band .preview {
-  width: min(100%, 1100px);
-  margin: var(--sp-70) auto 0;
-  border-radius: 16px 16px 0 0;
-  overflow: hidden;
-  box-shadow: 0 -8px 40px rgba(16, 45, 35, 0.18);
-  text-align: left;
-}
-
 /* ---------- Demo console mock (CTA) ---------- */
 .demo-mock {
   --dm-rail: #1e322d;
@@ -4277,10 +4265,6 @@ h4 {
   .testimonial {
     padding: var(--sp-40);
   }
-
-  .cta-band {
-    padding: var(--sp-50) var(--sp-40) 0;
-  }
 }
 
 @media (max-width: 1100px) {
@@ -4377,13 +4361,11 @@ h4 {
     padding-block: var(--sp-50);
   }
 
-  .hero-actions,
-  .cta-actions {
+  .hero-actions {
     width: 100%;
   }
 
-  .hero-actions .btn,
-  .cta-actions .btn {
+  .hero-actions .btn {
     flex: 1 1 auto;
     min-width: min(100%, 10rem);
   }
@@ -4459,18 +4441,7 @@ h4 {
     padding: var(--sp-40);
   }
 
-  .cta-band {
-    padding: var(--sp-50) var(--sp-30) 0;
-    border-radius: calc(var(--radius) - 2px);
-  }
-
-  .cta-band > p br {
-    display: none;
-  }
-
-
-  .hero-actions .btn,
-  .cta-actions .btn {
+  .hero-actions .btn {
     width: 100%;
   }
 }

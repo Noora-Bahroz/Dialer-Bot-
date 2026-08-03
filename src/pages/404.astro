@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageMastFx from '../components/PageMastFx.astro';
 import { wa } from '../data/site';
 import '../styles/global.css';
 import '../styles/not-found-page.css';
@@ -10,7 +11,8 @@ import '../styles/not-found-page.css';
 <BaseLayout title="Page Not Found | Dialer Bot" description="That Dialer Bot page may have moved or no longer exists.">
   <Header slot="header" />
 
-  <main class="nf">
+  <main class="nf page-mast" data-mast>
+    <PageMastFx />
     <div class="nf-shell">
       <p class="nf-brand">Dialer Bot</p>
       <p class="nf-code" aria-hidden="true">404</p>

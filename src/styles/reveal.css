@@ -1,0 +1,71 @@
+/* Sitewide scroll reveals — rise / fade / slide. Not sticky stacking. */
+
+[data-reveal] {
+  --reveal-y: 22px;
+  --reveal-x: 0px;
+  --reveal-dur: 0.7s;
+  --reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0;
+  transform: translate3d(var(--reveal-x), var(--reveal-y), 0);
+  transition:
+    opacity var(--reveal-dur) var(--reveal-ease),
+    transform var(--reveal-dur) var(--reveal-ease);
+  transition-delay: calc(var(--reveal-i, 0) * 0.08s);
+  will-change: opacity, transform;
+}
+
+[data-reveal='fade'] {
+  --reveal-y: 0;
+  --reveal-x: 0;
+}
+
+[data-reveal='left'] {
+  --reveal-y: 0;
+  --reveal-x: -28px;
+}
+
+[data-reveal='right'] {
+  --reveal-y: 0;
+  --reveal-x: 28px;
+}
+
+[data-reveal='up'] {
+  --reveal-y: 28px;
+  --reveal-x: 0;
+}
+
+[data-reveal='scale'] {
+  --reveal-y: 12px;
+  transform: translate3d(0, var(--reveal-y), 0) scale(0.97);
+}
+
+[data-reveal].is-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Soft hover presence for interactive tiles */
+[data-lift] {
+  transition:
+    transform 0.35s var(--reveal-ease),
+    box-shadow 0.35s var(--reveal-ease);
+}
+
+[data-lift]:hover {
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  [data-lift],
+  [data-lift]:hover {
+    transform: none;
+    transition: none;
+  }
+}

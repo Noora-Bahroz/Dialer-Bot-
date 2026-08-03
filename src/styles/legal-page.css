@@ -22,7 +22,7 @@
   margin-inline: auto;
 }
 
-/* Mast — compact legal document head */
+/* Mast â€” compact legal document head */
 .lg-mast {
   position: relative;
   isolation: isolate;
@@ -166,7 +166,7 @@
   color: var(--lg-green);
 }
 
-/* Layout — tighter */
+/* Layout â€” tighter */
 .lg-section {
   padding: clamp(1.5rem, 3vw, 2.25rem) 0 clamp(2.5rem, 5vw, 3.5rem);
 }
@@ -331,40 +331,6 @@
 }
 
 /* Close */
-.lg-close {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 60% 80% at 100% 50%, rgba(219, 254, 122, 0.16), transparent 55%),
-    var(--lg-deep);
-  color: #fff;
-  padding: clamp(1.75rem, 3.5vw, 2.5rem) 0;
-}
-
-.lg-close__inner {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--lg-gap);
-  align-items: center;
-}
-
-.lg-close h2 {
-  margin: 0 0 0.45rem;
-  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
-  letter-spacing: -0.03em;
-  font-weight: 750;
-  color: #fff;
-}
-
-.lg-close p {
-  margin: 0;
-  max-width: 38rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
-}
-
 .lg-btn {
   display: inline-flex;
   align-items: center;
@@ -408,8 +374,7 @@
 
 @media (max-width: 960px) {
   .lg-mast__title,
-  .lg-layout,
-  .lg-close__inner {
+  .lg-layout {
     grid-template-columns: 1fr;
   }
 

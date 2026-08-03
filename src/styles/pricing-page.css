@@ -1,4 +1,4 @@
-/* Pricing page — same design language as Features/Company, unique layout */
+/* Pricing page â€” same design language as Features/Company, unique layout */
 
 .pr {
   --pr-ink: #1e322d;
@@ -158,7 +158,7 @@
   transform: translateY(-1px);
 }
 
-/* Price dial — interactive plan picker */
+/* Price dial â€” interactive plan picker */
 .pr-dial {
   border: 1px solid var(--pr-line);
   border-radius: var(--pr-radius);
@@ -531,7 +531,7 @@
   font-weight: 750;
 }
 
-/* Two lanes — split panel */
+/* Two lanes â€” split panel */
 .pr-lanes {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -641,7 +641,7 @@
   margin-top: 0.25rem;
 }
 
-/* Include matrix — 3×2 */
+/* Include matrix â€” 3Ã—2 */
 .pr-include {
   list-style: none;
   margin: 0;
@@ -728,7 +728,7 @@
   color: var(--pr-muted);
 }
 
-/* Steps — 3 equal */
+/* Steps â€” 3 equal */
 .pr-steps {
   list-style: none;
   margin: 0;
@@ -783,40 +783,6 @@
 }
 
 /* Close */
-.pr-close {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 60% 80% at 100% 50%, rgba(219, 254, 122, 0.16), transparent 55%),
-    var(--pr-deep);
-  color: #fff;
-  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
-}
-
-.pr-close__inner {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--pr-gap);
-  align-items: center;
-}
-
-.pr-close h2 {
-  margin: 0 0 0.45rem;
-  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
-  letter-spacing: -0.03em;
-  font-weight: 750;
-  color: #fff;
-}
-
-.pr-close p {
-  margin: 0;
-  max-width: 36rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
-}
-
 @keyframes pr-in {
   from {
     opacity: 0;
@@ -847,8 +813,7 @@
 
 @media (max-width: 960px) {
   .pr-mast__grid,
-  .pr-lanes,
-  .pr-close__inner {
+  .pr-lanes {
     grid-template-columns: 1fr;
   }
 

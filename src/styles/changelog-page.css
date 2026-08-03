@@ -1,4 +1,4 @@
-/* Changelog — compact mast + version rail timeline */
+/* Changelog â€” compact mast + version rail timeline */
 
 .cl {
   --cl-ink: #1e322d;
@@ -375,41 +375,6 @@
   box-shadow: 0 0 0 1px rgba(47, 157, 99, 0.35);
 }
 
-.cl-close {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 60% 80% at 100% 50%, rgba(219, 254, 122, 0.16), transparent 55%),
-    var(--cl-deep);
-  color: #fff;
-  padding: clamp(1.75rem, 3.5vw, 2.5rem) 0;
-}
-
-.cl-close__inner {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--cl-gap);
-  align-items: center;
-}
-
-.cl-close h2 {
-  margin: 0 0 0.4rem;
-  font-size: clamp(1.25rem, 2.6vw, 1.7rem);
-  letter-spacing: -0.03em;
-  font-weight: 750;
-  color: #fff;
-}
-
-.cl-close p {
-  margin: 0;
-  max-width: 38rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.55;
-  font-size: 0.95rem;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .cl-btn:hover {
     transform: none;
@@ -418,8 +383,7 @@
 
 @media (max-width: 960px) {
   .cl-mast__title,
-  .cl-layout,
-  .cl-close__inner {
+  .cl-layout {
     grid-template-columns: 1fr;
   }
 

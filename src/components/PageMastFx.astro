@@ -1,0 +1,12 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<span class="page-mast__mesh" aria-hidden="true"></span>
+<span class="page-mast__sheen" aria-hidden="true"></span>
+<span class="page-mast__orb page-mast__orb--a" aria-hidden="true"></span>
+{!compact && <span class="page-mast__orb page-mast__orb--b" aria-hidden="true"></span>}

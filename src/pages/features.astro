@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageMastFx from '../components/PageMastFx.astro';
 import { wa, site } from '../data/site';
 import '../styles/global.css';
 import '../styles/features-page.css';
@@ -79,7 +80,8 @@ const modules = [
 
   <main class="fx">
     <!-- Masthead: single composition, brand-led -->
-    <header class="fx-mast">
+    <header class="fx-mast page-mast" data-mast>
+      <PageMastFx />
       <div class="fx-shell fx-mast__grid">
         <div class="fx-mast__copy">
           <nav class="fx-crumb" aria-label="Breadcrumb">
@@ -103,22 +105,28 @@ const modules = [
 
         <aside class="fx-mast__aside" aria-label="Feature snapshot">
           <div class="fx-snapshot">
-            <div class="fx-snapshot__row">
-              <span>Surface</span>
-              <strong>Qualification layer</strong>
+            <div class="fx-snapshot__top">
+              <p class="fx-snapshot__label">At a glance</p>
+              <span class="fx-snapshot__badge">Live layer</span>
             </div>
-            <div class="fx-snapshot__row">
-              <span>Modules</span>
-              <strong>8 core controls</strong>
-            </div>
-            <div class="fx-snapshot__row">
-              <span>Handoff</span>
-              <strong>Warm · scored</strong>
-            </div>
-            <div class="fx-snapshot__row">
-              <span>Sales path</span>
-              <strong>WhatsApp</strong>
-            </div>
+            <dl class="fx-snapshot__grid">
+              <div>
+                <dt>Surface</dt>
+                <dd>Qualification layer</dd>
+              </div>
+              <div>
+                <dt>Modules</dt>
+                <dd>8 core controls</dd>
+              </div>
+              <div>
+                <dt>Handoff</dt>
+                <dd>Warm · scored</dd>
+              </div>
+              <div>
+                <dt>Sales path</dt>
+                <dd>WhatsApp</dd>
+              </div>
+            </dl>
           </div>
         </aside>
       </div>
@@ -127,7 +135,7 @@ const modules = [
     <!-- Symmetric capability matrix -->
     <section class="fx-section" aria-labelledby="fx-matrix-title">
       <div class="fx-shell">
-        <div class="fx-section__head">
+        <div class="fx-section__head" data-reveal>
           <p class="fx-kicker">Capability matrix</p>
           <h2 id="fx-matrix-title">Eight controls. One qualification layer.</h2>
           <p class="fx-section__deck">
@@ -137,8 +145,8 @@ const modules = [
 
         <ul class="fx-matrix">
           {
-            matrix.map((item) => (
-              <li class="fx-matrix__cell">
+            matrix.map((item, i) => (
+              <li class="fx-matrix__cell" data-reveal="up" data-lift style={`--reveal-i: ${i % 4}`}>
                 <span class="fx-matrix__n">{item.n}</span>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -152,15 +160,15 @@ const modules = [
     <!-- Detail modules: same column rhythm every time -->
     <section class="fx-section fx-section--tint" aria-labelledby="fx-modules-title">
       <div class="fx-shell">
-        <div class="fx-section__head">
+        <div class="fx-section__head" data-reveal>
           <p class="fx-kicker">How it holds together</p>
           <h2 id="fx-modules-title">Three layers behind the matrix</h2>
         </div>
 
         <div class="fx-modules">
           {
-            modules.map((mod) => (
-              <article class="fx-module">
+            modules.map((mod, i) => (
+              <article class="fx-module" data-reveal="left" style={`--reveal-i: ${i}`}>
                 <div class="fx-module__label">
                   <p class="fx-kicker">{mod.kicker}</p>
                 </div>
@@ -180,19 +188,6 @@ const modules = [
       </div>
     </section>
 
-    <!-- Closing bar -->
-    <section class="fx-close">
-      <div class="fx-shell fx-close__inner">
-        <div>
-          <p class="fx-brand fx-brand--on-dark">Dialer Bot</p>
-          <h2>Ready to map this to your dialer?</h2>
-          <p>Send campaign type and dialer name. We reply with fit and go-live scope.</p>
-        </div>
-        <a class="fx-btn fx-btn--lime" href={wa.start} target="_blank" rel="noopener noreferrer">
-          Chat on WhatsApp
-        </a>
-      </div>
-    </section>
   </main>
 
   <Footer slot="footer" />

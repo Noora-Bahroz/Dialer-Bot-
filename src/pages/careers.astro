@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageMastFx from '../components/PageMastFx.astro';
 import { wa, waLink, site } from '../data/site';
 import '../styles/global.css';
 import '../styles/careers-page.css';
@@ -79,7 +80,8 @@ const traits = [
   <Header slot="header" />
 
   <main class="cr">
-    <header class="cr-mast">
+    <header class="cr-mast page-mast" data-mast>
+      <PageMastFx />
       <div class="cr-shell cr-mast__grid">
         <div class="cr-mast__copy">
           <nav class="cr-crumb" aria-label="Breadcrumb">
@@ -141,14 +143,14 @@ const traits = [
 
     <section class="cr-section cr-section--tint" aria-labelledby="cr-traits-title">
       <div class="cr-shell">
-        <div class="cr-section__head">
+        <div class="cr-section__head" data-reveal>
           <p class="cr-kicker">Who thrives here</p>
           <h2 id="cr-traits-title">Three signals we hire for</h2>
         </div>
         <ul class="cr-traits">
           {
-            traits.map((t) => (
-              <li>
+            traits.map((t, i) => (
+              <li data-reveal="up" data-lift style={`--reveal-i: ${i}`}>
                 <span>{t.n}</span>
                 <h3>{t.title}</h3>
                 <p>{t.text}</p>
@@ -162,7 +164,7 @@ const traits = [
     <section class="cr-section" aria-labelledby="cr-roles-title">
       <div class="cr-shell">
         <div class="cr-roles-head">
-          <div class="cr-section__head">
+          <div class="cr-section__head" data-reveal>
             <p class="cr-kicker">Open roles</p>
             <h2 id="cr-roles-title">Multiple niches, one floor mission</h2>
           </div>
@@ -191,7 +193,7 @@ const traits = [
                 `Hi Dialer Bot — I'm interested in the ${role.title} role.\n\nHere's a short note and a link to my work:`,
               );
               return (
-                <li data-niche={role.niche} style={`--cr-i:${i}`}>
+                <li data-niche={role.niche} data-reveal="up" style={`--cr-i:${i}; --reveal-i: ${i % 4}`}>
                   <div class="cr-job__meta">
                     <span>{role.niche}</span>
                     <em>{role.type}</em>
@@ -212,21 +214,6 @@ const traits = [
       </div>
     </section>
 
-    <section class="cr-close">
-      <div class="cr-shell cr-close__inner">
-        <div>
-          <p class="cr-brand cr-brand--on-dark">Dialer Bot</p>
-          <h2>Do not see your title?</h2>
-          <p>
-            Still message WhatsApp with what you do best. We hire for floor impact — not only the six niches above.
-            Office 8, {site.address.line1}.
-          </p>
-        </div>
-        <a class="cr-btn cr-btn--lime" href={wa.careers} target="_blank" rel="noopener noreferrer">
-          Message careers
-        </a>
-      </div>
-    </section>
   </main>
 
   <Footer slot="footer" />

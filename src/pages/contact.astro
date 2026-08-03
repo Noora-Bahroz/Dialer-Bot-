@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageMastFx from '../components/PageMastFx.astro';
 import { wa, site } from '../data/site';
 import '../styles/global.css';
 import '../styles/contact-page.css';
@@ -52,7 +53,8 @@ const reasons = [
   <Header slot="header" />
 
   <main class="ct">
-    <header class="ct-mast">
+    <header class="ct-mast page-mast" data-mast>
+      <PageMastFx />
       <div class="ct-shell ct-mast__grid">
         <div class="ct-mast__copy">
           <nav class="ct-crumb" aria-label="Breadcrumb">
@@ -122,6 +124,11 @@ const reasons = [
                 <a href={wa.general} target="_blank" rel="noopener noreferrer">{site.phoneDisplay}</a>
               </p>
               <p class="ct-reach__note">Bots, quotes, dialer help — message the builders directly.</p>
+              <ul class="ct-reach__tips">
+                <li>Dialer type and seat count</li>
+                <li>Campaign list (ACA, FE, HI, dispatch…)</li>
+                <li>Usually same-day reply on WhatsApp</li>
+              </ul>
               <a class="ct-btn ct-btn--solid ct-reach__cta" href={wa.general} target="_blank" rel="noopener noreferrer">
                 Open WhatsApp
               </a>
@@ -139,6 +146,11 @@ const reasons = [
                 <a href={`mailto:${site.email}`}>{site.email}</a>
               </p>
               <p class="ct-reach__note">Attachments and longer threads belong on email.</p>
+              <ul class="ct-reach__tips">
+                <li>Scope and timeline in the first message</li>
+                <li>Attach scripts or compliance notes if ready</li>
+                <li>We reply from the same address</li>
+              </ul>
               <a class="ct-btn ct-btn--solid ct-reach__cta" href={`mailto:${site.email}`}>Send email</a>
             </div>
 
@@ -156,6 +168,11 @@ const reasons = [
                 {site.address.city}
               </p>
               <p class="ct-reach__note">Message before you drop by — we will confirm someone is in.</p>
+              <ul class="ct-reach__tips">
+                <li>WhatsApp ahead for a slot</li>
+                <li>Bring dialer notes if you have them</li>
+                <li>Office hours by appointment</li>
+              </ul>
               <a class="ct-btn ct-btn--solid ct-reach__cta" href={wa.general} target="_blank" rel="noopener noreferrer">
                 WhatsApp before visit
               </a>
@@ -167,14 +184,14 @@ const reasons = [
 
     <section class="ct-section" aria-labelledby="ct-channels-title">
       <div class="ct-shell">
-        <div class="ct-section__head">
+        <div class="ct-section__head" data-reveal>
           <p class="ct-kicker">Channels</p>
           <h2 id="ct-channels-title">Three ways in. One team behind them.</h2>
         </div>
         <ul class="ct-channels">
           {
-            channels.map((ch) => (
-              <li class:list={[{ 'is-primary': ch.primary }]}>
+            channels.map((ch, i) => (
+              <li class:list={[{ 'is-primary': ch.primary }]} data-reveal="up" data-lift style={`--reveal-i: ${i}`}>
                 <span>{ch.n}</span>
                 <h3>{ch.title}</h3>
                 <p>{ch.text}</p>
@@ -194,7 +211,7 @@ const reasons = [
 
     <section class="ct-section ct-section--tint" aria-labelledby="ct-brief-title">
       <div class="ct-shell ct-brief">
-        <div class="ct-brief__copy">
+        <div class="ct-brief__copy" data-reveal="left">
           <p class="ct-kicker">Quick brief</p>
           <h2 id="ct-brief-title">Write it here. Send it on WhatsApp.</h2>
           <p>
@@ -208,7 +225,7 @@ const reasons = [
           </ul>
         </div>
 
-        <form id="contact-form" class="ct-form" novalidate>
+        <form id="contact-form" class="ct-form" novalidate data-reveal="right" style="--reveal-i:1">
           <div class="ct-form__row">
             <label>
               <span>Name</span>
@@ -249,20 +266,6 @@ const reasons = [
       </div>
     </section>
 
-    <section class="ct-close">
-      <div class="ct-shell ct-close__inner">
-        <div>
-          <p class="ct-brand ct-brand--on-dark">Dialer Bot</p>
-          <h2>Prefer to skip the form?</h2>
-          <p>
-            Message {site.phoneDisplay} directly — or email {site.email} for contracts and longer briefs.
-          </p>
-        </div>
-        <a class="ct-btn ct-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
-          Chat on WhatsApp
-        </a>
-      </div>
-    </section>
   </main>
 
   <Footer slot="footer" />

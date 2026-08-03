@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import DemoConsoleMock from '../components/DemoConsoleMock.astro';
 import FeatureConsoleMock from '../components/FeatureConsoleMock.astro';
 import WarmHandoffMock from '../components/WarmHandoffMock.astro';
 import HeroOrbitMock from '../components/HeroOrbitMock.astro';
@@ -170,7 +169,7 @@ const testimonials = [
     <div class="hero-inner">
       <div class="hero-grid">
         <div class="hero-copy">
-          <div class="announcement">
+          <div class="announcement" data-reveal style="--reveal-i:0">
             <span class="badge">NEW</span>
             <p>AI Voice Bots for Modern Dialing Floors</p>
             <span class="arrow" aria-hidden="true">
@@ -179,13 +178,13 @@ const testimonials = [
               </svg>
             </span>
           </div>
-          <h1>Dialer Bot qualifies the call so your agents don't have to</h1>
-          <p class="lead">
+          <h1 data-reveal style="--reveal-i:1">Dialer Bot qualifies the call so your agents don't have to</h1>
+          <p class="lead" data-reveal style="--reveal-i:2">
             AI voice bots for inbound reception and outbound campaigns. Dialer Bot asks the first questions,
             fine-tunes the replies, and only hands off leads worth an agent’s time — for call centers, truck
             dispatch, ACA, FE, HI, and every floor that still dials by hand.
           </p>
-          <div class="hero-actions">
+          <div class="hero-actions" data-reveal style="--reveal-i:3">
             <a class="btn btn-white" href="/#contact">Get Started</a>
             <a class="btn btn-glass" href="/#features">
               See How It Works
@@ -195,7 +194,7 @@ const testimonials = [
             </a>
           </div>
         </div>
-        <div class="hero-visual">
+        <div class="hero-visual" data-reveal="right" style="--reveal-i:2">
           <HeroOrbitMock />
         </div>
       </div>
@@ -205,14 +204,14 @@ const testimonials = [
   <!-- benifits -->
   <section class="benefits" id="features">
     <div class="wrap">
-      <div class="benefits-head">
+      <div class="benefits-head" data-reveal>
         <div>
           <p class="section-label">Built for Calling Teams</p>
           <h2 class="section-title wide">What Dialer Bot takes off your agents’ plates</h2>
         </div>
       </div>
 
-      <div class="benefits-card">
+      <div class="benefits-card" data-reveal="scale" style="--reveal-i:1">
         <div class="benefits-media">
           <WarmHandoffMock />
         </div>
@@ -237,9 +236,11 @@ const testimonials = [
   <!-- sponsors-section -->
   <section class="sponsors">
     <div class="wrap">
-      <h2 class="section-title center">Trusted by call centers and dispatch teams that live on the phone</h2>
+      <h2 class="section-title center" data-reveal>Trusted by call centers and dispatch teams that live on the phone</h2>
       <div class="sponsors-logos">
-        {sponsors.map((logo) => <img src={`/images/${logo}`} alt="Partner company logo" />)}
+        {sponsors.map((logo, i) => (
+          <img src={`/images/${logo}`} alt="Partner company logo" data-reveal="fade" style={`--reveal-i: ${i}`} />
+        ))}
       </div>
     </div>
   </section>
@@ -247,12 +248,17 @@ const testimonials = [
   <!-- feature-spotlight-grid -->
   <section class="spotlight">
     <div class="spotlight-inner">
-      <p class="section-label center">Where Dialer Bot Fits</p>
-      <h2 class="section-title center">One platform for the calls your team used to handle by hand.</h2>
+      <p class="section-label center" data-reveal>Where Dialer Bot Fits</p>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">One platform for the calls your team used to handle by hand.</h2>
       <div class="spotlight-grid">
         {
-          spotlights.map((card) => (
-            <article class="spotlight-card" style={`background-image:url(${card.image})`}>
+          spotlights.map((card, i) => (
+            <article
+              class="spotlight-card"
+              data-reveal="up"
+              data-lift
+              style={`background-image:url(${card.image}); --reveal-i: ${i}`}
+            >
               <div />
               <div>
                 <h3>{card.title}</h3>
@@ -267,12 +273,12 @@ const testimonials = [
     </div>
   </section>
 
-  <!-- service-section -->
+  <!-- service-section — sticky stack already handles motion; no reveal here -->
   <section class="service">
     <div class="wrap">
       {
-        serviceRows.map((row) => (
-          <div class:list={['service-row', { reverse: row.reverse }]}>
+        serviceRows.map((row, i) => (
+          <div class:list={['service-row', { reverse: row.reverse }]} style={`--stack-i: ${i}`}>
             <div class="service-copy">
               <p class="section-label">{row.label}</p>
               <h2>{row.title}</h2>
@@ -300,11 +306,11 @@ const testimonials = [
   <!-- success-section -->
   <section class="success" id="company">
     <div class="wrap">
-      <p class="section-label center">Why Dialer Bot</p>
-      <h2 class="section-title center">Less manual calling. More conversations that matter.</h2>
+      <p class="section-label center" data-reveal>Why Dialer Bot</p>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">Less manual calling. More conversations that matter.</h2>
 
       <div class="success-grid">
-        <div class="success-copy">
+        <div class="success-copy" data-reveal="left">
           <p class="section-label">Our Motive</p>
           <h2>Stop burning people on the first five minutes</h2>
           <p class="lead">
@@ -325,7 +331,7 @@ const testimonials = [
             }
           </div>
         </div>
-        <div class="success-media">
+        <div class="success-media" data-reveal="right" style="--reveal-i:1">
           <FeatureConsoleMock variant="motive" />
         </div>
       </div>
@@ -335,14 +341,14 @@ const testimonials = [
   <!-- a3-statistics -->
   <section class="stats" id="pricing">
     <div class="wrap">
-      <p class="section-label center">Results on the Floor</p>
-      <h2 class="section-title center">What teams see when Dialer Bot takes the first pass</h2>
+      <p class="section-label center" data-reveal>Results on the Floor</p>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">What teams see when Dialer Bot takes the first pass</h2>
 
       <div class="stats-top">
-        <div class="stat-media">
+        <div class="stat-media" data-reveal="left">
           <img src="/images/dialerbot-home-04.webp" alt="Dialer Bot reducing agent workload" />
         </div>
-        <div class="stat-card">
+        <div class="stat-card" data-reveal="right" data-lift style="--reveal-i:1">
           <div class="num">60%</div>
           <h3>Less agent time on raw qualification</h3>
           <p>
@@ -353,7 +359,7 @@ const testimonials = [
       </div>
 
       <div class="stats-bottom">
-        <div class="stat-card">
+        <div class="stat-card" data-reveal="up" data-lift>
           <div class="num">24/7</div>
           <h3>Inbound coverage without extra seats</h3>
           <p>
@@ -361,10 +367,10 @@ const testimonials = [
             stop falling through.
           </p>
         </div>
-        <div class="stat-media">
+        <div class="stat-media" data-reveal="scale" style="--reveal-i:1">
           <img src="/images/dialerbot-home-05.webp" alt="Dialer Bot campaign performance" />
         </div>
-        <div class="stat-card">
+        <div class="stat-card" data-reveal="up" data-lift style="--reveal-i:2">
           <div class="num">1:1</div>
           <h3>Pace matched to your dialer</h3>
           <p>
@@ -379,12 +385,12 @@ const testimonials = [
   <!-- testimonials -->
   <section class="testimonials">
     <div class="wrap">
-      <p class="section-label center">From Floors That Dial Every Day</p>
-      <h2 class="section-title center">What operators say after Dialer Bot goes live</h2>
+      <p class="section-label center" data-reveal>From Floors That Dial Every Day</p>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">What operators say after Dialer Bot goes live</h2>
       <div class="testimonial-grid">
         {
-          testimonials.map((t) => (
-            <article class="testimonial">
+          testimonials.map((t, i) => (
+            <article class="testimonial" data-reveal="up" data-lift style={`--reveal-i: ${i % 3}`}>
               <div class="testimonial-head">
                 <img src={t.image} alt={t.name} />
                 <div>
@@ -396,31 +402,6 @@ const testimonials = [
             </article>
           ))
         }
-      </div>
-    </div>
-  </section>
-
-  <!-- a5-tasks -->
-  <section class="cta-wrap" id="contact">
-    <div class="wrap">
-      <div class="cta-band">
-        <h2>Put Dialer Bot on your next campaign</h2>
-        <p>
-          Plug AI voice bots into inbound reception and outbound dialing. Qualify faster, keep your dialer paced,
-          and give agents only the calls worth their time.<br /> Ready for call centers, dispatch, ACA, FE, HI, and more.
-        </p>
-        <div class="cta-actions">
-          <a class="btn btn-white" href="/contact">Talk to Us</a>
-          <a class="btn btn-glass" href="/features">
-            Explore Features
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-          </a>
-        </div>
-        <div class="preview">
-          <DemoConsoleMock />
-        </div>
       </div>
     </div>
   </section>

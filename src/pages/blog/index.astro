@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import PageMastFx from '../../components/PageMastFx.astro';
 import { posts } from '../../data/posts';
 import { wa } from '../../data/site';
 import '../../styles/global.css';
@@ -26,7 +27,8 @@ function formatDate(iso: string) {
   <Header slot="header" />
 
   <main class="bl">
-    <header class="bl-mast">
+    <header class="bl-mast page-mast page-mast--compact" data-mast>
+      <PageMastFx compact />
       <div class="bl-shell">
         <div class="bl-mast__top">
           <nav class="bl-crumb" aria-label="Breadcrumb">
@@ -77,6 +79,7 @@ function formatDate(iso: string) {
               href={`/blog/${featured.slug}`}
               data-tag={featured.tag}
               data-bl-item
+              data-reveal="scale"
             >
               <img src={featured.image} alt="" width="720" height="480" />
               <div class="bl-feature__copy">
@@ -93,8 +96,8 @@ function formatDate(iso: string) {
 
         <ul class="bl-grid" data-bl-list>
           {
-            rest.map((post) => (
-              <li data-tag={post.tag} data-bl-item>
+            rest.map((post, i) => (
+              <li data-tag={post.tag} data-bl-item data-reveal="up" data-lift style={`--reveal-i: ${i % 3}`}>
                 <a href={`/blog/${post.slug}`}>
                   <img src={post.image} alt="" width="640" height="400" loading="lazy" />
                   <div class="bl-grid__copy">
@@ -113,18 +116,6 @@ function formatDate(iso: string) {
       </div>
     </section>
 
-    <section class="bl-close">
-      <div class="bl-shell bl-close__inner">
-        <div>
-          <p class="bl-brand bl-brand--on-dark">Dialer Bot</p>
-          <h2>Got a floor question not covered here?</h2>
-          <p>WhatsApp the campaign type and dialer — we answer from the same builders who ship the bots.</p>
-        </div>
-        <a class="bl-btn bl-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
-          WhatsApp us
-        </a>
-      </div>
-    </section>
   </main>
 
   <Footer slot="footer" />

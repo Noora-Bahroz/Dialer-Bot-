@@ -1,4 +1,4 @@
-/* Careers page — same design language as other interiors, unique layout */
+/* Careers page â€” same design language as other interiors, unique layout */
 
 .cr {
   --cr-ink: #1e322d;
@@ -491,40 +491,6 @@
 }
 
 /* Close */
-.cr-close {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 60% 80% at 100% 50%, rgba(219, 254, 122, 0.16), transparent 55%),
-    var(--cr-deep);
-  color: #fff;
-  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
-}
-
-.cr-close__inner {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--cr-gap);
-  align-items: center;
-}
-
-.cr-close h2 {
-  margin: 0 0 0.45rem;
-  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
-  letter-spacing: -0.03em;
-  font-weight: 750;
-  color: #fff;
-}
-
-.cr-close p {
-  margin: 0;
-  max-width: 38rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
-}
-
 @keyframes cr-in {
   from {
     opacity: 0;
@@ -554,7 +520,6 @@
 
 @media (max-width: 960px) {
   .cr-mast__grid,
-  .cr-close__inner,
   .cr-traits {
     grid-template-columns: 1fr;
   }

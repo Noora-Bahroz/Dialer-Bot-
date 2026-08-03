@@ -1,7 +1,8 @@
-﻿---
+---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageMastFx from '../components/PageMastFx.astro';
 import { site, wa } from '../data/site';
 import '../styles/global.css';
 import '../styles/legal-page.css';
@@ -53,7 +54,8 @@ const sections = [
   <Header slot="header" />
 
   <main class="lg">
-    <header class="lg-mast">
+    <header class="lg-mast page-mast page-mast--compact" data-mast>
+      <PageMastFx compact />
       <div class="lg-shell">
         <div class="lg-mast__top">
           <nav class="lg-crumb" aria-label="Breadcrumb">
@@ -138,18 +140,6 @@ const sections = [
       </div>
     </section>
 
-    <section class="lg-close">
-      <div class="lg-shell lg-close__inner">
-        <div>
-          <p class="lg-brand lg-brand--on-dark">Dialer Bot</p>
-          <h2>Need a custom MSA?</h2>
-          <p>Enterprise floors get agreement terms on WhatsApp — not a one-size PDF dump.</p>
-        </div>
-        <a class="lg-btn lg-btn--lime" href={wa.enterprise} target="_blank" rel="noopener noreferrer">
-          WhatsApp enterprise
-        </a>
-      </div>
-    </section>
   </main>
 
   <Footer slot="footer" />

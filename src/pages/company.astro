@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageMastFx from '../components/PageMastFx.astro';
 import { wa, site } from '../data/site';
 import '../styles/global.css';
 import '../styles/company-page.css';
@@ -50,7 +51,8 @@ const principles = [
   <Header slot="header" />
 
   <main class="co">
-    <header class="co-mast">
+    <header class="co-mast page-mast" data-mast>
+      <PageMastFx />
       <div class="co-shell co-mast__grid">
         <div class="co-mast__copy">
           <nav class="co-crumb" aria-label="Breadcrumb">
@@ -74,13 +76,16 @@ const principles = [
 
         <aside class="co-mast__aside" aria-label="Headquarters">
           <div class="co-hq">
-            <p class="co-hq__label">Headquarters</p>
-            <address>
+            <div class="co-hq__top">
+              <p class="co-hq__label">Headquarters</p>
+              <span class="co-hq__badge">Rawalpindi</span>
+            </div>
+            <address class="co-hq__address">
               {site.address.line1}<br />
               {site.address.line2}<br />
               {site.address.city}
             </address>
-            <dl>
+            <dl class="co-hq__grid">
               <div>
                 <dt>WhatsApp</dt>
                 <dd>
@@ -103,7 +108,7 @@ const principles = [
 
     <section class="co-section" aria-labelledby="co-story-title">
       <div class="co-shell co-story">
-        <div class="co-story__copy">
+        <div class="co-story__copy" data-reveal="left">
           <p class="co-kicker">Our story</p>
           <h2 id="co-story-title">From noisy floors to cleaner handoffs</h2>
           <p>
@@ -119,7 +124,7 @@ const principles = [
             from Rawalpindi.
           </p>
         </div>
-        <figure class="co-story__media">
+        <figure class="co-story__media" data-reveal="right" style="--reveal-i:1">
           <img src="/images/dialerbot-company-05.webp" alt="" width="640" height="520" />
           <figcaption>
             <strong>Office 8</strong>
@@ -131,14 +136,14 @@ const principles = [
 
     <section class="co-section co-section--tint" aria-labelledby="co-arc-title">
       <div class="co-shell">
-        <div class="co-section__head">
+        <div class="co-section__head" data-reveal>
           <p class="co-kicker">How we got here</p>
           <h2 id="co-arc-title">A short arc. A long floor day.</h2>
         </div>
         <ol class="co-arc">
           {
-            arc.map((item) => (
-              <li>
+            arc.map((item, i) => (
+              <li data-reveal="up" style={`--reveal-i: ${i}`}>
                 <span>{item.n}</span>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -151,14 +156,14 @@ const principles = [
 
     <section class="co-section" aria-labelledby="co-principles-title">
       <div class="co-shell">
-        <div class="co-section__head">
+        <div class="co-section__head" data-reveal>
           <p class="co-kicker">Operating principles</p>
           <h2 id="co-principles-title">Three commitments on every bot</h2>
         </div>
         <ul class="co-principles">
           {
-            principles.map((item) => (
-              <li>
+            principles.map((item, i) => (
+              <li data-reveal="up" data-lift style={`--reveal-i: ${i}`}>
                 <span>{item.n}</span>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -169,18 +174,6 @@ const principles = [
       </div>
     </section>
 
-    <section class="co-close">
-      <div class="co-shell co-close__inner">
-        <div>
-          <p class="co-brand co-brand--on-dark">Dialer Bot</p>
-          <h2>Come by ZamZama Plaza — or just WhatsApp</h2>
-          <p>Office 8 is open for serious floors. Remote teams get the same direct line.</p>
-        </div>
-        <a class="co-btn co-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
-          Chat on WhatsApp
-        </a>
-      </div>
-    </section>
   </main>
 
   <Footer slot="footer" />

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageMastFx from '../components/PageMastFx.astro';
 import { wa, site } from '../data/site';
 import '../styles/global.css';
 import '../styles/changelog-page.css';
@@ -60,7 +61,8 @@ const latest = entries[0];
   <Header slot="header" />
 
   <main class="cl">
-    <header class="cl-mast">
+    <header class="cl-mast page-mast page-mast--compact" data-mast>
+      <PageMastFx compact />
       <div class="cl-shell">
         <div class="cl-mast__top">
           <nav class="cl-crumb" aria-label="Breadcrumb">
@@ -120,7 +122,7 @@ const latest = entries[0];
         <div class="cl-feed" data-cl-feed>
           {
             entries.map((e) => (
-              <article class="cl-entry" id={`v-${e.version.replace(/\./g, '-')}`} data-cl-entry={e.version}>
+              <article class="cl-entry" id={`v-${e.version.replace(/\./g, '-')}`} data-cl-entry={e.version} data-reveal="up">
                 <header>
                   <span class="cl-entry__ver">{e.version}</span>
                   <time datetime={e.date}>{e.date}</time>
@@ -138,18 +140,6 @@ const latest = entries[0];
       </div>
     </section>
 
-    <section class="cl-close">
-      <div class="cl-shell cl-close__inner">
-        <div>
-          <p class="cl-brand cl-brand--on-dark">Dialer Bot</p>
-          <h2>Want something on the next cut?</h2>
-          <p>Message dialer type and the gap — we route feature asks straight to the builders at {site.domain}.</p>
-        </div>
-        <a class="cl-btn cl-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
-          WhatsApp a request
-        </a>
-      </div>
-    </section>
   </main>
 
   <Footer slot="footer" />

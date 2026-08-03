@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageMastFx from '../components/PageMastFx.astro';
 import { wa, site } from '../data/site';
 import '../styles/global.css';
 import '../styles/faqs-page.css';
@@ -67,7 +68,8 @@ const topics = ['All', ...Array.from(new Set(faqs.map((f) => f.topic)))];
   <Header slot="header" />
 
   <main class="fq">
-    <header class="fq-mast">
+    <header class="fq-mast page-mast" data-mast>
+      <PageMastFx />
       <div class="fq-shell fq-mast__grid">
         <div class="fq-mast__copy">
           <nav class="fq-crumb" aria-label="Breadcrumb">
@@ -118,14 +120,14 @@ const topics = ['All', ...Array.from(new Set(faqs.map((f) => f.topic)))];
 
     <section class="fq-section" aria-labelledby="fq-list-title">
       <div class="fq-shell">
-        <div class="fq-section__head">
+        <div class="fq-section__head" data-reveal>
           <p class="fq-kicker">Answers</p>
           <h2 id="fq-list-title">
             <span data-fq-heading>All questions</span>
           </h2>
         </div>
 
-        <div class="fq-list" data-fq-list>
+        <div class="fq-list" data-fq-list data-reveal="up" style="--reveal-i:1">
           {
             faqs.map((item, i) => (
               <details class="fq-item" data-topic={item.topic} name="fq-accordion" open={i === 0}>
@@ -145,18 +147,6 @@ const topics = ['All', ...Array.from(new Set(faqs.map((f) => f.topic)))];
       </div>
     </section>
 
-    <section class="fq-close">
-      <div class="fq-shell fq-close__inner">
-        <div>
-          <p class="fq-brand fq-brand--on-dark">Dialer Bot</p>
-          <h2>Still unsure?</h2>
-          <p>Send your dialer name and campaign type — we reply with fit and price lane.</p>
-        </div>
-        <a class="fq-btn fq-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
-          WhatsApp us
-        </a>
-      </div>
-    </section>
   </main>
 
   <Footer slot="footer" />

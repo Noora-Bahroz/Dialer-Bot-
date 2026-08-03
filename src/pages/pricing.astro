@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageMastFx from '../components/PageMastFx.astro';
 import { wa, site } from '../data/site';
 import '../styles/global.css';
 import '../styles/pricing-page.css';
@@ -50,7 +51,8 @@ const steps = [
   <Header slot="header" />
 
   <main class="pr">
-    <header class="pr-mast">
+    <header class="pr-mast page-mast" data-mast>
+      <PageMastFx />
       <div class="pr-shell pr-mast__grid">
         <div class="pr-mast__copy">
           <nav class="pr-crumb" aria-label="Breadcrumb">
@@ -239,13 +241,13 @@ const steps = [
 
     <section class="pr-section" aria-labelledby="pr-lanes-title">
       <div class="pr-shell">
-        <div class="pr-section__head">
+        <div class="pr-section__head" data-reveal>
           <p class="pr-kicker">Lanes</p>
           <h2 id="pr-lanes-title">Starter clarity. Enterprise when the floor needs it.</h2>
         </div>
 
         <div class="pr-lanes">
-          <article class="pr-lane pr-lane--starter">
+          <article class="pr-lane pr-lane--starter" data-reveal="left" data-lift>
             <header>
               <p class="pr-kicker">Starter</p>
               <h3>Per bot</h3>
@@ -263,7 +265,7 @@ const steps = [
             </a>
           </article>
 
-          <article class="pr-lane pr-lane--enterprise">
+          <article class="pr-lane pr-lane--enterprise" data-reveal="right" data-lift style="--reveal-i:1">
             <header>
               <p class="pr-kicker pr-kicker--lime">Enterprise</p>
               <h3>Custom floor</h3>
@@ -287,14 +289,14 @@ const steps = [
 
     <section class="pr-section pr-section--tint" aria-labelledby="pr-include-title">
       <div class="pr-shell">
-        <div class="pr-section__head">
+        <div class="pr-section__head" data-reveal>
           <p class="pr-kicker">In every starter</p>
           <h2 id="pr-include-title">What ${site.pricePerBot} actually covers</h2>
         </div>
         <ul class="pr-include">
           {
-            included.map((item) => (
-              <li>
+            included.map((item, i) => (
+              <li data-reveal="up" style={`--reveal-i: ${i}`}>
                 <span>{item.n}</span>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -307,14 +309,14 @@ const steps = [
 
     <section class="pr-section" aria-labelledby="pr-steps-title">
       <div class="pr-shell">
-        <div class="pr-section__head">
+        <div class="pr-section__head" data-reveal>
           <p class="pr-kicker">How buying works</p>
           <h2 id="pr-steps-title">Three messages. Then live.</h2>
         </div>
         <ol class="pr-steps">
           {
-            steps.map((item) => (
-              <li>
+            steps.map((item, i) => (
+              <li data-reveal="up" style={`--reveal-i: ${i}`}>
                 <span>{item.n}</span>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -325,18 +327,6 @@ const steps = [
       </div>
     </section>
 
-    <section class="pr-close">
-      <div class="pr-shell pr-close__inner">
-        <div>
-          <p class="pr-brand pr-brand--on-dark">Dialer Bot</p>
-          <h2>Unsure which lane you are?</h2>
-          <p>Send dialer type, seat count, and campaign list. We will say starter or enterprise in one reply.</p>
-        </div>
-        <a class="pr-btn pr-btn--lime" href={wa.general} target="_blank" rel="noopener noreferrer">
-          Ask on WhatsApp
-        </a>
-      </div>
-    </section>
   </main>
 
   <Footer slot="footer" />
