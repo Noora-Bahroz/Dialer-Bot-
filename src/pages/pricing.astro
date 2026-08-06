@@ -4,8 +4,11 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
 import { wa, site } from '../data/site';
+import { breadcrumbJsonLd } from '../data/seo';
 import '../styles/global.css';
 import '../styles/pricing-page.css';
+
+export const prerender = true;
 
 const included = [
   { n: '01', title: 'Bot instance', text: 'One AI voice bot ready for a single campaign lane.' },
@@ -46,11 +49,15 @@ const steps = [
 
 <BaseLayout
   title="Pricing | Dialer Bot"
-  description={`Dialer Bot pricing — $${site.pricePerBot} per bot. Enterprise on WhatsApp.`}
+  description={`Dialer Bot pricing from $${site.pricePerBot}/bot — starter packs for calling floors; enterprise multi-bot and compliance quoted on WhatsApp.`}
+  jsonLd={breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Pricing', path: '/pricing' },
+  ])}
 >
   <Header slot="header" />
 
-  <main class="pr">
+  <div class="pr">
     <header class="pr-mast page-mast" data-mast>
       <PageMastFx />
       <div class="pr-shell pr-mast__grid">
@@ -67,8 +74,8 @@ const steps = [
             lane. Multi-bot floors and custom rules are quoted directly, not buried in a public matrix.
           </p>
           <div class="pr-actions">
-            <a class="pr-btn pr-btn--solid" href={wa.start} target="_blank" rel="noopener noreferrer">
-              Buy via WhatsApp
+            <a class="pr-btn pr-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+              Try live demo
             </a>
             <a class="pr-btn pr-btn--ghost" href={wa.enterprise} target="_blank" rel="noopener noreferrer">
               Enterprise quote
@@ -159,12 +166,12 @@ const steps = [
 
               <a
                 class="pr-btn pr-btn--solid pr-dial__cta"
-                href={wa.start}
+                href={site.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-plan-cta="starter"
               >
-                WhatsApp to buy
+                Try starter demo
               </a>
             </div>
 
@@ -261,7 +268,7 @@ const steps = [
               custom compliance matrix.
             </p>
             <a class="pr-btn pr-btn--solid" href={wa.start} target="_blank" rel="noopener noreferrer">
-              WhatsApp to buy
+              WhatsApp sales
             </a>
           </article>
 
@@ -327,7 +334,7 @@ const steps = [
       </div>
     </section>
 
-  </main>
+  </div>
 
   <Footer slot="footer" />
 </BaseLayout>

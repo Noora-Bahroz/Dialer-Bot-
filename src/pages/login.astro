@@ -1,0 +1,155 @@
+---
+import PortalLayout from '../layouts/PortalLayout.astro';
+import { dbGet, dbRun, ensureDb, lastId } from '../db/db';
+import { getSessionUser, setSession, safeRedirect } from '../lib/portal/auth';
+import bcrypt from 'bcryptjs';
+
+export const prerender = false;
+
+await ensureDb();
+
+const next = Astro.url.searchParams.get('next');
+let error = '';
+let mode: 'login' | 'register' = 'login';
+
+const existing = await getSessionUser(Astro.request);
+if (existing) {
+  const dest =
+    existing.role === 'recruiter'
+      ? '/recruiter/dashboard'
+      : safeRedirect(next, '/applicant/dashboard');
+  return Astro.redirect(dest);
+}
+
+if (Astro.request.method === 'POST') {
+  const data = await Astro.request.formData();
+  const action = data.get('action') as string;
+  const email = String(data.get('email') || '')
+    .trim()
+    .toLowerCase();
+  const password = String(data.get('password') || '');
+
+  if (action === 'login') {
+    const user = await dbGet<{ id: number; role: string; password_hash: string }>(
+      'SELECT * FROM users WHERE email = ?',
+      [email],
+    );
+    if (user && bcrypt.compareSync(password, user.password_hash)) {
+      setSession(Astro.cookies, { id: user.id, role: user.role });
+      const dest =
+        user.role === 'recruiter'
+          ? '/recruiter/dashboard'
+          : safeRedirect(next, '/applicant/dashboard');
+      return Astro.redirect(dest);
+    }
+    error = 'Email or password did not match.';
+    mode = 'login';
+  } else if (action === 'register') {
+    mode = 'register';
+    const name = String(data.get('name') || '').trim() || 'Applicant';
+    if (password.length < 8) {
+      error = 'Password must be at least 8 characters.';
+    } else {
+      try {
+        const hash = bcrypt.hashSync(password, 10);
+        const result = await dbRun(
+          "INSERT INTO users (email, password_hash, role, name) VALUES (?, ?, 'applicant', ?)",
+          [email, hash, name],
+        );
+        setSession(Astro.cookies, { id: lastId(result), role: 'applicant' });
+        return Astro.redirect(safeRedirect(next, '/applicant/dashboard'));
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : '';
+        error = msg.includes('UNIQUE') ? 'An account with this email already exists.' : 'Could not create account.';
+      }
+    }
+  }
+}
+---
+
+<PortalLayout title="Sign in | Dialer Bot Careers" description="Sign in to apply and track your Dialer Bot applications." noindex>
+  <div class="pt-auth">
+    <header class="pt-mast pt-mast--center">
+      <p class="pt-kicker">Careers portal</p>
+      <h1>Your floor career starts here</h1>
+      <p class="pt-deck">
+        Create a free account to apply, track status, and check in daily so recruiters see you first.
+      </p>
+    </header>
+
+    <div class="pt-panel pt-auth__card">
+      <div class="pt-panel__body">
+        <div class="pt-auth__tabs" role="tablist">
+          <button type="button" class:list={['pt-auth__tab', { 'is-on': mode === 'login' }]} data-auth-tab="login">
+            Sign in
+          </button>
+          <button type="button" class:list={['pt-auth__tab', { 'is-on': mode === 'register' }]} data-auth-tab="register">
+            Create account
+          </button>
+        </div>
+
+        {error && <div class="pt-alert pt-alert--err">{error}</div>}
+
+        <form method="POST" class="pt-form" id="auth-form">
+          <input type="hidden" name="action" value={mode} data-auth-action />
+          {next && <input type="hidden" name="next" value={next} />}
+
+          <label class="pt-field" data-auth-name style={mode === 'login' ? 'display:none' : undefined}>
+            <span>Full name</span>
+            <input type="text" name="name" autocomplete="name" placeholder="Your name" required={mode === 'register'} />
+          </label>
+
+          <label class="pt-field">
+            <span>Email</span>
+            <input type="email" name="email" required autocomplete="email" placeholder="you@email.com" />
+          </label>
+
+          <label class="pt-field">
+            <span>Password</span>
+            <input
+              type="password"
+              name="password"
+              required
+              autocomplete={mode === 'register' ? 'new-password' : 'current-password'}
+              minlength={mode === 'register' ? 8 : undefined}
+              placeholder={mode === 'register' ? 'Min. 8 characters' : 'Your password'}
+            />
+          </label>
+
+          <button type="submit" class="pt-btn pt-btn--solid pt-btn--block">
+            {mode === 'login' ? 'Sign in' : 'Create account & continue'}
+          </button>
+        </form>
+
+        <p class="pt-auth__foot">
+          Recruiting team?
+          <a href="/login">Use your recruiter email to sign in</a>
+        </p>
+      </div>
+    </div>
+
+    <a class="pt-auth__back" href="/careers">← Browse open roles</a>
+  </div>
+</PortalLayout>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>('[data-auth-tab]');
+  const actionInput = document.querySelector<HTMLInputElement>('[data-auth-action]');
+  const nameField = document.querySelector<HTMLLabelElement>('[data-auth-name]');
+  const form = document.getElementById('auth-form');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const mode = tab.dataset.authTab || 'login';
+      tabs.forEach((t) => t.classList.toggle('is-on', t === tab));
+      if (actionInput) actionInput.value = mode;
+      if (nameField) nameField.style.display = mode === 'register' ? '' : 'none';
+      const submit = form?.querySelector<HTMLButtonElement>('button[type=submit]');
+      if (submit) submit.textContent = mode === 'login' ? 'Sign in' : 'Create account & continue';
+    });
+  });
+
+  if (new URLSearchParams(location.search).get('mode') === 'register') {
+    tabs[1]?.click();
+  }
+</script>

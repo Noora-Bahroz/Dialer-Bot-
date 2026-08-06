@@ -6,12 +6,14 @@ import PageMastFx from '../components/PageMastFx.astro';
 import { wa } from '../data/site';
 import '../styles/global.css';
 import '../styles/not-found-page.css';
+
+export const prerender = true;
 ---
 
-<BaseLayout title="Page Not Found | Dialer Bot" description="That Dialer Bot page may have moved or no longer exists.">
+<BaseLayout title="Page Not Found | Dialer Bot" description="That Dialer Bot page may have moved or no longer exists." noindex>
   <Header slot="header" />
 
-  <main class="nf page-mast" data-mast>
+  <div class="nf page-mast" data-mast>
     <PageMastFx />
     <div class="nf-shell">
       <p class="nf-brand">Dialer Bot</p>
@@ -36,7 +38,7 @@ import '../styles/not-found-page.css';
         <li><a href="/careers">Careers</a></li>
       </ul>
     </div>
-  </main>
+  </div>
 
   <Footer slot="footer" />
 </BaseLayout>

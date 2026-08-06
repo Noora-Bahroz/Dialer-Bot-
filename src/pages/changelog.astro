@@ -4,8 +4,11 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
 import { wa, site } from '../data/site';
+import { breadcrumbJsonLd } from '../data/seo';
 import '../styles/global.css';
 import '../styles/changelog-page.css';
+
+export const prerender = true;
 
 const entries = [
   {
@@ -57,10 +60,14 @@ const latest = entries[0];
 <BaseLayout
   title="Changelog | Dialer Bot"
   description="Dialer Bot product changelog — releases for qualification, routing, vault, and floor tooling."
+  jsonLd={breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Changelog', path: '/changelog' },
+  ])}
 >
   <Header slot="header" />
 
-  <main class="cl">
+  <div class="cl">
     <header class="cl-mast page-mast page-mast--compact" data-mast>
       <PageMastFx compact />
       <div class="cl-shell">
@@ -110,8 +117,11 @@ const latest = entries[0];
               entries.map((e, i) => (
                 <li>
                   <a href={`#v-${e.version.replace(/\./g, '-')}`} data-cl-link={e.version} class:list={[{ 'is-active': i === 0 }]}>
-                    <span>{e.version}</span>
-                    <em>{e.date}</em>
+                    <span class="cl-rail__dot" aria-hidden="true"></span>
+                    <span class="cl-rail__text">
+                      <span>{e.version}</span>
+                      <em>{e.date}</em>
+                    </span>
                   </a>
                 </li>
               ))
@@ -140,7 +150,7 @@ const latest = entries[0];
       </div>
     </section>
 
-  </main>
+  </div>
 
   <Footer slot="footer" />
 </BaseLayout>

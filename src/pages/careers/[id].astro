@@ -1,0 +1,336 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import { dbGet, dbRun, getJob, getRelatedJobs } from '../../db/db';
+import { getSessionUser } from '../../lib/portal/auth';
+import { timeAgo, formatDate } from '../../lib/portal/format';
+import { breadcrumbJsonLd, jobPostingJsonLd } from '../../data/seo';
+
+export const prerender = false;
+
+const { id } = Astro.params;
+const job = await getJob(id!);
+if (!job || job.status !== 'open') return Astro.redirect('/careers');
+
+const user = await getSessionUser(Astro.request);
+const applyHref =
+  user?.role === 'applicant'
+    ? `/careers/${job.id}/apply`
+    : `/login?next=${encodeURIComponent(`/careers/${job.id}/apply`)}`;
+
+let hasApplied = false;
+let isSaved = false;
+
+if (user?.role === 'applicant') {
+  hasApplied = !!(await dbGet('SELECT id FROM applications WHERE job_id = ? AND applicant_id = ?', [
+    job.id,
+    user.id,
+  ]));
+  isSaved = !!(await dbGet('SELECT 1 as ok FROM saved_jobs WHERE user_id = ? AND job_id = ?', [
+    user.id,
+    job.id,
+  ]));
+}
+
+if (Astro.request.method === 'POST' && user?.role === 'applicant') {
+  const data = await Astro.request.formData();
+  const action = data.get('action');
+  if (action === 'save') {
+    try {
+      await dbRun('INSERT INTO saved_jobs (user_id, job_id) VALUES (?, ?)', [user.id, job.id]);
+    } catch {
+      /* already saved */
+    }
+    return Astro.redirect(`/careers/${job.id}?saved=1`);
+  }
+  if (action === 'unsave') {
+    await dbRun('DELETE FROM saved_jobs WHERE user_id = ? AND job_id = ?', [user.id, job.id]);
+    return Astro.redirect(`/careers/${job.id}`);
+  }
+}
+
+const related = await getRelatedJobs(job.id, job.niche);
+const savedFlash = Astro.url.searchParams.get('saved') === '1';
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Careers', path: '/careers' },
+    { name: job.title, path: `/careers/${job.id}` },
+  ]),
+  jobPostingJsonLd({
+    id: job.id,
+    title: job.title,
+    description: job.description || job.blurb,
+    niche: job.niche,
+    type: job.type,
+    location: job.location,
+    compensation: job.compensation,
+    posted_at: job.posted_at,
+  }),
+];
+---
+
+<PortalLayout
+  title={`${job.title} | Careers | Dialer Bot`}
+  description={job.blurb}
+  wide
+  jsonLd={jsonLd}
+>
+  <div class="pt-job-layout">
+    <nav class="pt-crumb" aria-label="Breadcrumb">
+      <a href="/careers">Careers</a>
+      <span aria-hidden="true">/</span>
+      <span>{job.title}</span>
+    </nav>
+
+    <article class="pt-panel pt-job-detail">
+      <header class="pt-job-detail__hero">
+        <div class="pt-job-detail__hero-top">
+          <div class="pt-job-detail__tags">
+            <span class="pt-tag pt-tag--live">Open role</span>
+            <span class="pt-tag">{job.niche}</span>
+            <span class="pt-tag">{job.type}</span>
+            <span class="pt-tag">Posted {timeAgo(job.posted_at)}</span>
+          </div>
+          {hasApplied && <span class="pt-badge pt-badge--live">Application submitted</span>}
+        </div>
+        <h1>{job.title}</h1>
+        <p class="pt-job-detail__deck">{job.blurb}</p>
+      </header>
+
+      <div class="pt-job-detail__content">
+        <section class="pt-job-block">
+          <h2>
+            <span class="pt-job-block__icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                ><path
+                  d="M12 6v6l4 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"></path></svg
+              >
+            </span>
+            About this role
+          </h2>
+          <p>{job.description || job.blurb}</p>
+        </section>
+
+        {
+          job.responsibilityList.length > 0 && (
+            <section class="pt-job-block">
+              <h2>
+                <span class="pt-job-block__icon" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    ><path
+                      d="M9 11l2 2 4-4M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path></svg
+                  >
+                </span>
+                What you'll do
+              </h2>
+              <ul class="pt-job-list">
+                {job.responsibilityList.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        {
+          job.requirementList.length > 0 && (
+            <section class="pt-job-block">
+              <h2>
+                <span class="pt-job-block__icon" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    ><path
+                      d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"></path></svg
+                  >
+                </span>
+                What we're looking for
+              </h2>
+              <ul class="pt-job-list">
+                {job.requirementList.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        <section class="pt-job-block pt-job-block--soft">
+          <h2>
+            <span class="pt-job-block__icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                ><path
+                  d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"></path><path
+                  d="M9 22V12h6v10"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"></path></svg
+              >
+            </span>
+            About Dialer Bot
+          </h2>
+          <p>
+            Small team in Islamabad building AI voice bots that qualify inbound and outbound calls — ACA, FE, HI,
+            dispatch, and more. We protect agent time with honest qualification and warm handoffs. WhatsApp reaches the
+            builders directly.
+          </p>
+        </section>
+      </div>
+    </article>
+
+    <aside class="pt-job-aside">
+      {savedFlash && (
+        <div class="pt-alert pt-alert--ok">Role saved to your dashboard.</div>
+      )}
+
+      <div class="pt-role-card pt-role-card--detail">
+        <div class="pt-role-card__top">
+          <span class="pt-role-card__eyebrow">Apply for this role</span>
+          <span class="pt-role-card__badge">{job.niche}</span>
+        </div>
+
+        <ul class="pt-role-card__facts">
+          <li>
+            <span class="pt-role-card__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                ><path
+                  d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M4 7h16v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"></path></svg
+              >
+            </span>
+            <div>
+              <span>Type</span>
+              <strong>{job.type}</strong>
+            </div>
+          </li>
+          <li>
+            <span class="pt-role-card__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                ><path
+                  d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"></path><circle
+                  cx="12"
+                  cy="10"
+                  r="2.2"
+                  stroke="currentColor"
+                  stroke-width="1.7"></circle></svg
+              >
+            </span>
+            <div>
+              <span>Location</span>
+              <strong>{job.location}</strong>
+            </div>
+          </li>
+          <li>
+            <span class="pt-role-card__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                ><path
+                  d="M4 7h16v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"></path><path
+                  d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M4 11h16"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"></path></svg
+              >
+            </span>
+            <div>
+              <span>Compensation</span>
+              <strong>{job.compensation || 'Discussed on interview'}</strong>
+            </div>
+          </li>
+          <li>
+            <span class="pt-role-card__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                ><path
+                  d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"></path></svg
+              >
+            </span>
+            <div>
+              <span>Posted</span>
+              <strong>{formatDate(job.posted_at)}</strong>
+            </div>
+          </li>
+        </ul>
+
+        <div class="pt-job-aside__actions">
+          {
+            hasApplied ? (
+              <a class="pt-btn pt-btn--solid pt-btn--block" href="/applicant/dashboard">
+                View application status
+              </a>
+            ) : (
+              <a class="pt-btn pt-btn--solid pt-btn--block" href={applyHref}>
+                {user?.role === 'applicant' ? 'Apply now' : 'Sign in to apply'}
+              </a>
+            )
+          }
+
+          {
+            user?.role === 'applicant' && (
+              <form method="POST">
+                <button
+                  type="submit"
+                  name="action"
+                  value={isSaved ? 'unsave' : 'save'}
+                  class="pt-btn pt-btn--ghost pt-btn--block"
+                >
+                  {isSaved ? 'Remove from saved' : 'Save for later'}
+                </button>
+              </form>
+            )
+          }
+
+          {
+            user?.role === 'applicant' && (
+              <a class="pt-btn pt-btn--ghost pt-btn--block" href="/applicant/dashboard">
+                Your dashboard
+              </a>
+            )
+          }
+        </div>
+      </div>
+
+      {
+        related.length > 0 && (
+          <div class="pt-related">
+            <h2 class="pt-related__title">More in {job.niche}</h2>
+            <ul class="pt-related__list">
+              {related.map((r) => (
+                <li>
+                  <a href={`/careers/${r.id}`} class="pt-related__link">
+                    <strong>{r.title}</strong>
+                    <span>{r.type} · {timeAgo(r.posted_at)}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      <p class="pt-aside-note">
+        Real roles on a live product. We read every application — active applicants get seen first.
+      </p>
+    </aside>
+  </div>
+</PortalLayout>

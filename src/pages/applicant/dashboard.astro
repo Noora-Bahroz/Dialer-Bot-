@@ -1,0 +1,291 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import { dbAll, dbGet, dbRun, getOpenJobs } from '../../db/db';
+import { requireRole, clearSession } from '../../lib/portal/auth';
+import {
+  greeting,
+  timeAgo,
+  formatDate,
+  statusLabel,
+  statusNote,
+  statusStep,
+} from '../../lib/portal/format';
+
+export const prerender = false;
+
+const { user, redirect } = await requireRole(Astro, 'applicant');
+if (redirect) return redirect;
+
+let flash = '';
+
+if (Astro.request.method === 'POST') {
+  const data = await Astro.request.formData();
+  const action = data.get('action');
+
+  if (action === 'logout') {
+    clearSession(Astro.cookies);
+    return Astro.redirect('/login');
+  }
+  if (action === 'save') {
+    const jobId = Number(data.get('job_id'));
+    if (Number.isFinite(jobId)) {
+      try {
+        await dbRun('INSERT INTO saved_jobs (user_id, job_id) VALUES (?, ?)', [user!.id, jobId]);
+      } catch {
+        /* already saved */
+      }
+    }
+  }
+  if (action === 'unsave') {
+    const jobId = Number(data.get('job_id'));
+    await dbRun('DELETE FROM saved_jobs WHERE user_id = ? AND job_id = ?', [user!.id, jobId]);
+  }
+  if (action === 'profile') {
+    const headline = String(data.get('headline') || '').trim().slice(0, 120);
+    const bio = String(data.get('bio') || '').trim().slice(0, 500);
+    await dbRun('UPDATE users SET headline = ?, bio = ? WHERE id = ?', [
+      headline || null,
+      bio || null,
+      user!.id,
+    ]);
+    flash = 'profile';
+  }
+}
+
+const fresh = (await dbGet<typeof user & {
+  headline: string | null;
+  bio: string | null;
+  last_visit: string | null;
+}>('SELECT * FROM users WHERE id = ?', [user!.id]))!;
+
+await dbRun("UPDATE users SET last_visit = CURRENT_TIMESTAMP WHERE id = ?", [user!.id]);
+
+const appliedParam = Astro.url.searchParams.get('applied');
+
+const applications = await dbAll<{
+  id: number;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  job_id: number;
+  title: string;
+  niche: string;
+  type: string;
+}>(
+  `
+  SELECT a.id, a.status, a.created_at, a.updated_at, j.id as job_id, j.title, j.niche, j.type
+  FROM applications a
+  JOIN jobs j ON a.job_id = j.id
+  WHERE a.applicant_id = ?
+  ORDER BY a.updated_at DESC
+`,
+  [user!.id],
+);
+
+const appliedIds = new Set(applications.map((a) => a.job_id));
+
+const saved = await dbAll<{ id: number; title: string; niche: string; type: string; posted_at: string }>(
+  `
+  SELECT j.id, j.title, j.niche, j.type, j.posted_at, s.saved_at
+  FROM saved_jobs s
+  JOIN jobs j ON j.id = s.job_id
+  WHERE s.user_id = ? AND j.status = 'open'
+  ORDER BY s.saved_at DESC
+`,
+  [user!.id],
+);
+
+const savedIds = new Set(saved.map((s) => s.id));
+
+const allOpen = await getOpenJobs();
+const newSinceVisit = fresh.last_visit
+  ? allOpen.filter((j) => !appliedIds.has(j.id) && new Date(j.posted_at) > new Date(fresh.last_visit!))
+  : allOpen.filter((j) => !appliedIds.has(j.id)).slice(0, 3);
+
+const recommended = allOpen.filter((j) => !appliedIds.has(j.id)).slice(0, 6);
+
+---
+
+<PortalLayout title="Your dashboard | Dialer Bot Careers" description="Track applications and discover open roles." wide noindex>
+  <header class="pt-mast pt-mast__row">
+    <div>
+      <p class="pt-kicker">Applicant hub</p>
+      <h1>{greeting(fresh.name)}</h1>
+      <p class="pt-deck">
+        Track every application in one place, keep your profile current, and apply to new roles quickly.
+      </p>
+    </div>
+    <form method="POST">
+      <button type="submit" name="action" value="logout" class="pt-btn pt-btn--ghost">Sign out</button>
+    </form>
+  </header>
+
+  {(appliedParam || flash === 'profile') && (
+    <div class="pt-alert pt-alert--ok">
+      {appliedParam && 'Application submitted — we will reply to your email.'}
+      {flash === 'profile' && 'Profile updated.'}
+    </div>
+  )}
+
+  <div class="pt-dash pt-dash--app">
+    <div class="pt-stack pt-stack--lg pt-dash__main">
+      <section class="pt-panel">
+        <div class="pt-panel__head">
+          <h2>Your applications</h2>
+          <span class="pt-panel__meta">{applications.length} total</span>
+        </div>
+        <div class="pt-panel__body">
+          {applications.length === 0 ? (
+            <div class="pt-empty">
+              No applications yet. <a href="/careers">Browse open roles →</a>
+            </div>
+          ) : (
+            <ul class="pt-app-list">
+              {applications.map((app) => {
+                const step = statusStep(app.status);
+                return (
+                  <li class="pt-app">
+                    <div class="pt-app__top">
+                      <div>
+                        <h3>{app.title}</h3>
+                        <p class="pt-app__meta">
+                          {app.niche} · Applied {formatDate(app.created_at)}
+                          {app.updated_at !== app.created_at && ` · Updated ${timeAgo(app.updated_at)}`}
+                        </p>
+                        <p class="pt-app__status-note">{statusNote(app.status)}</p>
+                      </div>
+                      <span class={`pt-badge pt-badge--${app.status}`}>{statusLabel(app.status)}</span>
+                    </div>
+                    {app.status !== 'rejected' && (
+                      <div class="pt-pipeline" aria-hidden="true">
+                        {[0, 1, 2, 3].map((i) => (
+                          <i class:list={[{ 'is-done': i < step }, { 'is-current': i === step }]} />
+                        ))}
+                      </div>
+                    )}
+                    <a href={`/careers/${app.job_id}`} class="pt-btn pt-btn--ghost pt-btn--sm pt-app__cta">
+                      View role
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      </section>
+
+      {newSinceVisit.length > 0 && (
+        <section class="pt-panel">
+          <div class="pt-panel__head">
+            <h2>New since your last visit</h2>
+          </div>
+          <div class="pt-panel__body pt-stack">
+            {newSinceVisit.map((job) => (
+              <div class="pt-job">
+                <div>
+                  <h3>
+                    {job.title} <span class="pt-badge pt-badge--new">New</span>
+                  </h3>
+                  <p>
+                    {job.niche} · {job.type} · {timeAgo(job.posted_at)}
+                  </p>
+                </div>
+                <div class="pt-job__actions">
+                  <a href={`/careers/${job.id}/apply`} class="pt-btn pt-btn--solid pt-btn--sm">
+                    Apply
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section class="pt-panel">
+        <div class="pt-panel__head">
+          <h2>Open roles for you</h2>
+        </div>
+        <div class="pt-panel__body pt-stack">
+          {recommended.length === 0 ? (
+            <div class="pt-empty">You're caught up on every open role.</div>
+          ) : (
+            recommended.map((job) => (
+              <div class="pt-job">
+                <div>
+                  <h3>{job.title}</h3>
+                  <p>
+                    {job.niche} · {job.location}
+                  </p>
+                </div>
+                <div class="pt-job__actions">
+                  {!savedIds.has(job.id) ? (
+                    <form method="POST">
+                      <input type="hidden" name="job_id" value={job.id} />
+                      <button type="submit" name="action" value="save" class="pt-btn pt-btn--ghost pt-btn--sm">
+                        Save
+                      </button>
+                    </form>
+                  ) : (
+                    <form method="POST">
+                      <input type="hidden" name="job_id" value={job.id} />
+                      <button type="submit" name="action" value="unsave" class="pt-btn pt-btn--ghost pt-btn--sm">
+                        Saved
+                      </button>
+                    </form>
+                  )}
+                  <a href={`/careers/${job.id}`} class="pt-btn pt-btn--ghost pt-btn--sm">
+                    Details
+                  </a>
+                  <a href={`/careers/${job.id}/apply`} class="pt-btn pt-btn--solid pt-btn--sm">
+                    Apply
+                  </a>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </section>
+
+      {saved.length > 0 && (
+        <section class="pt-panel">
+          <div class="pt-panel__head"><h2>Saved roles</h2></div>
+          <div class="pt-panel__body pt-stack">
+            {saved.map((job) => (
+              <div class="pt-job">
+                <div>
+                  <h3>{job.title}</h3>
+                  <p>
+                    {job.niche} · {job.type}
+                  </p>
+                </div>
+                <div class="pt-job__actions">
+                  <a href={`/careers/${job.id}/apply`} class="pt-btn pt-btn--solid pt-btn--sm">
+                    Apply
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+    </div>
+    <aside class="pt-panel pt-dash__side">
+      <div class="pt-panel__head"><h2>Your profile</h2></div>
+      <div class="pt-panel__body">
+        <form method="POST" class="pt-form">
+          <input type="hidden" name="action" value="profile" />
+          <label class="pt-field">
+            <span>Headline</span>
+            <input type="text" name="headline" value={fresh.headline || ''} placeholder="Floor ops · 4 yrs ACA" maxlength="120" />
+          </label>
+          <label class="pt-field">
+            <span>Short bio</span>
+            <textarea name="bio" rows="3" placeholder="Dialers you've used, campaigns, timezone…" maxlength="500">{fresh.bio || ''}</textarea>
+          </label>
+          <button type="submit" class="pt-btn pt-btn--ghost pt-btn--sm">Save profile</button>
+        </form>
+      </div>
+    </aside>
+  </div>
+</PortalLayout>

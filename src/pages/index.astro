@@ -5,7 +5,10 @@ import Footer from '../components/Footer.astro';
 import FeatureConsoleMock from '../components/FeatureConsoleMock.astro';
 import WarmHandoffMock from '../components/WarmHandoffMock.astro';
 import HeroOrbitMock from '../components/HeroOrbitMock.astro';
+import { site, wa } from '../data/site';
 import '../styles/global.css';
+
+export const prerender = true;
 
 const benefitFeatures = [
   {
@@ -160,7 +163,8 @@ const testimonials = [
 
 <BaseLayout
   title="Dialer Bot | AI Voice Bots for Inbound & Outbound Calling"
-  description="Dialer Bot is an AI voice bot platform for call centers, truck dispatch, ACA, FE, HI, and more. Qualify inbound and outbound calls, sync with your dialer, and save agent time with humanized voices and ready campaign bots."
+  description="AI voice bots that qualify inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoff closable leads to your agents."
+  image="/images/dialerbot-home-01.webp"
 >
   <Header slot="header" />
 
@@ -185,9 +189,9 @@ const testimonials = [
             dispatch, ACA, FE, HI, and every floor that still dials by hand.
           </p>
           <div class="hero-actions" data-reveal style="--reveal-i:3">
-            <a class="btn btn-white" href="/#contact">Get Started</a>
-            <a class="btn btn-glass" href="/#features">
-              See How It Works
+            <a class="btn btn-white" href={site.demoUrl} target="_blank" rel="noopener noreferrer">Try Live Demo</a>
+            <a class="btn btn-glass" href={wa.start} target="_blank" rel="noopener noreferrer">
+              WhatsApp Sales
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
@@ -262,7 +266,7 @@ const testimonials = [
               <div />
               <div>
                 <h3>{card.title}</h3>
-                <a class="btn btn-outline-white" href="/#features">
+                <a class="btn btn-outline-white" href="/features">
                   Learn More
                 </a>
               </div>
@@ -290,7 +294,7 @@ const testimonials = [
                   </div>
                 ))}
               </div>
-              <a class="btn btn-chip" href="/#contact">
+              <a class="btn btn-chip" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
                 {row.cta}
               </a>
             </div>

@@ -2,13 +2,15 @@
 export const site = {
   name: 'Dialer Bot',
   domain: 'dialerbot.online',
-  email: 'uzair@dialerbot.site',
+  url: 'https://dialerbot.online',
+  demoUrl: 'https://demo.dialerbot.online',
+  email: 'Query@dialerbot.online',
   phoneDisplay: '+92 311 6877887',
   phoneE164: '923116877887',
   address: {
-    line1: 'Office 8, ZamZama Plaza',
+    line1: 'Office 12',
     line2: 'Pakistan Town Phase 2',
-    city: 'Rawalpindi, Pakistan',
+    city: 'Islamabad, Pakistan',
   },
   pricePerBot: 35,
 } as const;

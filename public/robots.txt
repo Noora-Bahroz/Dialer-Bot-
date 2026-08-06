@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /applicant/
+Disallow: /recruiter/
+Disallow: /*/apply
+Disallow: /api/
+
+Sitemap: https://dialerbot.online/sitemap-index.xml
+Sitemap: https://dialerbot.online/sitemap-jobs.xml

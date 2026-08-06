@@ -3,56 +3,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
-import { wa, waLink, site } from '../data/site';
+import { site } from '../data/site';
+import { breadcrumbJsonLd } from '../data/seo';
+import { getOpenJobs } from '../db/db';
+import { getSessionUser } from '../lib/portal/auth';
+import { timeAgo } from '../lib/portal/format';
 import '../styles/global.css';
 import '../styles/careers-page.css';
 
-const roles = [
-  {
-    id: 'conversation',
-    niche: 'Voice AI',
-    title: 'Conversation Designer',
-    type: 'Full-time · Remote / Rawalpindi',
-    blurb: 'Craft opener packs, clarification loops, and handoff thresholds for ACA, FE, HI, and dispatch bots.',
-  },
-  {
-    id: 'platform',
-    niche: 'Engineering',
-    title: 'Realtime Voice Platform Engineer',
-    type: 'Full-time · Rawalpindi preferred',
-    blurb: 'SIP paths, recording pipelines, webhook dispositions, and dialer–model glue under live pressure.',
-  },
-  {
-    id: 'success',
-    niche: 'Ops',
-    title: 'Floor Success Specialist',
-    type: 'Full-time · Hybrid',
-    blurb: 'Onboard campaigns, tune pace governors, sit with supervisors until the bot feels native.',
-  },
-  {
-    id: 'compliance',
-    niche: 'Trust',
-    title: 'Calling Compliance Analyst',
-    type: 'Contract / Full-time',
-    blurb: 'Map consent gates, quiet hours, and disposition policy into product rules.',
-  },
-  {
-    id: 'partnerships',
-    niche: 'Growth',
-    title: 'Dialer Partnerships Lead',
-    type: 'Full-time · Remote OK',
-    blurb: 'Relationships with dialer vendors, BPOs, and insurance floors — diagnose queues, do not recite features.',
-  },
-  {
-    id: 'qa',
-    niche: 'QA',
-    title: 'Voice QA Reviewer',
-    type: 'Part-time · Remote',
-    blurb: 'Score transcripts, flag drift, feed winning phrasing back into opener packs.',
-  },
-];
+export const prerender = false;
 
+const roles = await getOpenJobs();
 const filters = ['All', ...Array.from(new Set(roles.map((r) => r.niche)))];
+const session = await getSessionUser(Astro.request);
 
 const traits = [
   {
@@ -71,15 +34,52 @@ const traits = [
     text: 'If it does not survive a live campaign morning, it does not ship.',
   },
 ];
+
+const hiringSteps = [
+  {
+    n: '01',
+    title: 'Apply online',
+    text: 'Submit your CV, pitch, and role preferences through the careers portal. We read every application.',
+  },
+  {
+    n: '02',
+    title: 'Application review',
+    text: 'Our team screens your profile within a few business days. Active applicants hear back first.',
+  },
+  {
+    n: '03',
+    title: 'Skills assessment',
+    text: 'One role-specific assessment — a scorecard exercise, script draft, technical task, or case study depending on the niche.',
+  },
+  {
+    n: '04',
+    title: 'First interview',
+    text: 'A 30–45 minute call covering your background, dialer experience, and why this role fits.',
+  },
+  {
+    n: '05',
+    title: 'Second interview',
+    text: 'A deeper session with the technical or floor team — scenarios, judgment calls, and how you work under pressure.',
+  },
+  {
+    n: '06',
+    title: 'Decision & offer',
+    text: 'We reply by email with next steps. No ghosting — you always know where you stand.',
+  },
+];
 ---
 
 <BaseLayout
   title="Careers | Dialer Bot"
   description="Open roles at Dialer Bot — conversation design, voice platform, floor success, compliance, partnerships, and QA."
+  jsonLd={breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Careers', path: '/careers' },
+  ])}
 >
   <Header slot="header" />
 
-  <main class="cr">
+  <div class="cr">
     <header class="cr-mast page-mast" data-mast>
       <PageMastFx />
       <div class="cr-shell cr-mast__grid">
@@ -93,51 +93,61 @@ const traits = [
           <h1>Work on the layer agents never see</h1>
           <p class="cr-deck">
             Six niches. One mission — protect agent time with honest qualification and warm handoffs. Small team in
-            Rawalpindi, open to remote where the work allows.
+            Islamabad, open to remote where the work allows.
           </p>
           <div class="cr-actions">
-            <a class="cr-btn cr-btn--solid" href={wa.careers} target="_blank" rel="noopener noreferrer">
-              Apply on WhatsApp
-            </a>
+            {
+              session?.role === 'applicant' ? (
+                <a class="cr-btn cr-btn--solid" href="/applicant/dashboard">Your dashboard</a>
+              ) : session?.role === 'recruiter' ? (
+                <a class="cr-btn cr-btn--solid" href="/recruiter/dashboard">Recruiter hub</a>
+              ) : (
+                <a class="cr-btn cr-btn--solid" href="/login">Sign in to apply</a>
+              )
+            }
             <a class="cr-btn cr-btn--ghost" href="/company">About the company</a>
           </div>
         </div>
 
-        <aside class="cr-mast__aside" aria-label="Quick apply">
-          <div class="cr-apply" data-cr-apply>
-            <p class="cr-apply__label">Quick apply</p>
-            <label class="cr-apply__field">
-              <span>Role</span>
-              <select data-cr-role>
-                {
-                  roles.map((role, i) => {
-                    const href = waLink(
-                      `Hi Dialer Bot — I'm interested in the ${role.title} role.\n\nHere's a short note and a link to my work:`,
-                    );
-                    return (
-                      <option value={role.id} data-href={href} data-type={role.type} selected={i === 0}>
-                        {role.title}
-                      </option>
-                    );
-                  })
-                }
-              </select>
-            </label>
-            <p class="cr-apply__type" data-cr-type>{roles[0].type}</p>
-            <p class="cr-apply__hint">Opens WhatsApp with the role title filled in. Add your note and a work link.</p>
-            <a
-              class="cr-btn cr-btn--solid cr-apply__cta"
-              href={waLink(
-                `Hi Dialer Bot — I'm interested in the ${roles[0].title} role.\n\nHere's a short note and a link to my work:`,
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cr-cta
-            >
-              Apply on WhatsApp
-            </a>
-          </div>
-        </aside>
+        {
+          roles.length > 0 && (
+            <aside class="cr-mast__aside" aria-label="Quick apply">
+              <div class="cr-apply" data-cr-apply>
+                <p class="cr-apply__label">Quick apply</p>
+                <label class="cr-apply__field">
+                  <span>Role</span>
+                  <select data-cr-role>
+                    {
+                      roles.map((role, i) => {
+                        const href = `/careers/${role.id}`;
+                        return (
+                          <option value={role.id} data-href={href} data-type={role.type} data-niche={role.niche} selected={i === 0}>
+                            {role.title}
+                          </option>
+                        );
+                      })
+                    }
+                  </select>
+                </label>
+                <div class="cr-apply__meta">
+                  <span class="cr-apply__pill" data-cr-type>{roles[0].type}</span>
+                  <span class="cr-apply__pill cr-apply__pill--soft" data-cr-niche>{roles[0].niche}</span>
+                </div>
+                <p class="cr-apply__hint">Read the full role, then apply in under two minutes.</p>
+                <div class="cr-apply__flow" aria-label="Hiring flow snapshot">
+                  <span>Assessment</span>
+                  <i aria-hidden="true"></i>
+                  <span>Interview 1</span>
+                  <i aria-hidden="true"></i>
+                  <span>Interview 2</span>
+                </div>
+                <a class="cr-btn cr-btn--solid cr-apply__cta" href={`/careers/${roles[0].id}`} data-cr-cta>
+                  View role
+                </a>
+              </div>
+            </aside>
+          )
+        }
       </div>
     </header>
 
@@ -158,6 +168,40 @@ const traits = [
             ))
           }
         </ul>
+      </div>
+    </section>
+
+    <section class="cr-section cr-section--process" aria-labelledby="cr-process-title">
+      <div class="cr-shell">
+        <div class="cr-section__head cr-section__head--row" data-reveal>
+          <div>
+            <p class="cr-kicker">How we hire</p>
+            <h2 id="cr-process-title">Clear process. No surprises.</h2>
+            <p class="cr-process__deck">
+              Every role follows the same backbone: one assessment and two interviews. Typical timeline is 1–2 weeks
+              from apply to decision.
+            </p>
+          </div>
+          <ul class="cr-process__highlights" aria-label="Process summary">
+            <li><strong>1</strong> assessment</li>
+            <li><strong>2</strong> interviews</li>
+            <li><strong>~2</strong> weeks</li>
+          </ul>
+        </div>
+
+        <ol class="cr-process">
+          {
+            hiringSteps.map((step, i) => (
+              <li data-reveal="up" style={`--reveal-i: ${i}`}>
+                <span class="cr-process__num">{step.n}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
       </div>
     </section>
 
@@ -188,33 +232,42 @@ const traits = [
 
         <ul class="cr-jobs" data-cr-jobs>
           {
-            roles.map((role, i) => {
-              const apply = waLink(
-                `Hi Dialer Bot — I'm interested in the ${role.title} role.\n\nHere's a short note and a link to my work:`,
-              );
-              return (
-                <li data-niche={role.niche} data-reveal="up" style={`--cr-i:${i}; --reveal-i: ${i % 4}`}>
-                  <div class="cr-job__meta">
-                    <span>{role.niche}</span>
-                    <em>{role.type}</em>
-                  </div>
-                  <div class="cr-job__body">
-                    <h3>{role.title}</h3>
-                    <p>{role.blurb}</p>
-                  </div>
-                  <a class="cr-btn cr-btn--solid cr-job__cta" href={apply} target="_blank" rel="noopener noreferrer">
-                    Apply
-                  </a>
-                </li>
-              );
-            })
+            roles.length === 0 ? (
+              <li class="cr-empty" style="display:block;padding:2rem;text-align:center;color:var(--cr-muted)">
+                No open roles right now — check back soon or email {site.email}.
+              </li>
+            ) : (
+              roles.map((role, i) => {
+                const detail = `/careers/${role.id}`;
+                const apply = session?.role === 'applicant' ? `/careers/${role.id}/apply` : `/login?next=${encodeURIComponent(`/careers/${role.id}/apply`)}`;
+                return (
+                  <li data-niche={role.niche} data-reveal="up" style={`--cr-i:${i}; --reveal-i: ${i % 4}`}>
+                    <div class="cr-job__meta">
+                      <span>{role.niche}</span>
+                      <em>{role.type}</em>
+                    </div>
+                    <div class="cr-job__body">
+                      <h3><a href={detail} style="color:inherit;text-decoration:none">{role.title}</a></h3>
+                      <p>{role.blurb}</p>
+                      <p style="font-size:0.78rem;color:var(--cr-muted);margin:0.35rem 0 0;font-weight:600">
+                        {role.location} · Posted {timeAgo(role.posted_at)}
+                      </p>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem;align-items:flex-end">
+                      <a class="cr-btn cr-btn--ghost cr-job__cta" href={detail} style="min-height:38px">Details</a>
+                      <a class="cr-btn cr-btn--solid cr-job__cta" href={apply}>Apply</a>
+                    </div>
+                  </li>
+                );
+              })
+            )
           }
         </ul>
         <p class="cr-empty" data-cr-empty hidden>No open roles in that niche right now — try All, or message us anyway.</p>
       </div>
     </section>
 
-  </main>
+  </div>
 
   <Footer slot="footer" />
 </BaseLayout>
@@ -223,6 +276,7 @@ const traits = [
   const applyRoot = document.querySelector<HTMLElement>('[data-cr-apply]');
   const roleSelect = applyRoot?.querySelector<HTMLSelectElement>('[data-cr-role]');
   const typeEl = applyRoot?.querySelector<HTMLElement>('[data-cr-type]');
+  const nicheEl = applyRoot?.querySelector<HTMLElement>('[data-cr-niche]');
   const cta = applyRoot?.querySelector<HTMLAnchorElement>('[data-cr-cta]');
 
   const syncApply = () => {
@@ -230,8 +284,10 @@ const traits = [
     if (!opt || !cta) return;
     const href = opt.getAttribute('data-href');
     const type = opt.getAttribute('data-type');
+    const niche = opt.getAttribute('data-niche');
     if (href) cta.href = href;
     if (typeEl && type) typeEl.textContent = type;
+    if (nicheEl && niche) nicheEl.textContent = niche;
   };
 
   roleSelect?.addEventListener('change', syncApply);

@@ -1,0 +1,17 @@
+---
+import PortalShell from '../components/portal/PortalShell.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  wide?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { title, description = 'Dialer Bot careers portal.', wide = false, jsonLd, noindex = false } = Astro.props;
+---
+
+<PortalShell title={title} description={description} wide={wide} jsonLd={jsonLd} noindex={noindex}>
+  <slot />
+</PortalShell>

@@ -1,10 +1,12 @@
 ---
-import { wa } from '../data/site';
+import { wa, site } from '../data/site';
 
 const links = [
   { href: '/features', label: 'Features' },
-  { href: '/company', label: 'Company' },
   { href: '/pricing', label: 'Pricing' },
+  { href: '/careers', label: 'Careers' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/company', label: 'Company' },
   { href: '/contact', label: 'Contact' },
 ];
 ---
@@ -24,7 +26,7 @@ const links = [
       <ul class="nav-list">
         {
           links.map((link) => (
-            <li>
+            <li class:list={[{ 'nav-item--contact': link.label === 'Contact' }]}>
               <a href={link.href}>{link.label}</a>
             </li>
           ))
@@ -33,6 +35,9 @@ const links = [
     </nav>
 
     <div class="header-actions">
+      <a class="btn btn-outline-white header-contact hide-on-mobile" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+        Live Demo
+      </a>
       <a class="btn header-cta hide-on-mobile" href={wa.start} target="_blank" rel="noopener noreferrer">
         WhatsApp Us
       </a>

@@ -1,0 +1,528 @@
+---
+import PortalLayout from '../../../layouts/PortalLayout.astro';
+import { dbGet, dbRun, getJob } from '../../../db/db';
+import { requireRole } from '../../../lib/portal/auth';
+import { saveUpload, saveUploads } from '../../../lib/portal/uploads';
+
+export const prerender = false;
+
+const { id } = Astro.params;
+const { user, redirect } = await requireRole(
+  Astro,
+  'applicant',
+  `/login?next=${encodeURIComponent(Astro.url.pathname)}`,
+);
+if (redirect) return redirect;
+
+const job = await getJob(id!);
+if (!job || job.status !== 'open') return Astro.redirect('/careers');
+
+let error = '';
+const formValues = {
+  availability: '',
+  work_mode: 'hybrid',
+  current_salary: '',
+  expected_salary: '',
+  portfolio_url: '',
+  linkedin_url: '',
+  other_links: '',
+  notes: '',
+  cover_letter: '',
+  headline: user!.headline || '',
+};
+
+const existing = await dbGet('SELECT id FROM applications WHERE job_id = ? AND applicant_id = ?', [
+  job.id,
+  user!.id,
+]);
+
+const WORK_MODES = [
+  { value: 'remote', label: 'Remote', hint: 'Work from anywhere' },
+  { value: 'onsite', label: 'On-site', hint: 'Office / floor' },
+  { value: 'hybrid', label: 'Hybrid', hint: 'Mix of both' },
+] as const;
+
+const AVAILABILITY_OPTIONS = [
+  'Immediate',
+  '1 week notice',
+  '2 weeks notice',
+  '1 month notice',
+  'After a specific date',
+];
+
+if (Astro.request.method === 'POST') {
+  if (existing) {
+    error = 'You already applied for this role.';
+  } else {
+    const data = await Astro.request.formData();
+
+    formValues.availability = String(data.get('availability') || '').trim();
+    formValues.work_mode = String(data.get('work_mode') || '').trim();
+    formValues.current_salary = String(data.get('current_salary') || '').trim();
+    formValues.expected_salary = String(data.get('expected_salary') || '').trim();
+    formValues.portfolio_url = String(data.get('portfolio_url') || '').trim();
+    formValues.linkedin_url = String(data.get('linkedin_url') || '').trim();
+    formValues.other_links = String(data.get('other_links') || '').trim();
+    formValues.notes = String(data.get('notes') || '').trim();
+    formValues.cover_letter = String(data.get('cover_letter') || '').trim();
+    formValues.headline = String(data.get('headline') || '').trim();
+
+    const workModes = new Set(WORK_MODES.map((m) => m.value));
+
+    const mergeLinks = [formValues.linkedin_url, formValues.other_links].filter(Boolean).join('\n');
+
+    try {
+      if (!workModes.has(formValues.work_mode as (typeof WORK_MODES)[number]['value'])) {
+        throw new Error('Please choose Remote, On-site, or Hybrid.');
+      }
+      if (!formValues.availability) {
+        throw new Error('Please tell us when you can start.');
+      }
+      if (!formValues.expected_salary) {
+        throw new Error('Please enter your expected salary.');
+      }
+      if (formValues.cover_letter.length < 20) {
+        throw new Error('Write a short pitch — at least a few sentences about why you fit.');
+      }
+
+      for (const [label, url] of [
+        ['Portfolio', formValues.portfolio_url],
+        ['LinkedIn', formValues.linkedin_url],
+      ] as const) {
+        if (url && !/^https?:\/\//i.test(url)) {
+          throw new Error(`${label} link should start with http:// or https://`);
+        }
+      }
+
+      const resume = await saveUpload(data.get('resume') as File | null, user!.id, 'resume');
+      if (!resume) throw new Error('Please attach your CV / resume (DOCX only, max 8 MB).');
+
+      const certifications = await saveUploads(data.getAll('certifications'), user!.id, 'cert');
+
+      await dbRun(
+        `
+        INSERT INTO applications (
+          job_id, applicant_id, cover_letter, resume_path, certifications_json,
+          work_mode, availability, current_salary, expected_salary,
+          portfolio_url, other_links, notes
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `,
+        [
+          job.id,
+          user!.id,
+          formValues.cover_letter,
+          resume.path,
+          certifications.length ? JSON.stringify(certifications) : null,
+          formValues.work_mode,
+          formValues.availability,
+          formValues.current_salary || null,
+          formValues.expected_salary,
+          formValues.portfolio_url || null,
+          mergeLinks || null,
+          formValues.notes || null,
+        ],
+      );
+
+      if (formValues.headline) {
+        await dbRun('UPDATE users SET headline = ? WHERE id = ?', [formValues.headline, user!.id]);
+      }
+      await dbRun("UPDATE users SET last_active = CURRENT_TIMESTAMP WHERE id = ?", [user!.id]);
+      return Astro.redirect('/applicant/dashboard?applied=1');
+    } catch (err) {
+      error = err instanceof Error ? err.message : 'Could not submit application.';
+    }
+  }
+}
+---
+
+<PortalLayout title={`Apply: ${job.title} | Dialer Bot`} description={`Apply for ${job.title} at Dialer Bot.`} wide noindex>
+  <div class="pt-apply-layout">
+    <nav class="pt-crumb" aria-label="Breadcrumb">
+      <a href="/careers">Careers</a>
+      <span aria-hidden="true">/</span>
+      <a href={`/careers/${job.id}`}>{job.title}</a>
+      <span aria-hidden="true">/</span>
+      <span>Apply</span>
+    </nav>
+
+    <div class="pt-panel pt-apply">
+      <header class="pt-apply-hero">
+        <p class="pt-kicker">Application · {job.niche}</p>
+        <h1>{job.title}</h1>
+        <p class="pt-apply-hero__meta">
+          Applying as <strong>{user!.name}</strong>
+          <span aria-hidden="true">·</span>
+          <span>{user!.email}</span>
+        </p>
+      </header>
+
+      <div class="pt-apply-body">
+        {error && <div class="pt-alert pt-alert--err" role="alert">{error}</div>}
+        {existing && !error && (
+          <div class="pt-alert pt-alert--ok">
+            You already applied for this role. <a href="/applicant/dashboard">View status →</a>
+          </div>
+        )}
+
+        {!existing && (
+          <form method="POST" enctype="multipart/form-data" class="pt-apply-form" id="apply-form">
+            <!-- 1. Profile -->
+            <section class="pt-step">
+              <div class="pt-step__head">
+                <span class="pt-step__num">1</span>
+                <div>
+                  <h2>Profile</h2>
+                  <p>Name and email are already on your account.</p>
+                </div>
+              </div>
+              <label class="pt-field">
+                <span>
+                  Headline <em>optional</em>
+                </span>
+                <input
+                  type="text"
+                  name="headline"
+                  value={formValues.headline}
+                  placeholder="e.g. 3 yrs dialer ops · ACA & FE floors"
+                  maxlength="120"
+                />
+              </label>
+            </section>
+
+            <!-- 2. Documents -->
+            <section class="pt-step">
+              <div class="pt-step__head">
+                <span class="pt-step__num">2</span>
+                <div>
+                  <h2>Documents</h2>
+                  <p>Upload your CV. Add certificates if you have them.</p>
+                </div>
+              </div>
+
+              <div class="pt-upload-grid">
+                <label class="pt-upload">
+                  <input
+                    type="file"
+                    name="resume"
+                    accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    required
+                    data-upload="resume"
+                  />
+                  <span class="pt-upload__box">
+                    <span class="pt-upload__icon" aria-hidden="true">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"
+                          stroke="currentColor"
+                          stroke-width="1.7"
+                        ></path>
+                        <path d="M14 3v5h5M9 13h6M9 17h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        ></path>
+                      </svg>
+                    </span>
+                    <strong class="pt-upload__title">CV / Resume <span class="pt-req">*</span></strong>
+                    <span class="pt-upload__hint">DOCX only · max 8 MB</span>
+                    <span class="pt-upload__name" data-filename>Click to choose file</span>
+                  </span>
+                </label>
+
+                <label class="pt-upload">
+                  <input
+                    type="file"
+                    name="certifications"
+                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,application/pdf,image/*"
+                    multiple
+                    data-upload="certs"
+                  />
+                  <span class="pt-upload__box">
+                    <span class="pt-upload__icon" aria-hidden="true">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M12 3l2.2 4.5L19 8.3l-3.5 3.4.8 4.8L12 14.8 7.7 16.5l.8-4.8L5 8.3l4.8-.8L12 3Z"
+                          stroke="currentColor"
+                          stroke-width="1.7"
+                          stroke-linejoin="round"
+                        ></path>
+                      </svg>
+                    </span>
+                    <strong class="pt-upload__title">Certifications <em>optional</em></strong>
+                    <span class="pt-upload__hint">PDF, Word, or images · multiple OK</span>
+                    <span class="pt-upload__name" data-filename>Click to add files</span>
+                  </span>
+                </label>
+              </div>
+            </section>
+
+            <!-- 3. Work preferences -->
+            <section class="pt-step">
+              <div class="pt-step__head">
+                <span class="pt-step__num">3</span>
+                <div>
+                  <h2>Work preferences</h2>
+                  <p>How and when you want to work.</p>
+                </div>
+              </div>
+
+              <fieldset class="pt-field pt-mode">
+                <legend>Work mode <span class="pt-req">*</span></legend>
+                <div class="pt-mode__row" role="radiogroup" aria-label="Work mode">
+                  {
+                    WORK_MODES.map((mode) => (
+                      <label class="pt-mode__opt">
+                        <input
+                          type="radio"
+                          name="work_mode"
+                          value={mode.value}
+                          required
+                          checked={formValues.work_mode === mode.value}
+                        />
+                        <span class="pt-mode__card">
+                          <span class="pt-mode__label">{mode.label}</span>
+                          <span class="pt-mode__hint">{mode.hint}</span>
+                        </span>
+                      </label>
+                    ))
+                  }
+                </div>
+              </fieldset>
+
+              <label class="pt-field">
+                <span>Availability to start <span class="pt-req">*</span></span>
+                <select name="availability" required>
+                  <option value="" disabled selected={formValues.availability === ''}>
+                    Select availability
+                  </option>
+                  {AVAILABILITY_OPTIONS.map((opt) => (
+                    <option value={opt} selected={formValues.availability === opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <div class="pt-row">
+                <label class="pt-field">
+                  <span>
+                    Current salary <em>optional</em>
+                  </span>
+                  <input
+                    type="text"
+                    name="current_salary"
+                    value={formValues.current_salary}
+                    placeholder="e.g. PKR 180,000 / month"
+                    maxlength="80"
+                    autocomplete="off"
+                  />
+                </label>
+                <label class="pt-field">
+                  <span>Expected salary <span class="pt-req">*</span></span>
+                  <input
+                    type="text"
+                    name="expected_salary"
+                    required
+                    value={formValues.expected_salary}
+                    placeholder="e.g. PKR 220,000 / month"
+                    maxlength="80"
+                    autocomplete="off"
+                  />
+                </label>
+              </div>
+            </section>
+
+            <!-- 4. Links -->
+            <section class="pt-step">
+              <div class="pt-step__head">
+                <span class="pt-step__num">4</span>
+                <div>
+                  <h2>Links</h2>
+                  <p>Portfolio, LinkedIn, or anything that shows your work.</p>
+                </div>
+              </div>
+
+              <div class="pt-row">
+                <label class="pt-field">
+                  <span>
+                    Portfolio <em>optional</em>
+                  </span>
+                  <input
+                    type="url"
+                    name="portfolio_url"
+                    value={formValues.portfolio_url}
+                    placeholder="https://your-portfolio.com"
+                    maxlength="300"
+                  />
+                </label>
+                <label class="pt-field">
+                  <span>
+                    LinkedIn <em>optional</em>
+                  </span>
+                  <input
+                    type="url"
+                    name="linkedin_url"
+                    value={formValues.linkedin_url}
+                    placeholder="https://linkedin.com/in/…"
+                    maxlength="300"
+                  />
+                </label>
+              </div>
+
+              <label class="pt-field">
+                <span>
+                  Other links <em>optional</em>
+                </span>
+                <input
+                  type="text"
+                  name="other_links"
+                  value={formValues.other_links}
+                  placeholder="GitHub, Behance, personal site…"
+                  maxlength="500"
+                />
+              </label>
+            </section>
+
+            <!-- 5. Pitch -->
+            <section class="pt-step">
+              <div class="pt-step__head">
+                <span class="pt-step__num">5</span>
+                <div>
+                  <h2>Your pitch</h2>
+                  <p>A few sentences go a long way — we read every application.</p>
+                </div>
+              </div>
+
+              <label class="pt-field">
+                <span>Why this role <span class="pt-req">*</span></span>
+                <textarea
+                  name="cover_letter"
+                  rows="5"
+                  required
+                  placeholder="Dialer experience, campaigns you've run, and why this role fits…"
+                >{formValues.cover_letter}</textarea>
+              </label>
+
+              <label class="pt-field">
+                <span>
+                  Additional notes <em>optional</em>
+                </span>
+                <textarea
+                  name="notes"
+                  rows="3"
+                  placeholder="Visa, relocation, notice period, or anything else we should know"
+                >{formValues.notes}</textarea>
+              </label>
+            </section>
+
+            <div class="pt-apply-submit">
+              <p class="pt-apply-hint">
+                Required fields are marked <span class="pt-req">*</span>. You can only submit once per role.
+              </p>
+              <button type="submit" class="pt-btn pt-btn--solid pt-btn--lg">Submit application</button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+
+    <aside class="pt-apply-aside">
+      <div class="pt-role-card">
+        <div class="pt-role-card__top">
+          <span class="pt-role-card__eyebrow">Role summary</span>
+          <span class="pt-role-card__badge">{job.niche}</span>
+        </div>
+        <h2 class="pt-role-card__title">{job.title}</h2>
+        <p class="pt-role-card__blurb">{job.blurb}</p>
+
+        <ul class="pt-role-card__facts">
+          <li>
+            <span class="pt-role-card__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                ><path
+                  d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M4 7h16v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"></path></svg
+              >
+            </span>
+            <div>
+              <span>Type</span>
+              <strong>{job.type}</strong>
+            </div>
+          </li>
+          <li>
+            <span class="pt-role-card__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                ><path
+                  d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"></path><circle
+                  cx="12"
+                  cy="10"
+                  r="2.2"
+                  stroke="currentColor"
+                  stroke-width="1.7"></circle></svg
+              >
+            </span>
+            <div>
+              <span>Location</span>
+              <strong>{job.location}</strong>
+            </div>
+          </li>
+          <li>
+            <span class="pt-role-card__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                ><path
+                  d="M4 7h16v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"></path><path
+                  d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M4 11h16"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"></path></svg
+              >
+            </span>
+            <div>
+              <span>Compensation</span>
+              <strong>{job.compensation || 'Discussed on interview'}</strong>
+            </div>
+          </li>
+        </ul>
+
+        <a class="pt-btn pt-btn--ghost pt-btn--block" href={`/careers/${job.id}`}>View full role →</a>
+      </div>
+
+      <div class="pt-role-tip">
+        <strong>Tip</strong>
+        <p>Check in on your dashboard — active applicants get seen first.</p>
+      </div>
+    </aside>
+  </div>
+</PortalLayout>
+
+<script>
+  function wireUploads() {
+    document.querySelectorAll<HTMLInputElement>('[data-upload]').forEach((input) => {
+      const label = input.closest('.pt-upload');
+      const nameEl = label?.querySelector<HTMLElement>('[data-filename]');
+      if (!nameEl) return;
+
+      const refresh = () => {
+        const files = input.files;
+        if (!files || files.length === 0) {
+          nameEl.textContent = input.multiple ? 'Click to add files' : 'Click to choose file';
+          label?.classList.remove('has-file');
+          return;
+        }
+        if (files.length === 1) nameEl.textContent = files[0].name;
+        else nameEl.textContent = `${files.length} files selected`;
+        label?.classList.add('has-file');
+      };
+
+      input.addEventListener('change', refresh);
+      refresh();
+    });
+  }
+
+  wireUploads();
+  document.addEventListener('astro:page-load', wireUploads);
+</script>

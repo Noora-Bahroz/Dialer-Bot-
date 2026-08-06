@@ -4,8 +4,11 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
 import { wa, site } from '../data/site';
+import { breadcrumbJsonLd } from '../data/seo';
 import '../styles/global.css';
 import '../styles/company-page.css';
+
+export const prerender = true;
 
 const arc = [
   {
@@ -21,7 +24,7 @@ const arc = [
   {
     n: '03',
     title: 'Today',
-    text: 'Inbound and outbound teams across insurance, dispatch, and sales — supported from ZamZama Plaza.',
+    text: 'Inbound and outbound teams across insurance, dispatch, and sales — supported from Islamabad.',
   },
 ];
 
@@ -39,18 +42,23 @@ const principles = [
   {
     n: '03',
     title: 'Close enough to care',
-    text: 'WhatsApp reaches the builders in Rawalpindi — not a ticket queue abroad.',
+    text: 'WhatsApp reaches the builders in Islamabad — not a ticket queue abroad.',
   },
 ];
 ---
 
 <BaseLayout
   title="Company | Dialer Bot"
-  description="About Dialer Bot — AI voice bots from Office 8, ZamZama Plaza, Pakistan Town Phase 2, Rawalpindi."
+  description="About Dialer Bot — AI voice qualification built in Islamabad for dialers, truck dispatch, and insurance calling floors."
+  image="/images/dialerbot-company-05.webp"
+  jsonLd={breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Company', path: '/company' },
+  ])}
 >
   <Header slot="header" />
 
-  <main class="co">
+  <div class="co">
     <header class="co-mast page-mast" data-mast>
       <PageMastFx />
       <div class="co-shell co-mast__grid">
@@ -63,14 +71,14 @@ const principles = [
           <p class="co-brand">Dialer Bot</p>
           <h1>Built beside the dialers, not above them</h1>
           <p class="co-deck">
-            We protect agent time — greet, ask, confirm, then warm a seat. From Office 8 in Rawalpindi, on
+            We protect agent time — greet, ask, confirm, then warm a seat. From Office 12 in Islamabad, on
             WhatsApp whenever the floor needs us.
           </p>
           <div class="co-actions">
-            <a class="co-btn co-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
-              WhatsApp the team
+            <a class="co-btn co-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+              Try live demo
             </a>
-            <a class="co-btn co-btn--ghost" href="/careers">See careers</a>
+            <a class="co-btn co-btn--ghost" href={wa.general} target="_blank" rel="noopener noreferrer">WhatsApp the team</a>
           </div>
         </div>
 
@@ -78,7 +86,7 @@ const principles = [
           <div class="co-hq">
             <div class="co-hq__top">
               <p class="co-hq__label">Headquarters</p>
-              <span class="co-hq__badge">Rawalpindi</span>
+              <span class="co-hq__badge">Islamabad</span>
             </div>
             <address class="co-hq__address">
               {site.address.line1}<br />
@@ -121,14 +129,19 @@ const principles = [
           </p>
           <p>
             That idea — simple on a slide, hard on a live dialer — is still the center of every release we ship
-            from Rawalpindi.
+            from Islamabad.
           </p>
         </div>
         <figure class="co-story__media" data-reveal="right" style="--reveal-i:1">
-          <img src="/images/dialerbot-company-05.webp" alt="" width="640" height="520" />
+          <img
+            src="/images/dialerbot-company-05.webp"
+            alt="Dialer Bot office at Office 12, Pakistan Town Phase 2, Islamabad"
+            width="640"
+            height="520"
+          />
           <figcaption>
-            <strong>Office 8</strong>
-            <span>ZamZama Plaza · Rawalpindi</span>
+            <strong>Office 12</strong>
+            <span>Pakistan Town Phase 2 · Islamabad</span>
           </figcaption>
         </figure>
       </div>
@@ -174,7 +187,7 @@ const principles = [
       </div>
     </section>
 
-  </main>
+  </div>
 
   <Footer slot="footer" />
 </BaseLayout>

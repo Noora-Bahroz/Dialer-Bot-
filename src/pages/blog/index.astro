@@ -5,8 +5,11 @@ import Footer from '../../components/Footer.astro';
 import PageMastFx from '../../components/PageMastFx.astro';
 import { posts } from '../../data/posts';
 import { wa } from '../../data/site';
+import { breadcrumbJsonLd } from '../../data/seo';
 import '../../styles/global.css';
 import '../../styles/blog-page.css';
+
+export const prerender = true;
 
 const [featured, ...rest] = posts;
 const tags = ['All', ...Array.from(new Set(posts.map((p) => p.tag)))];
@@ -23,10 +26,14 @@ function formatDate(iso: string) {
 <BaseLayout
   title="Insights | Dialer Bot"
   description="Dialer Bot insights from live dialing floors — warm handoff, opener packs, pace, dispatch, vault, and pricing."
+  jsonLd={breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Insights', path: '/blog' },
+  ])}
 >
   <Header slot="header" />
 
-  <main class="bl">
+  <div class="bl">
     <header class="bl-mast page-mast page-mast--compact" data-mast>
       <PageMastFx compact />
       <div class="bl-shell">
@@ -81,7 +88,7 @@ function formatDate(iso: string) {
               data-bl-item
               data-reveal="scale"
             >
-              <img src={featured.image} alt="" width="720" height="480" />
+              <img src={featured.image} alt={featured.title} width="720" height="480" />
               <div class="bl-feature__copy">
                 <span>{featured.tag}</span>
                 <h2>{featured.title}</h2>
@@ -99,7 +106,7 @@ function formatDate(iso: string) {
             rest.map((post, i) => (
               <li data-tag={post.tag} data-bl-item data-reveal="up" data-lift style={`--reveal-i: ${i % 3}`}>
                 <a href={`/blog/${post.slug}`}>
-                  <img src={post.image} alt="" width="640" height="400" loading="lazy" />
+                  <img src={post.image} alt={post.title} width="640" height="400" loading="lazy" />
                   <div class="bl-grid__copy">
                     <span class="bl-grid__tag">{post.tag}</span>
                     <h3 class="bl-grid__title">{post.title}</h3>
@@ -116,7 +123,7 @@ function formatDate(iso: string) {
       </div>
     </section>
 
-  </main>
+  </div>
 
   <Footer slot="footer" />
 </BaseLayout>

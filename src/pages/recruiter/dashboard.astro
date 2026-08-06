@@ -1,0 +1,456 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import { dbAll, dbGet, dbRun } from '../../db/db';
+import { requireRole, clearSession } from '../../lib/portal/auth';
+import { timeAgo, formatDate, statusLabel, isActiveToday, APP_STATUSES } from '../../lib/portal/format';
+
+export const prerender = false;
+
+const { user, redirect } = await requireRole(Astro, 'recruiter');
+if (redirect) return redirect;
+
+const filterStatus = Astro.url.searchParams.get('status') || 'all';
+const filterJob = Astro.url.searchParams.get('job') || 'all';
+const filterMode = Astro.url.searchParams.get('mode') || 'all';
+const searchQuery = String(Astro.url.searchParams.get('q') || '').trim();
+let flash = '';
+
+if (Astro.request.method === 'POST') {
+  const data = await Astro.request.formData();
+  const action = data.get('action');
+
+  if (action === 'logout') {
+    clearSession(Astro.cookies);
+    return Astro.redirect('/login');
+  }
+
+  if (action === 'update_status') {
+    const appId = Number(data.get('app_id'));
+    const status = String(data.get('status') || '');
+    if (APP_STATUSES.includes(status as (typeof APP_STATUSES)[number])) {
+      await dbRun("UPDATE applications SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?", [
+        status,
+        appId,
+      ]);
+      flash = 'status';
+    }
+  }
+
+  if (action === 'create_job') {
+    const title = String(data.get('title') || '').trim();
+    const niche = String(data.get('niche') || '').trim();
+    const type = String(data.get('type') || '').trim();
+    const location = String(data.get('location') || '').trim();
+    const compensation = String(data.get('compensation') || '').trim();
+    const blurb = String(data.get('blurb') || '').trim();
+    const description = String(data.get('description') || '').trim();
+    if (title && niche && blurb) {
+      await dbRun(
+        `
+        INSERT INTO jobs (recruiter_id, title, niche, type, location, compensation, blurb, description, posted_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+      `,
+        [
+          user!.id,
+          title,
+          niche,
+          type || 'Full-time',
+          location || 'Islamabad / Remote',
+          compensation || null,
+          blurb,
+          description || blurb,
+        ],
+      );
+      flash = 'job_created';
+    }
+  }
+
+  if (action === 'toggle_job') {
+    const jobId = Number(data.get('job_id'));
+    const job = await dbGet<{ status: string }>(
+      'SELECT status FROM jobs WHERE id = ? AND recruiter_id = ?',
+      [jobId, user!.id],
+    );
+    if (job) {
+      const next = job.status === 'open' ? 'closed' : 'open';
+      await dbRun("UPDATE jobs SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?", [next, jobId]);
+      flash = 'job_updated';
+    }
+  }
+}
+
+const jobs = await dbAll<{
+  id: number;
+  title: string;
+  niche: string;
+  status: string;
+  posted_at: string;
+}>('SELECT * FROM jobs WHERE recruiter_id = ? ORDER BY posted_at DESC', [user!.id]);
+
+const openCount = jobs.filter((j) => j.status === 'open').length;
+
+let appQuery = `
+  SELECT a.id, a.status, a.cover_letter, a.created_at, a.updated_at,
+         a.resume_path, a.certifications_json, a.work_mode, a.availability,
+         a.current_salary, a.expected_salary, a.portfolio_url, a.other_links, a.notes,
+         u.name as applicant_name, u.email as applicant_email, u.last_active, u.headline,
+         j.id as job_id, j.title as job_title, j.niche
+  FROM applications a
+  JOIN users u ON a.applicant_id = u.id
+  JOIN jobs j ON a.job_id = j.id
+  WHERE j.recruiter_id = ?
+`;
+const params: (number | string)[] = [user!.id];
+
+if (filterStatus !== 'all') {
+  appQuery += ' AND a.status = ?';
+  params.push(filterStatus);
+}
+if (filterJob !== 'all') {
+  appQuery += ' AND j.id = ?';
+  params.push(Number(filterJob));
+}
+if (filterMode !== 'all') {
+  appQuery += ' AND a.work_mode = ?';
+  params.push(filterMode);
+}
+if (searchQuery) {
+  appQuery += ` AND (
+    u.name LIKE ?
+    OR u.email LIKE ?
+    OR IFNULL(u.headline, '') LIKE ?
+    OR j.title LIKE ?
+    OR IFNULL(a.cover_letter, '') LIKE ?
+  )`;
+  const q = `%${searchQuery}%`;
+  params.push(q, q, q, q, q);
+}
+appQuery += ' ORDER BY u.last_active DESC, a.created_at DESC';
+
+type CertMeta = { path: string; originalName: string; size: number };
+
+const applications = (
+  await dbAll<{
+    id: number;
+    status: string;
+    cover_letter: string;
+    created_at: string;
+    resume_path: string | null;
+    certifications_json: string | null;
+    work_mode: string | null;
+    availability: string | null;
+    current_salary: string | null;
+    expected_salary: string | null;
+    portfolio_url: string | null;
+    other_links: string | null;
+    notes: string | null;
+    applicant_name: string;
+    applicant_email: string;
+    last_active: string;
+    headline: string | null;
+    job_id: number;
+    job_title: string;
+    niche: string;
+  }>(appQuery, params)
+).map((app) => {
+  let certifications: CertMeta[] = [];
+  if (app.certifications_json) {
+    try {
+      certifications = JSON.parse(app.certifications_json) as CertMeta[];
+    } catch {
+      certifications = [];
+    }
+  }
+  return { ...app, certifications };
+});
+
+const workModeLabel: Record<string, string> = {
+  remote: 'Remote',
+  onsite: 'On-site',
+  hybrid: 'Hybrid',
+};
+
+const stats = {
+  total: applications.length,
+  pending: applications.filter((a) => a.status === 'pending').length,
+  reviewing: applications.filter((a) => a.status === 'reviewing').length,
+  interview: applications.filter((a) => a.status === 'interview').length,
+  activeToday: applications.filter((a) => isActiveToday(a.last_active)).length,
+};
+
+const hasFilters = filterStatus !== 'all' || filterJob !== 'all' || filterMode !== 'all' || !!searchQuery;
+const buildFilterHref = (status: string, job: string, mode: string, q: string) => {
+  const query = new URLSearchParams();
+  if (status !== 'all') query.set('status', status);
+  if (job !== 'all') query.set('job', job);
+  if (mode !== 'all') query.set('mode', mode);
+  if (q) query.set('q', q);
+  const text = query.toString();
+  return text ? `?${text}` : '?status=all';
+};
+---
+
+<PortalLayout title="Recruiter dashboard | Dialer Bot" description="Manage jobs and applications." wide noindex>
+  <header class="pt-mast pt-mast__row">
+    <div>
+      <p class="pt-kicker">Talent · {user!.name}</p>
+      <h1>Recruiter dashboard</h1>
+      <p class="pt-deck">
+        {openCount} open roles · {applications.length} applications in view
+      </p>
+    </div>
+    <form method="POST">
+      <button type="submit" name="action" value="logout" class="pt-btn pt-btn--ghost">Sign out</button>
+    </form>
+  </header>
+
+  {flash && (
+    <div class="pt-alert pt-alert--ok">
+      {flash === 'status' && 'Application status updated.'}
+      {flash === 'job_created' && 'New role published.'}
+      {flash === 'job_updated' && 'Role status updated.'}
+    </div>
+  )}
+
+  <div class="pt-stat-grid">
+    <div class="pt-stat"><strong>{stats.total}</strong><span>Total in view</span></div>
+    <div class="pt-stat"><strong>{stats.pending}</strong><span>Pending</span></div>
+    <div class="pt-stat"><strong>{stats.reviewing}</strong><span>In review</span></div>
+    <div class="pt-stat"><strong>{stats.interview}</strong><span>Interview</span></div>
+    <div class="pt-stat"><strong>{stats.activeToday}</strong><span>Active today</span></div>
+  </div>
+
+  <div class="pt-rec-grid">
+    <aside class="pt-stack">
+      <div class="pt-panel">
+        <div class="pt-panel__head"><h2>Your roles</h2></div>
+        <div class="pt-panel__body">
+          {jobs.length === 0 ? (
+            <p class="pt-empty">No roles yet.</p>
+          ) : (
+            <div class="pt-role-list">
+              {jobs.map((job) => (
+                <div class="pt-role-row">
+                  <div>
+                    <strong>{job.title}</strong>
+                    <p>{job.niche}</p>
+                  </div>
+                  <form method="POST" class="pt-role-row__actions">
+                    <input type="hidden" name="job_id" value={job.id} />
+                    <span class={`pt-badge pt-badge--${job.status === 'open' ? 'live' : 'closed'}`}>{job.status}</span>
+                    <button type="submit" name="action" value="toggle_job" class="pt-btn pt-btn--ghost pt-btn--sm">
+                      {job.status === 'open' ? 'Close' : 'Reopen'}
+                    </button>
+                  </form>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div class="pt-panel">
+        <div class="pt-panel__head"><h2>Post a role</h2></div>
+        <div class="pt-panel__body">
+          <form method="POST" class="pt-form">
+            <input type="hidden" name="action" value="create_job" />
+            <label class="pt-field">
+              <span>Title</span>
+              <input type="text" name="title" required placeholder="e.g. Campaign Ops Lead" />
+            </label>
+            <div class="pt-row">
+              <label class="pt-field">
+                <span>Niche</span>
+                <input type="text" name="niche" required placeholder="Ops" />
+              </label>
+              <label class="pt-field">
+                <span>Type</span>
+                <input type="text" name="type" placeholder="Full-time · Remote" />
+              </label>
+            </div>
+            <label class="pt-field">
+              <span>Short blurb</span>
+              <input type="text" name="blurb" required placeholder="One line for the listing" />
+            </label>
+            <label class="pt-field">
+              <span>Full description</span>
+              <textarea name="description" rows="4" placeholder="About the role…"></textarea>
+            </label>
+            <div class="pt-row">
+              <label class="pt-field">
+                <span>Location</span>
+                <input type="text" name="location" placeholder="Islamabad / Remote" />
+              </label>
+              <label class="pt-field">
+                <span>Compensation</span>
+                <input type="text" name="compensation" placeholder="PKR · DOE" />
+              </label>
+            </div>
+            <button type="submit" class="pt-btn pt-btn--solid pt-btn--block">Publish role</button>
+          </form>
+        </div>
+      </div>
+    </aside>
+
+    <section class="pt-panel">
+      <div class="pt-panel__head">
+        <h2>Applications</h2>
+      </div>
+      <div class="pt-panel__body">
+        <div class="pt-tabs" role="tablist">
+          <a
+            href={buildFilterHref('all', filterJob, filterMode, searchQuery)}
+            class:list={[{ 'is-on': filterStatus === 'all' }]}
+          >
+            All
+          </a>
+          {APP_STATUSES.map((s) => (
+            <a
+              href={buildFilterHref(s, filterJob, filterMode, searchQuery)}
+              class:list={[{ 'is-on': filterStatus === s }]}
+            >
+              {statusLabel(s)}
+            </a>
+          ))}
+        </div>
+
+        <form method="GET" class="pt-filter">
+          <div class="pt-filter-grid">
+            <label class="pt-field">
+              <span>Search applicant / role</span>
+              <input
+                type="search"
+                name="q"
+                value={searchQuery}
+                placeholder="Name, email, headline, role..."
+              />
+            </label>
+            <label class="pt-field">
+              <span>Work mode</span>
+              <select name="mode">
+                <option value="all" selected={filterMode === 'all'}>All modes</option>
+                <option value="remote" selected={filterMode === 'remote'}>Remote</option>
+                <option value="onsite" selected={filterMode === 'onsite'}>On-site</option>
+                <option value="hybrid" selected={filterMode === 'hybrid'}>Hybrid</option>
+              </select>
+            </label>
+            <label class="pt-field">
+              <span>Filter by role</span>
+              <select name="job">
+                <option value="all" selected={filterJob === 'all'}>All roles</option>
+                {jobs.map((j) => (
+                  <option value={j.id} selected={filterJob === String(j.id)}>
+                    {j.title}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          {filterStatus !== 'all' && <input type="hidden" name="status" value={filterStatus} />}
+          <div class="pt-filter-actions">
+            <button type="submit" class="pt-btn pt-btn--solid pt-btn--sm">Apply filters</button>
+            {hasFilters && (
+              <a class="pt-btn pt-btn--ghost pt-btn--sm" href="?status=all">Clear</a>
+            )}
+          </div>
+        </form>
+
+        {applications.length === 0 ? (
+          <div class="pt-empty">No applications match this filter.</div>
+        ) : (
+          <div class="pt-rec-list">
+            {applications.map((app) => (
+              <article class:list={['pt-rec-app', { 'is-hot': isActiveToday(app.last_active) }]}>
+                <div class="pt-rec-app__top">
+                  <div>
+                    <h3>
+                      {app.applicant_name}
+                      {isActiveToday(app.last_active) && <span class="pt-badge pt-badge--live">Active today</span>}
+                    </h3>
+                    <p>
+                      <a href={`mailto:${app.applicant_email}`}>{app.applicant_email}</a>
+                      {app.headline && ` · ${app.headline}`}
+                    </p>
+                  </div>
+                  <div class="pt-rec-app__job">
+                    <strong>{app.job_title}</strong>
+                    <p>Applied {formatDate(app.created_at)}</p>
+                  </div>
+                </div>
+
+                <div class="pt-rec-meta">
+                  {app.work_mode && (
+                    <span><strong>Mode</strong> {workModeLabel[app.work_mode] || app.work_mode}</span>
+                  )}
+                  {app.availability && <span><strong>Available</strong> {app.availability}</span>}
+                  {app.current_salary && <span><strong>Current</strong> {app.current_salary}</span>}
+                  {app.expected_salary && <span><strong>Expected</strong> {app.expected_salary}</span>}
+                </div>
+
+                <details class="pt-rec-more">
+                  <summary>View full applicant details</summary>
+                  {(app.resume_path || app.certifications.length > 0 || app.portfolio_url || app.other_links) && (
+                    <div class="pt-rec-files">
+                      {app.resume_path && (
+                        <a
+                          class="pt-file-link"
+                          href={`/api/portal/download?app=${app.id}&path=${encodeURIComponent(app.resume_path)}`}
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          CV / Resume
+                        </a>
+                      )}
+                      {app.certifications.map((cert) => (
+                        <a
+                          class="pt-file-link"
+                          href={`/api/portal/download?app=${app.id}&path=${encodeURIComponent(cert.path)}`}
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          {cert.originalName || 'Certificate'}
+                        </a>
+                      ))}
+                      {app.portfolio_url && (
+                        <a class="pt-file-link" href={app.portfolio_url} target="_blank" rel="noopener">
+                          Portfolio
+                        </a>
+                      )}
+                    </div>
+                  )}
+
+                  {app.other_links && <div class="pt-cover pt-cover--links">{app.other_links}</div>}
+
+                  <div class="pt-cover">{app.cover_letter}</div>
+                  {app.notes && (
+                    <div class="pt-cover pt-cover--notes">
+                      <strong>Notes</strong>
+                      {app.notes}
+                    </div>
+                  )}
+                </details>
+
+                <div class="pt-rec-app__foot">
+                  <span>Last seen {timeAgo(app.last_active)}</span>
+                  <form method="POST" class="pt-status-form">
+                    <input type="hidden" name="app_id" value={app.id} />
+                    <select name="status">
+                      {APP_STATUSES.map((s) => (
+                        <option value={s} selected={app.status === s}>
+                          {statusLabel(s)}
+                        </option>
+                      ))}
+                    </select>
+                    <button type="submit" name="action" value="update_status" class="pt-btn pt-btn--solid pt-btn--sm">
+                      Update
+                    </button>
+                  </form>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  </div>
+</PortalLayout>

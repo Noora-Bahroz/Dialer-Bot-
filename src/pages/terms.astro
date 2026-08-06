@@ -4,8 +4,11 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
 import { site, wa } from '../data/site';
+import { breadcrumbJsonLd } from '../data/seo';
 import '../styles/global.css';
 import '../styles/legal-page.css';
+
+export const prerender = true;
 
 const updated = 'August 2, 2026';
 
@@ -42,18 +45,22 @@ const sections = [
     id: 'law',
     n: '05',
     title: 'Governing law',
-    body: 'Governed by laws applicable in Pakistan. Courts in Rawalpindi / Islamabad have jurisdiction unless a signed enterprise agreement says otherwise.',
+    body: 'Governed by laws applicable in Pakistan. Courts in Islamabad have jurisdiction unless a signed enterprise agreement says otherwise.',
   },
 ];
 ---
 
 <BaseLayout
   title="Terms & Conditions | Dialer Bot"
-  description={`Terms and Conditions for Dialer Bot (${site.domain}). Updated ${updated}.`}
+  description={`Terms and Conditions for Dialer Bot (${site.domain}) — service use, billing, and governing law. Updated ${updated}.`}
+  jsonLd={breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Terms', path: '/terms' },
+  ])}
 >
   <Header slot="header" />
 
-  <main class="lg">
+  <div class="lg">
     <header class="lg-mast page-mast page-mast--compact" data-mast>
       <PageMastFx compact />
       <div class="lg-shell">
@@ -140,7 +147,7 @@ const sections = [
       </div>
     </section>
 
-  </main>
+  </div>
 
   <Footer slot="footer" />
 </BaseLayout>

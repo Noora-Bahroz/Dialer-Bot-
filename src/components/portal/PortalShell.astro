@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import '../../styles/global.css';
+import '../../styles/portal-page.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  wide?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { title, description = 'Dialer Bot careers portal.', wide = false, jsonLd, noindex = false } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd} noindex={noindex}>
+  <Header slot="header" />
+  <div class="pt">
+    <div class:list={['pt-shell', { 'pt-shell--wide': wide }]}>
+      <slot />
+    </div>
+  </div>
+  <Footer slot="footer" />
+</BaseLayout>

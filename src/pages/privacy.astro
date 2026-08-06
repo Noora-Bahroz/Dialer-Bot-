@@ -4,8 +4,11 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
 import { site, wa } from '../data/site';
+import { breadcrumbJsonLd } from '../data/seo';
 import '../styles/global.css';
 import '../styles/legal-page.css';
+
+export const prerender = true;
 
 const updated = 'August 2, 2026';
 
@@ -53,11 +56,15 @@ const sections = [
 
 <BaseLayout
   title="Privacy Policy | Dialer Bot"
-  description={`Privacy Policy for Dialer Bot (${site.domain}). Updated ${updated}.`}
+  description={`Privacy Policy for Dialer Bot (${site.domain}). How we handle inquiries, call vault data, and contact preferences. Updated ${updated}.`}
+  jsonLd={breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Privacy', path: '/privacy' },
+  ])}
 >
   <Header slot="header" />
 
-  <main class="lg">
+  <div class="lg">
     <header class="lg-mast page-mast page-mast--compact" data-mast>
       <PageMastFx compact />
       <div class="lg-shell">
@@ -146,7 +153,7 @@ const sections = [
       </div>
     </section>
 
-  </main>
+  </div>
 
   <Footer slot="footer" />
 </BaseLayout>

@@ -4,8 +4,11 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
 import { wa, site } from '../data/site';
+import { breadcrumbJsonLd, faqPageJsonLd } from '../data/seo';
 import '../styles/global.css';
 import '../styles/faqs-page.css';
+
+export const prerender = true;
 
 const faqs = [
   {
@@ -54,7 +57,7 @@ const faqs = [
     id: 'where',
     topic: 'Company',
     q: 'Where are you based?',
-    a: `Office 8, ZamZama Plaza, Pakistan Town Phase 2, Rawalpindi. WhatsApp ${site.phoneDisplay} · ${site.email}.`,
+    a: `Office 12, Pakistan Town Phase 2, Islamabad. WhatsApp ${site.phoneDisplay} · ${site.email}.`,
   },
 ];
 
@@ -63,11 +66,18 @@ const topics = ['All', ...Array.from(new Set(faqs.map((f) => f.topic)))];
 
 <BaseLayout
   title="FAQs | Dialer Bot"
-  description="Frequently asked questions about Dialer Bot — pricing, dialers, qualification, vault, and support."
+  description="FAQs on Dialer Bot pricing, dialer support, call qualification, recording vault, go-live speed, and office location."
+  jsonLd={[
+    breadcrumbJsonLd([
+      { name: 'Home', path: '/' },
+      { name: 'FAQs', path: '/faqs' },
+    ]),
+    faqPageJsonLd(faqs),
+  ]}
 >
   <Header slot="header" />
 
-  <main class="fq">
+  <div class="fq">
     <header class="fq-mast page-mast" data-mast>
       <PageMastFx />
       <div class="fq-shell fq-mast__grid">
@@ -147,7 +157,7 @@ const topics = ['All', ...Array.from(new Set(faqs.map((f) => f.topic)))];
       </div>
     </section>
 
-  </main>
+  </div>
 
   <Footer slot="footer" />
 </BaseLayout>

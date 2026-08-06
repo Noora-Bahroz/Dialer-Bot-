@@ -3,9 +3,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { posts, getPost } from '../../data/posts';
-import { wa } from '../../data/site';
+import { wa, site } from '../../data/site';
+import { articleJsonLd, breadcrumbJsonLd } from '../../data/seo';
 import '../../styles/global.css';
 import '../../styles/blog-page.css';
+
+export const prerender = true;
 
 export function getStaticPaths() {
   return posts.map((post) => ({ params: { slug: post.slug } }));
@@ -28,10 +31,23 @@ function formatDate(iso: string) {
 const headings = [...post.content.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1]);
 ---
 
-<BaseLayout title={`${post.title} | Dialer Bot`} description={post.excerpt}>
+<BaseLayout
+  title={`${post.title} | Dialer Bot`}
+  description={post.excerpt}
+  image={post.image}
+  ogType="article"
+  jsonLd={[
+    breadcrumbJsonLd([
+      { name: 'Home', path: '/' },
+      { name: 'Insights', path: '/blog' },
+      { name: post.title, path: `/blog/${post.slug}` },
+    ]),
+    articleJsonLd(post),
+  ]}
+>
   <Header slot="header" />
 
-  <main class="bl bl--post">
+  <div class="bl bl--post">
     <div class="bl-shell bl-post">
       <nav class="bl-crumb bl-post__crumb" aria-label="Breadcrumb">
         <a href="/blog">← Insights</a>
@@ -40,7 +56,7 @@ const headings = [...post.content.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1])
       </nav>
 
       <figure class="bl-post__cover">
-        <img src={post.image} alt="" width="1200" height="640" />
+        <img src={post.image} alt={post.title} width="1200" height="640" />
       </figure>
 
       <div class="bl-post__layout">
@@ -67,10 +83,10 @@ const headings = [...post.content.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1])
               <p>WhatsApp campaign type and dialer stack — same builders who ship the bots.</p>
             </div>
             <div class="bl-article__cta">
-              <a class="bl-btn bl-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
-                WhatsApp Dialer Bot
+              <a class="bl-btn bl-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+                Try live demo
               </a>
-              <a class="bl-btn bl-btn--ghost" href="/features">View features</a>
+              <a class="bl-btn bl-btn--ghost" href={wa.general} target="_blank" rel="noopener noreferrer">WhatsApp sales</a>
             </div>
           </footer>
         </article>
@@ -94,9 +110,9 @@ const headings = [...post.content.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1])
 
             <div class="bl-post__panel bl-post__panel--cta">
               <p class="bl-post__panel-label">Talk to Dialer Bot</p>
-              <p class="bl-post__panel-note">Ask about this campaign type on WhatsApp.</p>
-              <a class="bl-btn bl-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
-                Open WhatsApp
+              <p class="bl-post__panel-note">Try the live product, then message us for setup.</p>
+              <a class="bl-btn bl-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+                Open live demo
               </a>
             </div>
 
@@ -105,11 +121,15 @@ const headings = [...post.content.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1])
                 <div class="bl-post__panel">
                   <p class="bl-post__panel-label">Related</p>
                   <ul class="bl-post__related">
-                    {others.slice(0, 3).map((p) => (
+                    {others.slice(0, 3).map((p, i) => (
                       <li>
                         <a href={`/blog/${p.slug}`}>
-                          <span>{p.tag}</span>
-                          <strong>{p.title}</strong>
+                          <span class="bl-post__related-tag">{p.tag}</span>
+                          <strong class="bl-post__related-title">{p.title}</strong>
+                          <span class="bl-post__related-cta">
+                            Open insight
+                            <em>{String(i + 1).padStart(2, '0')}</em>
+                          </span>
                         </a>
                       </li>
                     ))}
@@ -134,7 +154,7 @@ const headings = [...post.content.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1])
               {others.map((p) => (
                 <li>
                   <a href={`/blog/${p.slug}`}>
-                    <img src={p.image} alt="" width="640" height="400" loading="lazy" />
+                    <img src={p.image} alt={p.title} width="640" height="400" loading="lazy" />
                     <div class="bl-grid__copy">
                       <span class="bl-grid__tag">{p.tag}</span>
                       <h3 class="bl-grid__title">{p.title}</h3>
@@ -148,7 +168,7 @@ const headings = [...post.content.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1])
         </section>
       )
     }
-  </main>
+  </div>
 
   <Footer slot="footer" />
 </BaseLayout>
