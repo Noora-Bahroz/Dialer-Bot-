@@ -5,7 +5,7 @@ function env(key: string) {
   return String(import.meta.env[key] ?? process.env[key] ?? '').trim();
 }
 
-const RECRUITER_EMAIL = env('RECRUITER_EMAIL') || 'Query@dialerbot.online';
+const RECRUITER_EMAIL = (env('RECRUITER_EMAIL') || 'Query@dialerbot.online').toLowerCase();
 const RECRUITER_NAME = env('RECRUITER_NAME') || 'Contactivity Talent';
 const RECRUITER_PASSWORD = env('RECRUITER_PASSWORD');
 const RESET_RECRUITER_PASSWORD = env('RECRUITER_RESET_PASSWORD') === 'true';

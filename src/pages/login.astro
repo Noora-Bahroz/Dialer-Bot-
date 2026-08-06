@@ -31,7 +31,7 @@ if (Astro.request.method === 'POST') {
 
   if (action === 'login') {
     const user = await dbGet<{ id: number; role: string; password_hash: string }>(
-      'SELECT * FROM users WHERE email = ?',
+      'SELECT * FROM users WHERE lower(email) = ?',
       [email],
     );
     if (user && bcrypt.compareSync(password, user.password_hash)) {
