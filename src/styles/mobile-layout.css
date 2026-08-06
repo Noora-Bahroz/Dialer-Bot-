@@ -50,10 +50,10 @@
     width: 100%;
   }
 
-  html body .hero-visual .hlive,
+  html body .hero-visual .vc,
   html body .hero-visual > * {
     margin-inline: auto;
-    max-width: min(100%, 420px);
+    max-width: min(100%, 520px);
   }
 
   html body .hero-actions {

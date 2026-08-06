@@ -1,162 +1,373 @@
 ---
 /**
- * Hero visual — live qualification call.
- * Soft product moment: qualify → warm handoff.
+ * Hero — enterprise live voice console (balanced density).
  */
-const steps = [
-  { label: 'Openers', state: 'done' },
-  { label: 'Intent', state: 'done' },
-  { label: 'Handoff', state: 'active' },
+import '../styles/hero-voice-console.css';
+
+const meta = [
+  { k: 'Lead', v: 'Jordan Lee' },
+  { k: 'Rep', v: 'Alex' },
+  { k: 'State', v: 'Texas' },
+  { k: 'Intent', v: 'what_is_this', live: true },
 ];
 
-const turns = [
+const pipeline = ['Rapport', 'Pitch + subsidy', 'Coverage gate', 'Consent', 'Warm transfer'];
+
+const activity = [
   { who: 'bot', text: 'Hey Jordan — checked your health subsidy this year?' },
-  { who: 'lead', text: 'Yeah, I think so. Why?' },
-  { who: 'sys', text: 'Intent · subsidy_yes · TX 78701' },
-  { who: 'bot', text: 'Great — connecting you to Priya now.' },
+  { who: 'you', text: "I don't know what you mean." },
+  { who: 'bot', text: 'ACA subsidy can lower your premium — want me to check eligibility?' },
+  { who: 'you', text: 'Yeah, I think so.' },
 ];
 ---
 
-<div class="hlive" data-viz aria-label="Live Dialer Bot qualification call">
-  <div class="hlive-stage">
-    <div class="hlive-card">
-      <header class="hlive-top">
-        <div class="hlive-id">
-          <span class="hlive-dot" aria-hidden="true" />
+<div class="vc" data-vc aria-label="Dialer Bot live calling console">
+  <div class="vc-shell">
+    <aside class="vc-rail" aria-hidden="true">
+      <a class="vc-rail__brand" href="/" tabindex="-1">
+        <img
+          src="/images/dialerbot-logo-white.svg"
+          alt="Dialer Bot"
+          width="118"
+          height="24"
+          decoding="async"
+        />
+        <em>Voice ops</em>
+      </a>
+
+      <p class="vc-rail__label">Workspace</p>
+      <ul class="vc-rail__nav">
+        <li class="is-active">
+          <span class="vc-rail__ico" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="12" height="12"><path fill="currentColor" d="M6.2 11.4 2.8 8l1.1-1.1 2.3 2.3 5-5L12.3 5.3z"/></svg>
+          </span>
+          Live demo
+        </li>
+        <li>
+          <span class="vc-rail__ico" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="12" height="12"><path fill="currentColor" d="M2 3.5h12v1.5H2zm0 3.75h12V8.75H2zm0 3.75h8V14H2z"/></svg>
+          </span>
+          Campaigns
+        </li>
+        <li>
+          <span class="vc-rail__ico" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="12" height="12"><path fill="currentColor" d="M9.5 2.5 13.5 8l-4 5.5H6.5L10.5 8 6.5 2.5zM5 2.5 9 8l-4 5.5H2.5L6.5 8 2.5 2.5z"/></svg>
+          </span>
+          Transfers
+        </li>
+        <li>
+          <span class="vc-rail__ico" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="12" height="12"><path fill="currentColor" d="M8 1.5A6.5 6.5 0 1 1 1.5 8 6.51 6.51 0 0 1 8 1.5M8 3a5 5 0 1 0 5 5 5 5 0 0 0-5-5m-.75 2h1.5v3.2l2.1 1.25-.75 1.25L7.25 9z"/></svg>
+          </span>
+          QA review
+        </li>
+      </ul>
+
+      <p class="vc-rail__label">Floor</p>
+      <ul class="vc-rail__nav">
+        <li>
+          <span class="vc-rail__ico" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="12" height="12"><path fill="currentColor" d="M3 2.5h7.5L13 5v8.5H3zm1.5 1.5v8h7V5.8L9.7 4zM5 7h6v1.3H5zm0 2.5h4.5V11H5z"/></svg>
+          </span>
+          Call history
+        </li>
+        <li>
+          <span class="vc-rail__ico" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="12" height="12"><path fill="currentColor" d="M3 3h10v1.4H3zm0 3h10v1.4H3zm0 3h7v1.4H3zm0 3h5v1.4H3z"/></svg>
+          </span>
+          Agents
+        </li>
+        <li>
+          <span class="vc-rail__ico" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="12" height="12"><path fill="currentColor" d="M2.5 2.5h4v4h-4zm7 0h4v4h-4zm-7 7h4v4h-4zm7 0h4v4h-4z"/></svg>
+          </span>
+          Seat map
+        </li>
+      </ul>
+
+      <div class="vc-rail__stat">
+        <em>Active seats</em>
+        <strong data-vc-seats>12 / 18</strong>
+        <span class="vc-rail__bar" aria-hidden="true"><i data-vc-seats-bar style="width:67%" /></span>
+      </div>
+
+      <div class="vc-rail__foot">
+        <div class="vc-rail__user">
+          <i class="vc-rail__online" />
           <div>
-            <strong>Live call</strong>
-            <em>ACA · Jordan · TX</em>
+            <strong>Alex · Rep</strong>
           </div>
         </div>
-        <div class="hlive-timer">
-          <span data-hlive-timer>0:48</span>
-          <em data-hlive-line>Bot on line</em>
+        <button type="button" class="vc-rail__logout" tabindex="-1">Log out</button>
+      </div>
+    </aside>
+
+    <div class="vc-main">
+      <header class="vc-head">
+        <div class="vc-head__copy">
+          <h3 data-vc-title>Gate → warm transfer</h3>
+          <p class="vc-deck" data-vc-deck>Qualify, score, then warm handoff.</p>
+        </div>
+        <div class="vc-head__actions">
+          <span class="vc-live" data-vc-live><i />Live</span>
+          <button type="button" class="vc-btn vc-btn--lime" data-vc-start>Start call</button>
+          <button type="button" class="vc-btn vc-btn--ghost" data-vc-hang>Hang up</button>
         </div>
       </header>
 
-      <div class="hlive-steps" data-hlive-steps aria-hidden="true">
+      <div class="vc-meta">
         {
-          steps.map((s, i) => (
-            <span class:list={['hlive-step', s.state]} data-step={s.label.toLowerCase()}>
-              {i > 0 && <i class="hlive-steps-line" />}
-              <em>
-                {s.state === 'done' ? (
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M5 12l5 5L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                ) : null}
-                {s.label}
-              </em>
-            </span>
-          ))
-        }
-      </div>
-
-      <div class="hlive-wave" data-hlive-wave aria-hidden="true">
-        <div class="hlive-wave-meta">
-          <strong data-hlive-voice>Sofia</strong>
-          <em data-hlive-voice-state>Speaking</em>
-        </div>
-        <div class="hlive-wave-bars">
-          <i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i />
-        </div>
-      </div>
-
-      <div class="hlive-thread">
-        {
-          turns.map((t, i) => (
-            <div class:list={['hlive-bubble', t.who]} style={`--d:${120 + i * 70}ms`}>
-              {t.who !== 'sys' && <span>{t.who === 'bot' ? 'Dialer Bot' : 'Jordan'}</span>}
-              <p>{t.text}</p>
+          meta.map((m) => (
+            <div class="vc-meta__cell">
+              <em>{m.k}</em>
+              <strong class:list={{ 'is-live': m.live }} data-vc-meta-key={m.k}>
+                {m.v}
+              </strong>
             </div>
           ))
         }
-        <div class="hlive-bubble sys hlive-xfer" data-hlive-xfer hidden>
-          <p>Warm transfer · Priya · Seat 07</p>
-        </div>
       </div>
 
-      <footer class="hlive-foot">
-        <div class="hlive-agent">
-          <span class="hlive-agent-av">
-            <img src="/images/dialerbot-pricing-02.webp" alt="" width="32" height="32" />
-            <i aria-hidden="true" />
-          </span>
-          <div>
-            <strong data-hlive-agent>Priya ready</strong>
-            <em data-hlive-meta>Seat 07</em>
+      <div class="vc-body">
+        <div class="vc-col">
+          <section class="vc-card vc-pipe" aria-label="Call pipeline">
+            <header class="vc-card__head">
+              <strong>Pipeline</strong>
+              <em data-vc-pipe-state>02 active</em>
+            </header>
+            <ol class="vc-pipe__list" data-vc-pipe>
+              {
+                pipeline.map((label, i) => (
+                  <li
+                    class:list={['vc-pipe__item', { 'is-done': i === 0, 'is-active': i === 1 }]}
+                    data-pipe-i={i}
+                  >
+                    <span class="vc-pipe__n">{String(i + 1).padStart(2, '0')}</span>
+                    <span class="vc-pipe__t">{label}</span>
+                  </li>
+                ))
+              }
+            </ol>
+          </section>
+
+          <section class="vc-card vc-turn" aria-label="Turn timing">
+            <header class="vc-card__head">
+              <strong>Turn-taking</strong>
+              <em data-vc-timer>0:48</em>
+            </header>
+            <div class="vc-eq" data-vc-eq aria-hidden="true">
+              <i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i />
+            </div>
+            <dl class="vc-turn__grid">
+              <div>
+                <dt>Endpointing</dt>
+                <dd data-vc-end>280ms · conf&gt;0.5</dd>
+              </div>
+              <div>
+                <dt>Last user turn</dt>
+                <dd data-vc-last>“I don’t know what you mean.”</dd>
+              </div>
+            </dl>
+          </section>
+        </div>
+
+        <div class="vc-col vc-col--aside">
+          <section class="vc-card vc-activity" aria-label="Live transcript">
+            <header class="vc-card__head">
+              <div>
+                <strong>Activity</strong>
+                <em>Live transcript</em>
+              </div>
+              <span class="vc-activity__pulse" aria-hidden="true" />
+            </header>
+            <div class="vc-activity__feed" data-vc-feed>
+              {
+                [...activity].reverse().map((row, i) => (
+                  <article class:list={['vc-msg', row.who]} style={`--d: ${70 + i * 55}ms`} data-vc-line>
+                    <span class="vc-msg__who">{row.who === 'bot' ? 'BOT' : 'YOU'}</span>
+                    <p>{row.text}</p>
+                  </article>
+                ))
+              }
+              <div class="vc-typing" data-vc-typing hidden>
+                <span class="vc-msg__who">BOT</span>
+                <span class="vc-typing__dots" aria-hidden="true"><i /><i /><i /></span>
+              </div>
+            </div>
+          </section>
+
+          <div class="vc-card vc-mascot" aria-hidden="true">
+            <div class="vc-mascot__stage" data-vc-lottie></div>
+            <em data-vc-mascot-label>Voice bot on line</em>
           </div>
         </div>
-        <button type="button" class="hlive-cta" data-mock>Transfer now</button>
-      </footer>
-    </div>
-
-    <div class="hlive-badge" aria-hidden="true">
-      <strong data-hlive-badge-title>Qualified</strong>
-      <span data-hlive-badge-sub>in under a minute</span>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  document.querySelectorAll('.hlive[data-viz]').forEach((root) => {
-    const timerEl = root.querySelector('[data-hlive-timer]');
-    const lineEl = root.querySelector('[data-hlive-line]');
-    const agentEl = root.querySelector('[data-hlive-agent]');
-    const metaEl = root.querySelector('[data-hlive-meta]');
-    const voiceEl = root.querySelector('[data-hlive-voice]');
-    const voiceStateEl = root.querySelector('[data-hlive-voice-state]');
-    const badgeTitle = root.querySelector('[data-hlive-badge-title]');
-    const badgeSub = root.querySelector('[data-hlive-badge-sub]');
-    const xferNote = root.querySelector('[data-hlive-xfer]');
-    const handoffStep = root.querySelector('[data-step="handoff"]');
-    const cta = root.querySelector('[data-mock]');
-    let secs = 48;
+  document.querySelectorAll('[data-vc]').forEach((root) => {
+    const live = root.querySelector('[data-vc-live]');
+    const startBtn = root.querySelector('[data-vc-start]');
+    const hangBtn = root.querySelector('[data-vc-hang]');
+    const title = root.querySelector('[data-vc-title]');
+    const deck = root.querySelector('[data-vc-deck]');
+    const pipeState = root.querySelector('[data-vc-pipe-state]');
+    const timerEl = root.querySelector('[data-vc-timer]');
+    const intent = root.querySelector('[data-vc-meta-key="Intent"]');
+    const last = root.querySelector('[data-vc-last]');
+    const endEl = root.querySelector('[data-vc-end]');
+    const typing = root.querySelector('[data-vc-typing]');
+    const seatsEl = root.querySelector('[data-vc-seats]');
+    const seatsBar = root.querySelector('[data-vc-seats-bar]');
+    const lines = Array.from(root.querySelectorAll('[data-vc-line]'));
+    const pipeItems = Array.from(root.querySelectorAll('[data-pipe-i]'));
+    const topLine = lines[0];
+    const topWho = topLine?.querySelector('.vc-msg__who');
+    const topText = topLine?.querySelector('p');
+    const topWho0 = topWho?.textContent || 'BOT';
+    const topText0 = topText?.textContent || '';
+    const mascotLabel = root.querySelector('[data-vc-mascot-label]');
+    const lottieMount = root.querySelector('[data-vc-lottie]');
+    let lottieAnim = null;
+
+    const loadLottie = () => {
+      if (!lottieMount || lottieMount.dataset.ready === '1') return;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const boot = () => {
+        if (!window.lottie) return;
+        lottieAnim = window.lottie.loadAnimation({
+          container: lottieMount,
+          renderer: 'svg',
+          loop: !reduced,
+          autoplay: !reduced && liveOn,
+          path: '/lottie/voice-bot.json',
+          rendererSettings: { progressiveLoad: true },
+        });
+        lottieMount.dataset.ready = '1';
+        if (reduced) lottieAnim.goToAndStop(30, true);
+        else if (!liveOn) lottieAnim.pause();
+      };
+      if (window.lottie) {
+        boot();
+        return;
+      }
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js';
+      s.async = true;
+      s.onload = boot;
+      document.head.appendChild(s);
+    };
     let tick = 0;
+    let life = 0;
     let demo = 0;
-    let locked = false;
+    let pipeI = 1;
+    let liveOn = true;
+    let seats = 12;
 
-    const setTransferred = (on) => {
-      root.classList.toggle('is-transferred', on);
-      if (cta) {
-        cta.classList.toggle('is-on', on);
-        cta.textContent = on ? 'Connected' : 'Transfer now';
-      }
-      if (agentEl) agentEl.textContent = on ? 'Priya on call' : 'Priya ready';
-      if (metaEl) metaEl.textContent = on ? 'On call · Seat 07' : 'Seat 07';
-      if (lineEl) lineEl.textContent = on ? 'Agent on line' : 'Bot on line';
-      if (voiceEl) voiceEl.textContent = on ? 'Priya' : 'Sofia';
-      if (voiceStateEl) voiceStateEl.textContent = on ? 'Live' : 'Speaking';
-      if (badgeTitle) badgeTitle.textContent = on ? 'Transferred' : 'Qualified';
-      if (badgeSub) badgeSub.textContent = on ? 'agent connected' : 'in under a minute';
-      if (xferNote) xferNote.hidden = !on;
-      if (handoffStep) {
-        handoffStep.classList.toggle('active', !on);
-        handoffStep.classList.toggle('done', on);
-        const em = handoffStep.querySelector('em');
-        if (em) {
-          em.innerHTML = on
-            ? `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>Handoff`
-            : 'Handoff';
-        }
+    const confs = ['0.94', '0.96', '0.91', '0.88', '0.97'];
+
+    const setPipe = (index) => {
+      pipeI = Math.max(0, Math.min(pipeItems.length - 1, index));
+      pipeItems.forEach((el, i) => {
+        el.classList.toggle('is-done', i < pipeI);
+        el.classList.toggle('is-active', i === pipeI);
+      });
+      if (pipeState) {
+        pipeState.textContent =
+          pipeI >= pipeItems.length - 1 ? 'Transfer' : `${String(pipeI + 1).padStart(2, '0')} active`;
       }
     };
 
-    const runTransfer = () => {
-      if (locked) return;
-      locked = true;
-      setTransferred(true);
+    const setLive = (on) => {
+      liveOn = on;
+      root.classList.toggle('is-live', on);
+      root.classList.toggle('is-idle', !on);
+      root.classList.toggle('is-speaking', on);
+      if (live) live.classList.toggle('is-off', !on);
+      if (startBtn) startBtn.disabled = on;
+      if (hangBtn) hangBtn.disabled = !on;
+      if (title) title.textContent = on ? 'Gate → warm transfer' : 'Call ended';
+      if (deck) {
+        deck.textContent = on ? 'Qualify, score, then warm handoff.' : 'Session closed. Start a new call.';
+      }
+      if (mascotLabel) mascotLabel.textContent = on ? 'Voice bot on line' : 'Bot idle';
+      if (lottieAnim) {
+        if (on) lottieAnim.play();
+        else lottieAnim.pause();
+      }
+    };
+
+    const flash = (el) => {
+      if (!el) return;
+      el.classList.remove('is-flash');
+      void el.offsetWidth;
+      el.classList.add('is-flash');
+    };
+
+    const showTyping = (on) => {
+      if (!typing) return;
+      typing.hidden = !on;
+    };
+
+    const markTransfer = (on) => {
+      root.classList.toggle('is-xfer', on);
+      if (!topLine || !topWho || !topText) return;
+      if (on) {
+        topLine.classList.remove('bot', 'you');
+        
+      } else {
+        topLine.classList.remove('sys');
+        topLine.classList.add('bot');
+        topWho.textContent = topWho0;
+        topText.textContent = topText0;
+      }
+    };
+
+    const advance = () => {
+      if (!liveOn) return;
+      showTyping(true);
       window.setTimeout(() => {
-        setTransferred(false);
-        locked = false;
-      }, 2600);
+        showTyping(false);
+        if (pipeI < pipeItems.length - 1) setPipe(pipeI + 1);
+        if (pipeI >= pipeItems.length - 1) {
+          markTransfer(true);
+          if (intent) {
+            intent.textContent = 'transfer_ready';
+            flash(intent);
+          }
+          if (last) last.textContent = '“Yeah, I think so.”';
+        } else if (pipeI >= 2) {
+          if (intent) {
+            intent.textContent = 'subsidy_interest';
+            flash(intent);
+          }
+          if (last) last.textContent = '“Yeah, I think so.”';
+        }
+      }, 550);
     };
+
+    const resetCall = () => {
+      markTransfer(false);
+      showTyping(false);
+      setPipe(1);
+      secs = 48;
+      if (intent) intent.textContent = 'what_is_this';
+      if (last) last.textContent = '“I don’t know what you mean.”';
+      setLive(true);
+    };
+
+    setLive(true);
+    setPipe(1);
+    loadLottie();
 
     tick = window.setInterval(() => {
       if (!root.isConnected) {
         window.clearInterval(tick);
         return;
       }
+      if (!liveOn) return;
       secs += 1;
       if (timerEl) {
         const m = Math.floor(secs / 60);
@@ -165,21 +376,45 @@ const turns = [
       }
     }, 1000);
 
-    cta?.addEventListener('click', (e) => {
+    life = window.setInterval(() => {
+      if (!root.isConnected) {
+        window.clearInterval(life);
+        return;
+      }
+      if (!liveOn) return;
+      const c = confs[Math.floor(Math.random() * confs.length)];
+      const ms = 240 + Math.floor(Math.random() * 80);
+      if (endEl) {
+        endEl.textContent = `${ms}ms · conf>${c}`;
+        flash(endEl);
+      }
+      if (Math.random() > 0.55 && seatsEl && seatsBar) {
+        seats = Math.max(10, Math.min(16, seats + (Math.random() > 0.5 ? 1 : -1)));
+        seatsEl.textContent = `${seats} / 18`;
+        seatsBar.style.width = `${Math.round((seats / 18) * 100)}%`;
+      }
+    }, 2200);
+
+    startBtn?.addEventListener('click', (e) => {
       e.preventDefault();
-      runTransfer();
+      resetCall();
     });
 
-    // Quiet auto-demo after bubbles settle — twice, then stop
+    hangBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      setLive(false);
+      showTyping(false);
+    });
+
     const startDemo = () => {
       if (demo) return;
       let plays = 0;
       demo = window.setTimeout(function tickDemo() {
-        if (!root.isConnected || plays >= 2) return;
-        runTransfer();
+        if (!root.isConnected || plays >= 3) return;
+        advance();
         plays += 1;
-        if (plays < 2) demo = window.setTimeout(tickDemo, 7200);
-      }, 2400);
+        demo = window.setTimeout(tickDemo, 3200);
+      }, 1800);
     };
 
     if ('IntersectionObserver' in window) {
@@ -192,7 +427,7 @@ const turns = [
             }
           });
         },
-        { threshold: 0.35 },
+        { threshold: 0.3 },
       );
       io.observe(root);
     } else {
