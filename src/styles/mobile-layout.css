@@ -164,6 +164,14 @@
 
 /* ========== Phone (≤720): snap rails for browse sections ========== */
 @media (max-width: 720px) {
+  html body .hero-visual .vc {
+    max-width: 100%;
+  }
+
+  html body .hero {
+    padding-bottom: 0.5rem;
+  }
+
   html body .aeo-solutions__grid,
   html body .spotlight-grid,
   html body .testimonial-grid {
@@ -237,6 +245,14 @@
     width: 100%;
   }
 
+  html body .hero-actions {
+    gap: 0.55rem;
+  }
+
+  html body .hero-actions .btn {
+    min-height: 2.75rem;
+  }
+
   html body .success-points h3 {
     font-size: 0.92rem;
   }
@@ -281,6 +297,11 @@
   html body .testimonials {
     scroll-margin-top: 4.5rem;
   }
+
+  /* Footer sits clear of sticky conversion bar */
+  html body .ft {
+    padding-bottom: 0.25rem;
+  }
 }
 
 /* ========== Narrow phone (≤480): conversion priority ========== */
@@ -296,6 +317,21 @@
   html body .spotlight-card {
     flex-basis: min(88vw, 17rem);
     min-height: 280px;
+  }
+
+  html body .hero-grid {
+    gap: 1.35rem;
+  }
+
+  html body .section-title,
+  html body .hero h1 {
+    word-break: break-word;
+  }
+
+  html body .btn-chip,
+  html body .service-row .btn-chip {
+    width: 100%;
+    justify-content: center;
   }
 }
 
