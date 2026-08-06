@@ -5,5 +5,5 @@
     <path d="M8 22 L16 8 L24 22 Z" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/>
     <path d="M12.5 22h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
   </g>
-  <text x="40" y="24" fill="#6B7280" font-family="'Trebuchet MS', 'Segoe UI', sans-serif" font-size="15" font-weight="700" letter-spacing="0.8">SummitFE</text>
+  <text x="40" y="24" fill="#374151" font-family="'Trebuchet MS', 'Segoe UI', sans-serif" font-size="15" font-weight="700" letter-spacing="0.8">SummitFE</text>
 </svg>

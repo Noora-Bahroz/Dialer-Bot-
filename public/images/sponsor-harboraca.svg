@@ -6,5 +6,5 @@
     <path d="M5 16.5c3.2-1.8 6.4-1.8 9.6 0s6.4 1.8 9.6 0" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
     <path d="M5 21.5c3.2-1.8 6.4-1.8 9.6 0s6.4 1.8 9.6 0" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
   </g>
-  <text x="40" y="24" fill="#6B7280" font-family="Verdana, Geneva, sans-serif" font-size="14.5" font-weight="700" letter-spacing="-0.3">HarborACA</text>
+  <text x="40" y="24" fill="#374151" font-family="Verdana, Geneva, sans-serif" font-size="14.5" font-weight="700" letter-spacing="-0.3">HarborACA</text>
 </svg>

@@ -1417,20 +1417,20 @@ h4 {
 .sponsors-bash {
   position: relative;
   margin-top: clamp(2rem, 4vw, 3.25rem);
-  padding-block: 2.75rem 3.25rem;
+  padding-block: 2.5rem 2.85rem;
   isolation: isolate;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(30, 50, 45, 0.04) 12%, rgba(30, 50, 45, 0.04) 88%, transparent 100%);
 }
 
 .sponsors-bash__glow {
   position: absolute;
-  inset: 10% -8% 8%;
+  inset: 0;
   z-index: 0;
-  border-radius: 40% / 50%;
   background:
-    radial-gradient(ellipse 70% 55% at 50% 40%, rgba(219, 254, 122, 0.18), transparent 70%),
-    radial-gradient(ellipse 50% 60% at 20% 70%, rgba(47, 157, 99, 0.14), transparent 65%),
-    radial-gradient(ellipse 45% 55% at 80% 30%, rgba(30, 50, 45, 0.12), transparent 60%);
-  filter: blur(8px);
+    radial-gradient(ellipse 55% 70% at 50% 50%, rgba(219, 254, 122, 0.22), transparent 68%),
+    radial-gradient(ellipse 40% 80% at 12% 50%, rgba(47, 157, 99, 0.2), transparent 60%),
+    radial-gradient(ellipse 40% 80% at 88% 50%, rgba(16, 45, 35, 0.18), transparent 60%);
   pointer-events: none;
 }
 
@@ -1438,21 +1438,22 @@ h4 {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 1.1rem;
-  transform: rotate(-3.25deg) scale(1.04);
+  gap: 1rem;
+  padding-block: 0.35rem;
+  transform: rotate(-1.4deg) scale(1.02);
   transform-origin: center;
   mask-image: linear-gradient(
     90deg,
     transparent 0%,
-    #000 8%,
-    #000 92%,
+    #000 6%,
+    #000 94%,
     transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0%,
-    #000 8%,
-    #000 92%,
+    #000 6%,
+    #000 94%,
     transparent 100%
   );
 }
@@ -1465,7 +1466,7 @@ h4 {
 .sponsors-bash__track {
   display: flex;
   width: max-content;
-  gap: 1rem;
+  gap: 0.85rem;
   will-change: transform;
   animation: sponsors-bash-ltr 38s linear infinite;
 }
@@ -1484,31 +1485,51 @@ h4 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 4.1rem;
-  padding: 0.85rem 1.35rem;
-  border-radius: 1.05rem;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(243, 247, 244, 0.78));
-  border: 1px solid rgba(30, 50, 45, 0.1);
+  min-height: 4.25rem;
+  padding: 0.9rem 1.4rem;
+  border-radius: 1rem;
+  background: #ffffff;
+  border: 1.5px solid rgba(30, 50, 45, 0.14);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.85) inset,
-    0 14px 28px rgba(16, 45, 35, 0.08),
-    0 2px 6px rgba(16, 45, 35, 0.05);
-  backdrop-filter: blur(10px);
-  transform: rotate(calc((var(--chip-i) - 2.5) * 0.55deg));
+    0 1px 0 rgba(255, 255, 255, 1) inset,
+    0 10px 24px rgba(16, 45, 35, 0.14),
+    0 2px 4px rgba(16, 45, 35, 0.08);
+  transform: rotate(calc((var(--chip-i) - 2.5) * 0.35deg));
   transition:
     transform 0.35s ease,
     box-shadow 0.35s ease,
-    border-color 0.35s ease;
+    border-color 0.35s ease,
+    background 0.35s ease;
+}
+
+.sponsors-bash__rail--b .sponsors-bash__chip {
+  background: #dbfe7a;
+  border-color: rgba(16, 45, 35, 0.22);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.45) inset,
+    0 12px 28px rgba(16, 45, 35, 0.16),
+    0 2px 4px rgba(16, 45, 35, 0.1);
+}
+
+.sponsors-bash__rail--b .sponsors-bash__chip img {
+  filter: saturate(1.25) contrast(1.15);
 }
 
 .sponsors-bash__chip:hover {
-  transform: rotate(0deg) translateY(-4px) scale(1.04);
-  border-color: rgba(47, 157, 99, 0.35);
+  transform: rotate(0deg) translateY(-5px) scale(1.045);
+  border-color: rgba(47, 157, 99, 0.55);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.9) inset,
-    0 18px 36px rgba(16, 45, 35, 0.14),
-    0 0 0 1px rgba(219, 254, 122, 0.35);
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 18px 36px rgba(16, 45, 35, 0.2),
+    0 0 0 2px rgba(47, 157, 99, 0.35);
+}
+
+.sponsors-bash__rail--b .sponsors-bash__chip:hover {
+  border-color: rgba(16, 45, 35, 0.45);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 18px 36px rgba(16, 45, 35, 0.22),
+    0 0 0 2px rgba(16, 45, 35, 0.2);
 }
 
 .sponsors-bash__chip img {
@@ -1517,7 +1538,7 @@ h4 {
   width: auto;
   max-width: 168px;
   object-fit: contain;
-  filter: saturate(1.05);
+  filter: saturate(1.2) contrast(1.12);
 }
 
 @keyframes sponsors-bash-ltr {
@@ -4577,8 +4598,8 @@ h4 {
   }
 
   .sponsors-bash__stage {
-    transform: rotate(-2.25deg) scale(1.08);
-    gap: 0.85rem;
+    transform: rotate(-1deg) scale(1.05);
+    gap: 0.8rem;
   }
 
   .sponsors-bash__chip {
