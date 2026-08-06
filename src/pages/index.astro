@@ -37,6 +37,11 @@ const sponsors = [
   { src: '/images/sponsor-relayops.svg', name: 'RelayOps', tip: 'Broker dispatch desk' },
 ];
 
+const sponsorRails = [
+  { key: 'a', items: [...sponsors, ...sponsors, ...sponsors] },
+  { key: 'b', items: [...sponsors].reverse().concat([...sponsors].reverse(), [...sponsors].reverse()) },
+];
+
 const spotlights = [
   {
     image: '/images/dialerbot-home-01.webp',
@@ -274,23 +279,40 @@ const testimonials = [
   </section>
 
   <!-- sponsors-section -->
-  <section class="sponsors">
+  <section class="sponsors" aria-label="Demo dialing floors">
     <div class="wrap">
-      <h2 class="section-title center" data-reveal>Built for dialing floors like these</h2>
-      <div class="sponsors-logos">
-        {sponsors.map((sponsor, i) => (
-          <img
-            src={sponsor.src}
-            alt={`${sponsor.name} — ${sponsor.tip}`}
-            title={sponsor.tip}
-            loading="lazy"
-            decoding="async"
-            width="168"
-            height="36"
-            data-reveal="fade"
-            style={`--reveal-i: ${i}`}
-          />
-        ))}
+      <p class="section-label center" data-reveal>Demo floors</p>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">Built for dialing floors like these</h2>
+    </div>
+
+    <div class="sponsors-bash" data-reveal style="--reveal-i:2">
+      <div class="sponsors-bash__glow" aria-hidden="true"></div>
+      <div class="sponsors-bash__stage">
+        {
+          sponsorRails.map((rail) => (
+            <div class:list={['sponsors-bash__rail', `sponsors-bash__rail--${rail.key}`]}>
+              <div class="sponsors-bash__track">
+                {rail.items.map((sponsor, i) => (
+                  <div
+                    class="sponsors-bash__chip"
+                    style={`--chip-i: ${i % sponsors.length}`}
+                    title={sponsor.tip}
+                  >
+                    <img
+                      src={sponsor.src}
+                      alt={i < sponsors.length ? `${sponsor.name} — ${sponsor.tip}` : ''}
+                      aria-hidden={i >= sponsors.length ? 'true' : undefined}
+                      loading={i < 6 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      width="168"
+                      height="36"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
