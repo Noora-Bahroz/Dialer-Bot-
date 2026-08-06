@@ -378,20 +378,45 @@
   color: #fff;
   border: 0;
   background: transparent;
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: none;
 }
 
+/* When any AI tile is hovered: kill idle shine on siblings */
+.ft-promo__social:has(a:hover) .ft-promo__icon {
+  animation: none;
+  transform: translateY(0) scale(1);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  opacity: 0.55;
+}
+
+.ft-promo__social:has(a:hover) .ft-promo__icon::after {
+  animation: none;
+  opacity: 0;
+}
+
+.ft-promo__social:has(a:hover) a:not(:hover) {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Only the hovered tile grows + shines */
 .ft-promo__social a:hover .ft-promo__icon {
+  opacity: 1;
   background:
-    linear-gradient(165deg, rgba(255, 255, 255, 0.14), transparent 55%),
-    rgba(18, 26, 23, 0.85);
-  border-color: rgba(220, 228, 224, 0.45);
-  transform: scale(1.05);
+    linear-gradient(165deg, rgba(255, 255, 255, 0.18), transparent 55%),
+    rgba(18, 26, 23, 0.92);
+  border-color: rgba(235, 240, 238, 0.85);
+  transform: translateY(-6px) scale(1.16);
   box-shadow:
-    0 14px 28px rgba(0, 0, 0, 0.28),
-    0 0 24px rgba(220, 228, 224, 0.22);
+    0 18px 36px rgba(0, 0, 0, 0.34),
+    0 0 40px rgba(230, 236, 232, 0.48),
+    inset 0 0 22px rgba(255, 255, 255, 0.12);
   color: #fff;
+}
+
+.ft-promo__social a:hover .ft-promo__icon::after {
+  animation: ft-ai-gleam-hover 0.9s ease-out forwards;
 }
 
 @property --ft-angle {
@@ -455,6 +480,20 @@
     opacity: 0.9;
   }
   30% {
+    left: 130%;
+    opacity: 0;
+  }
+}
+
+@keyframes ft-ai-gleam-hover {
+  0% {
+    left: -60%;
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
     left: 130%;
     opacity: 0;
   }
@@ -701,6 +740,8 @@
   .ft-promo__btn:hover,
   .ft-promo__social a:hover,
   .ft-promo__social a:hover .ft-promo__icon,
+  .ft-promo__social a:hover .ft-promo__icon::after,
+  .ft-promo__social:has(a:hover) .ft-promo__icon,
   .ft-status:hover,
   .ft-col a:hover,
   .ft-logo:hover {

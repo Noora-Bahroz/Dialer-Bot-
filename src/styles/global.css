@@ -1485,9 +1485,9 @@ h4 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 4.25rem;
-  padding: 0.9rem 1.4rem;
-  border-radius: 1rem;
+  min-height: 0;
+  padding: 0.55rem 0.7rem 0.55rem 0.6rem;
+  border-radius: 0.85rem;
   background: #ffffff;
   border: 1.5px solid rgba(30, 50, 45, 0.14);
   box-shadow:
@@ -1534,9 +1534,9 @@ h4 {
 
 .sponsors-bash__chip img {
   display: block;
-  height: 34px;
+  height: 40px;
   width: auto;
-  max-width: 168px;
+  max-width: none;
   object-fit: contain;
   filter: saturate(1.2) contrast(1.12);
 }
@@ -4603,13 +4603,13 @@ h4 {
   }
 
   .sponsors-bash__chip {
-    min-height: 3.6rem;
-    padding: 0.7rem 1.05rem;
-    border-radius: 0.9rem;
+    min-height: 0;
+    padding: 0.45rem 0.55rem 0.45rem 0.5rem;
+    border-radius: 0.75rem;
   }
 
   .sponsors-bash__chip img {
-    height: 28px;
+    height: 34px;
   }
 
   .section-title,

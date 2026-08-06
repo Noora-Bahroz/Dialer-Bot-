@@ -1,19 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="168" height="36" viewBox="0 0 168 36" role="img" aria-label="Northlane">
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="40" viewBox="0 0 128 40" role="img" aria-label="Northlane">
   <title>Northlane</title>
-  <g transform="translate(0,2)">
-    <circle cx="16" cy="16" r="16" fill="#E5484D"/>
-    <g fill="#fff" transform="translate(16,16)">
-      <rect x="-1.2" y="-11" width="2.4" height="7" rx="1.1" transform="rotate(0)"/>
-      <rect x="-1.2" y="-11" width="2.4" height="7" rx="1.1" transform="rotate(45)"/>
-      <rect x="-1.2" y="-11" width="2.4" height="7" rx="1.1" transform="rotate(90)"/>
-      <rect x="-1.2" y="-11" width="2.4" height="7" rx="1.1" transform="rotate(135)"/>
-      <rect x="-1.2" y="-11" width="2.4" height="7" rx="1.1" transform="rotate(180)"/>
-      <rect x="-1.2" y="-11" width="2.4" height="7" rx="1.1" transform="rotate(225)"/>
-      <rect x="-1.2" y="-11" width="2.4" height="7" rx="1.1" transform="rotate(270)"/>
-      <rect x="-1.2" y="-11" width="2.4" height="7" rx="1.1" transform="rotate(315)"/>
-      <circle r="3.2" fill="#E5484D"/>
-      <circle r="1.6" fill="#fff"/>
-    </g>
+  <circle cx="18" cy="20" r="16" fill="#E5484D"/>
+  <g fill="#fff" transform="translate(18,20)">
+    <rect x="-1.25" y="-11.5" width="2.5" height="7.2" rx="1.1" transform="rotate(0)"/>
+    <rect x="-1.25" y="-11.5" width="2.5" height="7.2" rx="1.1" transform="rotate(45)"/>
+    <rect x="-1.25" y="-11.5" width="2.5" height="7.2" rx="1.1" transform="rotate(90)"/>
+    <rect x="-1.25" y="-11.5" width="2.5" height="7.2" rx="1.1" transform="rotate(135)"/>
+    <rect x="-1.25" y="-11.5" width="2.5" height="7.2" rx="1.1" transform="rotate(180)"/>
+    <rect x="-1.25" y="-11.5" width="2.5" height="7.2" rx="1.1" transform="rotate(225)"/>
+    <rect x="-1.25" y="-11.5" width="2.5" height="7.2" rx="1.1" transform="rotate(270)"/>
+    <rect x="-1.25" y="-11.5" width="2.5" height="7.2" rx="1.1" transform="rotate(315)"/>
+    <circle r="3.2" fill="#E5484D"/>
+    <circle r="1.55" fill="#fff"/>
   </g>
-  <text x="40" y="24" fill="#374151" font-family="Georgia, 'Times New Roman', serif" font-size="15" font-weight="600" letter-spacing="0.4">Northlane</text>
+  <text x="42" y="26" fill="#1f2937" font-family="Georgia, 'Times New Roman', serif" font-size="17" font-weight="600" letter-spacing="0.2">Northlane</text>
 </svg>

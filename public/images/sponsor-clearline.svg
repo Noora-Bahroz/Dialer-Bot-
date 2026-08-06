@@ -1,9 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="168" height="36" viewBox="0 0 168 36" role="img" aria-label="Clearline">
+<svg xmlns="http://www.w3.org/2000/svg" width="122" height="40" viewBox="0 0 122 40" role="img" aria-label="Clearline">
   <title>Clearline</title>
-  <g transform="translate(0,2)">
-    <path d="M16 1.5 L27.5 8.2 V21.8 L16 28.5 L4.5 21.8 V8.2 Z" fill="#12B5A0"/>
-    <circle cx="16" cy="15" r="5.5" fill="none" stroke="#fff" stroke-width="2.4"/>
-    <circle cx="16" cy="15" r="1.8" fill="#fff"/>
-  </g>
-  <text x="40" y="24" fill="#374151" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="600" font-style="italic" letter-spacing="-0.2">Clearline</text>
+  <path d="M18 3.5 L29.5 10.2 V25.8 L18 32.5 L6.5 25.8 V10.2 Z" fill="#12B5A0"/>
+  <circle cx="18" cy="18" r="5.6" fill="none" stroke="#fff" stroke-width="2.4"/>
+  <circle cx="18" cy="18" r="1.85" fill="#fff"/>
+  <text x="42" y="26.5" fill="#1f2937" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="600" font-style="italic" letter-spacing="-0.3">Clearline</text>
 </svg>
