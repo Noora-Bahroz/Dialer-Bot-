@@ -15,31 +15,61 @@ const faqs = [
     id: 'what',
     topic: 'Product',
     q: 'What is Dialer Bot?',
-    a: 'An AI voice bot platform that qualifies inbound and outbound calls for call centers, truck dispatch, ACA, FE, HI, and similar floors — then warms handoffs to human agents.',
+    a: 'Dialer Bot is an AI voice bot platform that qualifies inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoffs only closable leads to human agents with context.',
   },
   {
     id: 'replace',
     topic: 'Product',
-    q: 'Does it replace agents?',
-    a: 'No. It clears openers and tire-kickers so agents spend time on closable conversations.',
+    q: 'Does Dialer Bot replace agents?',
+    a: 'No. It clears openers and tire-kickers so agents spend time on closable conversations. Humans still close.',
+  },
+  {
+    id: 'warm',
+    topic: 'Product',
+    q: 'What is warm handoff vs cold transfer?',
+    a: 'Cold transfer connects a caller with little context. Warm handoff only connects after qualification and passes what was asked, confirmed, and why the lead scored high enough for a human.',
   },
   {
     id: 'lock',
     topic: 'Product',
-    q: 'Can we lock the first questions?',
+    q: 'Can we lock the first questions for compliance?',
     a: 'Yes. First questions can be hardcoded for compliance and QA, with adaptive follow-ups after intent forms.',
+  },
+  {
+    id: 'aca',
+    topic: 'Product',
+    q: 'Does Dialer Bot work for ACA campaigns?',
+    a: 'Yes. ACA, FE, and HI floors use locked opener packs, intent scoring, and warm handoff. See the ACA voice bot solution page for the full pattern.',
+  },
+  {
+    id: 'dispatch',
+    topic: 'Product',
+    q: 'Can it qualify truck dispatch calls?',
+    a: 'Yes. Dispatch packs ask first logistics questions (fit, lane, timing) and only connect dispatchers when the call is worth human time.',
   },
   {
     id: 'vault',
     topic: 'Product',
-    q: 'Do you store recordings?',
+    q: 'Do you store recordings and transcripts?',
     a: 'Yes — searchable vault for ops review. Retention rules can be tuned on enterprise plans.',
   },
   {
+    id: 'demo',
+    topic: 'Buying',
+    q: 'How do I try Dialer Bot before buying?',
+    a: 'Open the live demo at demo.dialerbot.online, then WhatsApp sales if you want a pack configured for your dialer.',
+  },
+  {
     id: 'price',
-    topic: 'Pricing',
-    q: 'How much does it cost?',
+    topic: 'Buying',
+    q: 'How much does Dialer Bot cost?',
     a: `Starter pricing is $${site.pricePerBot} USD per bot. Multi-bot floors and custom compliance are quoted as enterprise on WhatsApp.`,
+  },
+  {
+    id: 'enterprise',
+    topic: 'Buying',
+    q: 'When do we need enterprise instead of starter?',
+    a: 'Choose enterprise when you need multi-bot scale, custom compliance workflows, or deeper dialer/CRM integration than a single campaign pack.',
   },
   {
     id: 'dialer',
@@ -51,13 +81,25 @@ const faqs = [
     id: 'live',
     topic: 'Ops',
     q: 'How fast can we go live?',
-    a: 'A focused campaign pack moves quickly once dialer access and openers are clear.',
+    a: 'A focused campaign pack moves quickly once dialer access and openers are clear — often days, not months, for a single lane.',
+  },
+  {
+    id: 'qa',
+    topic: 'Ops',
+    q: 'How does Dialer Bot help QA?',
+    a: 'Locked early turns keep scripts stable, and the transcript vault lets supervisors search what was said without sitting every call live.',
   },
   {
     id: 'where',
     topic: 'Company',
-    q: 'Where are you based?',
-    a: `Office 12, Pakistan Town Phase 2, Islamabad. WhatsApp ${site.phoneDisplay} · ${site.email}.`,
+    q: 'Where is Dialer Bot based?',
+    a: `Office 12, Pakistan Town Phase 2, Islamabad, Pakistan. WhatsApp ${site.phoneDisplay} · ${site.email}.`,
+  },
+  {
+    id: 'contact',
+    topic: 'Company',
+    q: 'How do I contact sales?',
+    a: `WhatsApp ${site.phoneDisplay}, email ${site.email}, or the contact form on dialerbot.online/contact.`,
   },
 ];
 
@@ -66,7 +108,7 @@ const topics = ['All', ...Array.from(new Set(faqs.map((f) => f.topic)))];
 
 <BaseLayout
   title="FAQs | Dialer Bot"
-  description="FAQs on Dialer Bot pricing, dialer support, call qualification, recording vault, go-live speed, and office location."
+  description="FAQs on Dialer Bot pricing, warm handoff, ACA and dispatch bots, dialer support, demo access, go-live speed, and Islamabad office contact."
   jsonLd={[
     breadcrumbJsonLd([
       { name: 'Home', path: '/' },

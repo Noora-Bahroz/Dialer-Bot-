@@ -114,6 +114,23 @@
   animation: fx-in 0.6s ease 0.18s both;
 }
 
+.fx-niche-links {
+  margin: 1rem 0 0;
+  font-size: 0.875rem;
+  color: var(--fx-muted);
+  animation: fx-in 0.6s ease 0.22s both;
+}
+
+.fx-niche-links a {
+  color: var(--fx-green);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.fx-niche-links a:hover {
+  text-decoration: underline;
+}
+
 .fx-btn {
   display: inline-flex;
   align-items: center;

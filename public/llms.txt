@@ -16,10 +16,10 @@ Dialer Bot is built in Islamabad, Pakistan. Primary conversion paths are the liv
 
 ## Product niches
 
-- [ACA / insurance calling](https://dialerbot.online/features): Qualification bots for ACA, FE, and HI floors
-- [Truck dispatch](https://dialerbot.online/features): Voice bots for dispatch and load-related calling
-- [Inbound receptionist](https://dialerbot.online/features): First-contact inbound qualification before agents pick up
-- [Outbound dialer sync](https://dialerbot.online/features): Pace-matched outbound campaign bots
+- [ACA voice bot](https://dialerbot.online/solutions/aca-voice-bot): Compliant ACA / FE / HI qualification and warm handoff
+- [Truck dispatch bot](https://dialerbot.online/solutions/truck-dispatch-bot): First logistics questions before dispatchers join
+- [Warm handoff](https://dialerbot.online/solutions/warm-handoff): Context-rich transfers instead of cold dumps
+- [Features](https://dialerbot.online/features): Intent scoring, opener packs, compliance, vault, routing, pace
 
 ## Content
 

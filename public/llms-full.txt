@@ -25,6 +25,9 @@ Office: Office 12, Pakistan Town Phase 2, Islamabad, Pakistan
 
 - Home: https://dialerbot.online/
 - Features: https://dialerbot.online/features
+- ACA voice bot: https://dialerbot.online/solutions/aca-voice-bot
+- Truck dispatch bot: https://dialerbot.online/solutions/truck-dispatch-bot
+- Warm handoff: https://dialerbot.online/solutions/warm-handoff
 - Pricing: https://dialerbot.online/pricing
 - Company: https://dialerbot.online/company
 - Contact: https://dialerbot.online/contact

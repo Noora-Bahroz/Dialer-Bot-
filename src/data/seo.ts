@@ -106,6 +106,36 @@ export function faqPageJsonLd(faqs: { q: string; a: string }[]) {
   };
 }
 
+export function definedTermJsonLd(term: string, description: string, path: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTerm',
+    name: term,
+    description,
+    url: absoluteUrl(path),
+    inDefinedTermSet: absoluteUrl('/llms.txt'),
+  };
+}
+
+export function webPageJsonLd(opts: {
+  name: string;
+  description: string;
+  path: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: opts.name,
+    description: opts.description,
+    url: absoluteUrl(opts.path),
+    isPartOf: {
+      '@type': 'WebSite',
+      name: site.name,
+      url: SITE_URL,
+    },
+  };
+}
+
 export function articleJsonLd(post: {
   title: string;
   excerpt: string;

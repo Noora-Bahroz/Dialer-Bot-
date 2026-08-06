@@ -3,12 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
+import AeoDefinition from '../components/AeoDefinition.astro';
 import { wa, site } from '../data/site';
-import { breadcrumbJsonLd } from '../data/seo';
+import { breadcrumbJsonLd, definedTermJsonLd } from '../data/seo';
 import '../styles/global.css';
 import '../styles/features-page.css';
 
 export const prerender = true;
+
+const featuresDefinition =
+  'Dialer Bot features are the controls under live call qualification — intent scoring, opener packs, compliance gates, transcript vault, affinity routing, and pace governance — so bots ask first and agents only take warm, scored handoffs.';
 
 const matrix = [
   {
@@ -78,10 +82,13 @@ const modules = [
 <BaseLayout
   title="Features | Dialer Bot"
   description="Dialer Bot features — intent scoring, opener packs, compliance gates, transcript vault, affinity routing, and pace control for calling floors."
-  jsonLd={breadcrumbJsonLd([
-    { name: 'Home', path: '/' },
-    { name: 'Features', path: '/features' },
-  ])}
+  jsonLd={[
+    breadcrumbJsonLd([
+      { name: 'Home', path: '/' },
+      { name: 'Features', path: '/features' },
+    ]),
+    definedTermJsonLd('Dialer Bot features', featuresDefinition, '/features'),
+  ]}
 >
   <Header slot="header" />
 
@@ -98,6 +105,7 @@ const modules = [
           </nav>
           <p class="fx-brand">Dialer Bot</p>
           <h1>Platform features for floors that already dial</h1>
+          <AeoDefinition term="Dialer Bot features" definition={featuresDefinition} />
           <p class="fx-deck">
             The controls under qualification — scoring, scripting, compliance, vault, routing, and pace.
             Starter bots from ${site.pricePerBot}.
@@ -108,6 +116,14 @@ const modules = [
             </a>
             <a class="fx-btn fx-btn--ghost" href={wa.start} target="_blank" rel="noopener noreferrer">WhatsApp sales</a>
           </div>
+          <p class="fx-niche-links">
+            Niche pages:
+            <a href="/solutions/aca-voice-bot">ACA voice bot</a>
+            ·
+            <a href="/solutions/truck-dispatch-bot">Truck dispatch bot</a>
+            ·
+            <a href="/solutions/warm-handoff">Warm handoff</a>
+          </p>
         </div>
 
         <aside class="fx-mast__aside" aria-label="Feature snapshot">

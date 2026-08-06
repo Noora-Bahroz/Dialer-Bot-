@@ -1,0 +1,43 @@
+---
+interface Props {
+  term: string;
+  definition: string;
+}
+const { term, definition } = Astro.props;
+---
+
+<section class="aeo-def" aria-label={`${term} definition`}>
+  <p class="aeo-def__label">Definition</p>
+  <p class="aeo-def__term">{term}</p>
+  <p class="aeo-def__text">{definition}</p>
+</section>
+
+<style>
+  .aeo-def {
+    margin: 1.25rem 0 0;
+    padding: 1rem 1.15rem;
+    border-left: 3px solid #2f9d63;
+    border-radius: 0 10px 10px 0;
+    background: rgba(47, 157, 99, 0.06);
+  }
+  .aeo-def__label {
+    margin: 0 0 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #2f9d63;
+  }
+  .aeo-def__term {
+    margin: 0 0 0.4rem;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #1e322d;
+  }
+  .aeo-def__text {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: #3d4a45;
+  }
+</style>

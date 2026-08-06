@@ -5,10 +5,15 @@ import Footer from '../components/Footer.astro';
 import FeatureConsoleMock from '../components/FeatureConsoleMock.astro';
 import WarmHandoffMock from '../components/WarmHandoffMock.astro';
 import HeroOrbitMock from '../components/HeroOrbitMock.astro';
+import AeoDefinition from '../components/AeoDefinition.astro';
 import { site, wa } from '../data/site';
+import { definedTermJsonLd, webPageJsonLd } from '../data/seo';
 import '../styles/global.css';
 
 export const prerender = true;
+
+const dialerBotDefinition =
+  'Dialer Bot is an AI voice bot platform that qualifies inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoffs only closable leads to human agents with context.';
 
 const benefitFeatures = [
   {
@@ -165,6 +170,15 @@ const testimonials = [
   title="Dialer Bot | AI Voice Bots for Inbound & Outbound Calling"
   description="AI voice bots that qualify inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoff closable leads to your agents."
   image="/images/dialerbot-home-01.webp"
+  jsonLd={[
+    webPageJsonLd({
+      name: 'Dialer Bot | AI Voice Bots for Inbound & Outbound Calling',
+      description:
+        'AI voice bots that qualify inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoff closable leads to your agents.',
+      path: '/',
+    }),
+    definedTermJsonLd('Dialer Bot', dialerBotDefinition, '/'),
+  ]}
 >
   <Header slot="header" />
 
@@ -188,6 +202,9 @@ const testimonials = [
             fine-tunes the replies, and only hands off leads worth an agent’s time — for call centers, truck
             dispatch, ACA, FE, HI, and every floor that still dials by hand.
           </p>
+          <div data-reveal style="--reveal-i:2.5">
+            <AeoDefinition term="Dialer Bot" definition={dialerBotDefinition} />
+          </div>
           <div class="hero-actions" data-reveal style="--reveal-i:3">
             <a class="btn btn-white" href={site.demoUrl} target="_blank" rel="noopener noreferrer">Try Live Demo</a>
             <a class="btn btn-glass" href={wa.start} target="_blank" rel="noopener noreferrer">
@@ -202,6 +219,25 @@ const testimonials = [
           <HeroOrbitMock />
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="aeo-solutions wrap" aria-label="Dialer Bot solutions">
+    <p class="section-label" data-reveal>Answer-ready solutions</p>
+    <h2 class="section-title" data-reveal style="--reveal-i:1">Built for the floors people search for</h2>
+    <div class="aeo-solutions__grid">
+      <a class="aeo-solutions__card" href="/solutions/aca-voice-bot" data-reveal="up" style="--reveal-i:0">
+        <strong>ACA voice bot</strong>
+        <span>Compliant openers, scored intent, warm handoff for ACA / FE / HI.</span>
+      </a>
+      <a class="aeo-solutions__card" href="/solutions/truck-dispatch-bot" data-reveal="up" style="--reveal-i:1">
+        <strong>Truck dispatch bot</strong>
+        <span>First logistics questions answered before a dispatcher joins.</span>
+      </a>
+      <a class="aeo-solutions__card" href="/solutions/warm-handoff" data-reveal="up" style="--reveal-i:2">
+        <strong>Warm handoff</strong>
+        <span>Context-rich transfers instead of cold dumps into seats.</span>
+      </a>
     </div>
   </section>
 

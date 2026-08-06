@@ -1,0 +1,242 @@
+.sl {
+  --sl-ink: #1e322d;
+  --sl-muted: #5c6762;
+  --sl-line: #e2e8e4;
+  --sl-wash: #f6f7f5;
+  --sl-lime: #dbfe7a;
+  --sl-green: #2f9d63;
+  --sl-max: 800px;
+  --sl-pad: var(--section-pad-x);
+  color: var(--sl-ink);
+  font-family: var(--font);
+  background: #fff;
+}
+
+.sl-shell {
+  width: min(100% - (var(--sl-pad) * 2), var(--sl-max));
+  margin-inline: auto;
+}
+
+.sl-mast {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-bottom: 1px solid var(--sl-line);
+  background:
+    radial-gradient(ellipse 55% 70% at 92% 8%, rgba(219, 254, 122, 0.28), transparent 58%),
+    linear-gradient(180deg, #eef3ef 0%, #f7f8f6 45%, #fff 100%);
+  padding: clamp(2.75rem, 6vw, 4.5rem) 0 clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.sl-mast__grid {
+  position: relative;
+  z-index: 1;
+}
+
+.sl-crumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--sl-muted);
+}
+
+.sl-crumb a {
+  color: var(--sl-muted);
+  text-decoration: none;
+}
+
+.sl-crumb a:hover {
+  color: var(--sl-green);
+}
+
+.sl-brand {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--sl-green);
+}
+
+.sl-mast h1 {
+  margin: 0;
+  font-size: clamp(1.85rem, 4.2vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  color: var(--sl-ink);
+}
+
+.sl-deck {
+  margin: 1.1rem 0 0;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--sl-muted);
+}
+
+.sl-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.sl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.65rem 1.15rem;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.sl-btn--solid {
+  background: var(--sl-ink);
+  color: #fff;
+}
+
+.sl-btn--solid:hover {
+  background: #16352c;
+}
+
+.sl-btn--ghost {
+  background: transparent;
+  color: var(--sl-ink);
+  border-color: var(--sl-line);
+}
+
+.sl-btn--ghost:hover {
+  border-color: var(--sl-green);
+  color: var(--sl-green);
+}
+
+.sl-section {
+  padding: clamp(2.5rem, 5vw, 3.75rem) 0;
+  border-bottom: 1px solid var(--sl-line);
+}
+
+.sl-section--wash {
+  background: var(--sl-wash);
+}
+
+.sl-section h2 {
+  margin: 0 0 1.15rem;
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.sl-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.sl-list li {
+  position: relative;
+  padding: 0.85rem 1rem 0.85rem 2.35rem;
+  border: 1px solid var(--sl-line);
+  border-radius: 10px;
+  background: #fff;
+  line-height: 1.5;
+}
+
+.sl-list li::before {
+  content: '';
+  position: absolute;
+  left: 0.95rem;
+  top: 1.15rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 2px;
+  background: var(--sl-lime);
+  box-shadow: 0 0 0 3px rgba(47, 157, 99, 0.15);
+}
+
+.sl-section--wash .sl-list li {
+  background: #fff;
+}
+
+.sl-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.sl-steps li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
+  align-items: start;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--sl-line);
+  border-radius: 10px;
+  background: #fff;
+  line-height: 1.5;
+}
+
+.sl-steps__n {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--sl-green);
+  letter-spacing: 0.04em;
+}
+
+.sl-faq {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.sl-faq__item {
+  border: 1px solid var(--sl-line);
+  border-radius: 10px;
+  background: #fff;
+  padding: 0.85rem 1rem;
+}
+
+.sl-faq__item summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--sl-ink);
+}
+
+.sl-faq__item p {
+  margin: 0.75rem 0 0;
+  color: var(--sl-muted);
+  line-height: 1.55;
+}
+
+.sl-related__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 0.5rem;
+}
+
+.sl-related__links a {
+  display: inline-flex;
+  padding: 0.55rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid var(--sl-line);
+  text-decoration: none;
+  color: var(--sl-ink);
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: #fff;
+}
+
+.sl-related__links a:hover {
+  border-color: var(--sl-green);
+  color: var(--sl-green);
+}

@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PageMastFx from '../../components/PageMastFx.astro';
+import AeoDefinition from '../../components/AeoDefinition.astro';
+import { wa, site } from '../../data/site';
+import { solutions } from '../../data/solutions';
+import {
+  breadcrumbJsonLd,
+  faqPageJsonLd,
+  definedTermJsonLd,
+  webPageJsonLd,
+} from '../../data/seo';
+import '../../styles/global.css';
+import '../../styles/solution-page.css';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return solutions.map((s) => ({ params: { slug: s.slug }, props: { solution: s } }));
+}
+
+const { solution } = Astro.props;
+const path = `/solutions/${solution.slug}`;
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Solutions', path: '/features' },
+    { name: solution.title, path },
+  ]),
+  webPageJsonLd({
+    name: `${solution.title} | Dialer Bot`,
+    description: solution.description,
+    path,
+  }),
+  definedTermJsonLd(solution.title, solution.definition, path),
+  faqPageJsonLd(solution.faqs),
+];
+---
+
+<BaseLayout title={`${solution.title} | Dialer Bot`} description={solution.description} jsonLd={jsonLd}>
+  <Header slot="header" />
+
+  <div class="sl">
+    <header class="sl-mast page-mast" data-mast>
+      <PageMastFx />
+      <div class="sl-shell sl-mast__grid">
+        <div class="sl-mast__copy">
+          <nav class="sl-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <a href="/features">Solutions</a>
+            <span aria-hidden="true">/</span>
+            <span>{solution.title}</span>
+          </nav>
+          <p class="sl-brand">Dialer Bot</p>
+          <h1>{solution.h1}</h1>
+          <AeoDefinition term={solution.title} definition={solution.definition} />
+          <p class="sl-deck">Built for: {solution.audience}</p>
+          <div class="sl-actions">
+            <a class="sl-btn sl-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+              Try live demo
+            </a>
+            <a class="sl-btn sl-btn--ghost" href={wa.start} target="_blank" rel="noopener noreferrer">
+              WhatsApp sales
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="sl-section">
+      <div class="sl-shell">
+        <h2>Problems this solves</h2>
+        <ul class="sl-list">
+          {solution.problems.map((p) => <li>{p}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="sl-section sl-section--wash">
+      <div class="sl-shell">
+        <h2>How Dialer Bot works here</h2>
+        <ol class="sl-steps">
+          {solution.howItWorks.map((step, i) => (
+            <li>
+              <span class="sl-steps__n">{String(i + 1).padStart(2, '0')}</span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="sl-section">
+      <div class="sl-shell">
+        <h2>What floors get</h2>
+        <ul class="sl-list">
+          {solution.outcomes.map((o) => <li>{o}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="sl-section sl-section--wash">
+      <div class="sl-shell">
+        <h2>FAQ</h2>
+        <div class="sl-faq">
+          {solution.faqs.map((f) => (
+            <details class="sl-faq__item">
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="sl-section">
+      <div class="sl-shell sl-related">
+        <h2>Related</h2>
+        <div class="sl-related__links">
+          {solution.related.map((r) =>
+            r.href.startsWith('http') ? (
+              <a href={r.href} target="_blank" rel="noopener noreferrer">
+                {r.label}
+              </a>
+            ) : (
+              <a href={r.href}>{r.label}</a>
+            ),
+          )}
+        </div>
+        <div class="sl-actions">
+          <a class="sl-btn sl-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+            Open live demo
+          </a>
+          <a class="sl-btn sl-btn--ghost" href="/pricing">View pricing</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <Footer slot="footer" />
+</BaseLayout>
