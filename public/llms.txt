@@ -1,0 +1,53 @@
+# Dialer Bot
+
+> AI voice bots that qualify inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoff closable leads to human agents.
+
+Dialer Bot is built in Islamabad, Pakistan. Primary conversion paths are the live product demo and WhatsApp sales. Public contact email is Query@dialerbot.online. Job applications go through the careers portal on this site.
+
+## Primary
+
+- [Home](https://dialerbot.online/): Product overview and main sales pitch for Dialer Bot
+- [Features](https://dialerbot.online/features): Intent scoring, opener packs, compliance gates, transcripts, routing, pace control
+- [Pricing](https://dialerbot.online/pricing): Starter bot pricing and enterprise quote path
+- [Live demo](https://demo.dialerbot.online/): Full working Dialer Bot product demo
+- [Contact](https://dialerbot.online/contact): WhatsApp, email, office address, and contact form
+- [Company](https://dialerbot.online/company): About Contactivity / Dialer Bot team in Islamabad
+- [Careers](https://dialerbot.online/careers): Open roles and hiring portal
+
+## Product niches
+
+- [ACA / insurance calling](https://dialerbot.online/features): Qualification bots for ACA, FE, and HI floors
+- [Truck dispatch](https://dialerbot.online/features): Voice bots for dispatch and load-related calling
+- [Inbound receptionist](https://dialerbot.online/features): First-contact inbound qualification before agents pick up
+- [Outbound dialer sync](https://dialerbot.online/features): Pace-matched outbound campaign bots
+
+## Content
+
+- [Blog](https://dialerbot.online/blog): Floor-tested articles on warm handoff, openers, pace, dispatch, vault, pricing
+- [Warm handoff beats cold transfer](https://dialerbot.online/blog/warm-handoff-beats-cold-transfer): Why warm handoff converts better than cold transfer
+- [ACA opener packs that survive QA](https://dialerbot.online/blog/aca-opener-packs-that-survive-qa): Building compliant ACA openers
+- [Pace governor for dialer RPM](https://dialerbot.online/blog/pace-governor-for-dialer-rpm): Matching bot pace to live dialer speed
+- [Truck dispatch bots first questions](https://dialerbot.online/blog/truck-dispatch-bots-first-questions): First questions for dispatch voice bots
+- [Transcript vault for supervisors](https://dialerbot.online/blog/transcript-vault-for-supervisors): Supervisor transcript workflows
+- [When to buy enterprise bots](https://dialerbot.online/blog/when-to-buy-enterprise-bots): When starter packs vs enterprise make sense
+
+## Trust & policy
+
+- [FAQs](https://dialerbot.online/faqs): Common product and buying questions
+- [Changelog](https://dialerbot.online/changelog): Product release notes
+- [Privacy](https://dialerbot.online/privacy): Privacy policy
+- [Terms](https://dialerbot.online/terms): Terms of use
+
+## Contact
+
+- Email: Query@dialerbot.online
+- WhatsApp / phone: +92 311 6877887
+- Office: Office 12, Pakistan Town Phase 2, Islamabad, Pakistan
+- Demo: https://demo.dialerbot.online
+
+## Optional
+
+- [Sitemap](https://dialerbot.online/sitemap-index.xml): Full marketing sitemap
+- [Jobs sitemap](https://dialerbot.online/sitemap-jobs.xml): Open career listings sitemap
+- [robots.txt](https://dialerbot.online/robots.txt): Crawler rules
+- [llms-full.txt](https://dialerbot.online/llms-full.txt): Longer single-file brand/product context for LLMs

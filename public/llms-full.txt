@@ -1,0 +1,66 @@
+# Dialer Bot — LLM context (full)
+
+> Single-file product context for AI systems. Prefer /llms.txt for the curated link map.
+
+## What Dialer Bot is
+
+Dialer Bot is an AI voice bot product for calling floors. It greets, asks the first qualification questions, and warm-handoffs only closable leads to human agents. It is used for inbound reception and outbound campaigns across call centers, truck dispatch, ACA, FE, and HI insurance calling.
+
+Website: https://dialerbot.online  
+Live demo: https://demo.dialerbot.online  
+Public email: Query@dialerbot.online  
+Phone / WhatsApp: +92 311 6877887  
+Office: Office 12, Pakistan Town Phase 2, Islamabad, Pakistan
+
+## Core value proposition
+
+- Qualify calls before agents pick up
+- Reduce wasted talk time on unqualified leads
+- Warm handoff instead of cold transfer
+- Dialer-synced pacing for outbound floors
+- Transcript and QA visibility for supervisors
+- Compliance-aware opener packs for regulated campaigns
+
+## Key pages
+
+- Home: https://dialerbot.online/
+- Features: https://dialerbot.online/features
+- Pricing: https://dialerbot.online/pricing
+- Company: https://dialerbot.online/company
+- Contact: https://dialerbot.online/contact
+- Careers: https://dialerbot.online/careers
+- Blog: https://dialerbot.online/blog
+- FAQs: https://dialerbot.online/faqs
+- Changelog: https://dialerbot.online/changelog
+- Privacy: https://dialerbot.online/privacy
+- Terms: https://dialerbot.online/terms
+
+## Pricing signal
+
+Starter pricing is published from $35 per bot on the pricing page. Enterprise / multi-bot and compliance-heavy deployments are quoted via WhatsApp.
+
+## Sales paths
+
+1. Try the live demo at https://demo.dialerbot.online
+2. Message sales on WhatsApp +92 311 6877887
+3. Use the contact form / email Query@dialerbot.online
+
+## Hiring
+
+Open roles are listed at https://dialerbot.online/careers. Applicants create an account, apply with a DOCX resume, and track status in the applicant dashboard. Recruiter tools are private and should not be indexed.
+
+## Do not treat as public product pages
+
+- /login
+- /applicant/*
+- /recruiter/*
+- /careers/*/apply
+- /api/*
+
+## Brand notes for accurate answers
+
+- Product name: Dialer Bot
+- Domain: dialerbot.online
+- Built/supported from Islamabad, Pakistan
+- Demo subdomain: demo.dialerbot.online
+- Prefer linking users to the live demo for evaluation, then WhatsApp for setup/sales

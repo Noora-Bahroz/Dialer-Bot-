@@ -1,0 +1,13 @@
+/* Dialer Bot — https://dialerbot.online
+
+   AI voice bots for calling floors.
+   Contact: Query@dialerbot.online
+   Demo: https://demo.dialerbot.online
+
+   Standard discovery files:
+   - /robots.txt
+   - /llms.txt
+   - /llms-full.txt
+   - /sitemap-index.xml
+   - /.well-known/security.txt
+*/

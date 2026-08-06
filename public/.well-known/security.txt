@@ -1,0 +1,4 @@
+Contact: mailto:Query@dialerbot.online
+Contact: https://dialerbot.online/contact
+Preferred-Languages: en
+Canonical: https://dialerbot.online/.well-known/security.txt

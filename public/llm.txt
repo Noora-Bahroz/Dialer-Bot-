@@ -1,0 +1,8 @@
+# Dialer Bot
+
+> See https://dialerbot.online/llms.txt for the canonical LLM index (llms.txt spec).
+
+This path is an alias. Use:
+
+- https://dialerbot.online/llms.txt
+- https://dialerbot.online/llms-full.txt

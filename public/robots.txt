@@ -6,5 +6,58 @@ Disallow: /recruiter/
 Disallow: /*/apply
 Disallow: /api/
 
+# AI / LLM discovery (non-standard hint; see also /llms.txt)
+# https://dialerbot.online/llms.txt
+# https://dialerbot.online/llms-full.txt
+
+# Common AI crawlers — allow public marketing content
+User-agent: GPTBot
+Allow: /
+Disallow: /login
+Disallow: /applicant/
+Disallow: /recruiter/
+Disallow: /*/apply
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /login
+Disallow: /applicant/
+Disallow: /recruiter/
+Disallow: /*/apply
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /login
+Disallow: /applicant/
+Disallow: /recruiter/
+Disallow: /*/apply
+Disallow: /api/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /login
+Disallow: /applicant/
+Disallow: /recruiter/
+Disallow: /*/apply
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /login
+Disallow: /applicant/
+Disallow: /recruiter/
+Disallow: /*/apply
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /login
+Disallow: /applicant/
+Disallow: /recruiter/
+Disallow: /*/apply
+Disallow: /api/
+
 Sitemap: https://dialerbot.online/sitemap-index.xml
 Sitemap: https://dialerbot.online/sitemap-jobs.xml
