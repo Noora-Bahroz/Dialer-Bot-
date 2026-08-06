@@ -2,11 +2,13 @@
 interface Props {
   term: string;
   definition: string;
+  /** Use on dark heroes / masts so text stays readable */
+  tone?: 'light' | 'dark';
 }
-const { term, definition } = Astro.props;
+const { term, definition, tone = 'light' } = Astro.props;
 ---
 
-<section class="aeo-def" aria-label={`${term} definition`}>
+<section class:list={['aeo-def', `aeo-def--${tone}`]} aria-label={`${term} definition`}>
   <p class="aeo-def__label">Definition</p>
   <p class="aeo-def__term">{term}</p>
   <p class="aeo-def__text">{definition}</p>
@@ -39,5 +41,19 @@ const { term, definition } = Astro.props;
     font-size: 0.95rem;
     line-height: 1.55;
     color: #3d4a45;
+  }
+
+  .aeo-def--dark {
+    border-left-color: #dbfe7a;
+    background: rgba(219, 254, 122, 0.08);
+  }
+  .aeo-def--dark .aeo-def__label {
+    color: #dbfe7a;
+  }
+  .aeo-def--dark .aeo-def__term {
+    color: #f3f7f4;
+  }
+  .aeo-def--dark .aeo-def__text {
+    color: rgba(243, 247, 244, 0.78);
   }
 </style>
