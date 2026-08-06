@@ -16,6 +16,8 @@ interface Props {
   image?: string;
   ogType?: 'website' | 'article';
   noindex?: boolean;
+  /** Smooth Lenis scroll — off on portal for snappier TTI */
+  smoothScroll?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
@@ -25,6 +27,7 @@ const {
   image = DEFAULT_OG_IMAGE,
   ogType = 'website',
   noindex = false,
+  smoothScroll = true,
   jsonLd,
 } = Astro.props;
 
@@ -36,6 +39,9 @@ const robots = noindex ? 'noindex, nofollow' : 'index, follow';
 const baseSchemas = noindex ? [] : [organizationJsonLd(), websiteJsonLd()];
 const extraSchemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 const schemas = [...baseSchemas, ...extraSchemas];
+
+const fontHref =
+  'https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap';
 ---
 
 <!doctype html>
@@ -78,10 +84,12 @@ const schemas = [...baseSchemas, ...extraSchemas];
     <link rel="dns-prefetch" href="//demo.dialerbot.online" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Non-blocking font CSS (swap in after load) -->
+    <link rel="preload" as="style" href={fontHref} />
+    <link rel="stylesheet" href={fontHref} media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href={fontHref} />
+    </noscript>
     <title>{pageTitle}</title>
     {
       schemas.map((schema) => (
@@ -98,74 +106,10 @@ const schemas = [...baseSchemas, ...extraSchemas];
     <slot name="footer" />
     <WhatsAppFloat />
 
-    <script>
-      import Lenis from 'lenis';
-      import 'lenis/dist/lenis.css';
-
+    <script define:vars={{ smoothScroll }}>
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!reduced) {
-        const lenis = new Lenis({
-          duration: 1.65,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          orientation: 'vertical',
-          gestureOrientation: 'vertical',
-          smoothWheel: true,
-          wheelMultiplier: 0.72,
-          touchMultiplier: 1.35,
-          infinite: false,
-          autoRaf: false,
-        });
 
-        window.__lenis = lenis;
-
-        const raf = (time) => {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        };
-        requestAnimationFrame(raf);
-
-        document.documentElement.classList.add('has-smooth-scroll');
-
-        document.addEventListener('click', (e) => {
-          const a = e.target?.closest?.('a[href]');
-          if (!a) return;
-
-          const href = a.getAttribute('href');
-          if (!href || href === '#' || /^https?:/i.test(href)) return;
-
-          let url;
-          try {
-            url = new URL(href, window.location.href);
-          } catch {
-            return;
-          }
-
-          if (url.origin !== window.location.origin) return;
-          if (url.pathname !== window.location.pathname) return;
-          if (!url.hash || url.hash === '#') return;
-
-          const el = document.querySelector(url.hash);
-          if (!el) return;
-
-          e.preventDefault();
-          lenis.scrollTo(el, {
-            offset: -72,
-            duration: 1.75,
-          });
-          history.pushState(null, '', url.hash);
-        });
-
-        const syncMenuLock = () => {
-          if (document.body.style.overflow === 'hidden') lenis.stop();
-          else lenis.start();
-        };
-        new MutationObserver(syncMenuLock).observe(document.body, {
-          attributes: true,
-          attributeFilter: ['style'],
-        });
-      }
-
-      const revealNodes = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      const revealNodes = document.querySelectorAll('[data-reveal]');
       if (revealNodes.length) {
         if (reduced || !('IntersectionObserver' in window)) {
           revealNodes.forEach((el) => el.classList.add('is-in'));
@@ -184,6 +128,70 @@ const schemas = [...baseSchemas, ...extraSchemas];
         }
       }
 
+      // Defer Lenis until after first paint so LCP/TTI stay snappy
+      if (smoothScroll && !reduced) {
+        const startLenis = () => {
+          import('lenis').then(({ default: Lenis }) => {
+            import('lenis/dist/lenis.css');
+            const lenis = new Lenis({
+              duration: 1.65,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+              orientation: 'vertical',
+              gestureOrientation: 'vertical',
+              smoothWheel: true,
+              wheelMultiplier: 0.72,
+              touchMultiplier: 1.35,
+              infinite: false,
+              autoRaf: false,
+            });
+
+            window.__lenis = lenis;
+
+            const raf = (time) => {
+              lenis.raf(time);
+              requestAnimationFrame(raf);
+            };
+            requestAnimationFrame(raf);
+            document.documentElement.classList.add('has-smooth-scroll');
+
+            document.addEventListener('click', (e) => {
+              const a = e.target?.closest?.('a[href]');
+              if (!a) return;
+              const href = a.getAttribute('href');
+              if (!href || href === '#' || /^https?:/i.test(href)) return;
+              let url;
+              try {
+                url = new URL(href, window.location.href);
+              } catch {
+                return;
+              }
+              if (url.origin !== window.location.origin) return;
+              if (url.pathname !== window.location.pathname) return;
+              if (!url.hash || url.hash === '#') return;
+              const el = document.querySelector(url.hash);
+              if (!el) return;
+              e.preventDefault();
+              lenis.scrollTo(el, { offset: -72, duration: 1.75 });
+              history.pushState(null, '', url.hash);
+            });
+
+            const syncMenuLock = () => {
+              if (document.body.style.overflow === 'hidden') lenis.stop();
+              else lenis.start();
+            };
+            new MutationObserver(syncMenuLock).observe(document.body, {
+              attributes: true,
+              attributeFilter: ['style'],
+            });
+          });
+        };
+
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(startLenis, { timeout: 1800 });
+        } else {
+          setTimeout(startLenis, 400);
+        }
+      }
     </script>
   </body>
 </html>

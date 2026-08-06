@@ -243,7 +243,16 @@ const testimonials = [
       <h2 class="section-title center" data-reveal>Trusted by call centers and dispatch teams that live on the phone</h2>
       <div class="sponsors-logos">
         {sponsors.map((logo, i) => (
-          <img src={`/images/${logo}`} alt="Partner company logo" data-reveal="fade" style={`--reveal-i: ${i}`} />
+          <img
+            src={`/images/${logo}`}
+            alt="Partner company logo"
+            loading="lazy"
+            decoding="async"
+            width="120"
+            height="40"
+            data-reveal="fade"
+            style={`--reveal-i: ${i}`}
+          />
         ))}
       </div>
     </div>
@@ -327,7 +336,7 @@ const testimonials = [
             {
               successPoints.map((point) => (
                 <div>
-                  <img src={point.icon} alt="" />
+                  <img src={point.icon} alt="" loading="lazy" decoding="async" width="24" height="24" />
                   <h3>{point.title}</h3>
                   <p>{point.text}</p>
                 </div>
@@ -350,7 +359,14 @@ const testimonials = [
 
       <div class="stats-top">
         <div class="stat-media" data-reveal="left">
-          <img src="/images/dialerbot-home-04.webp" alt="Dialer Bot reducing agent workload" />
+          <img
+            src="/images/dialerbot-home-04.webp"
+            alt="Dialer Bot reducing agent workload"
+            loading="lazy"
+            decoding="async"
+            width="720"
+            height="480"
+          />
         </div>
         <div class="stat-card" data-reveal="right" data-lift style="--reveal-i:1">
           <div class="num">60%</div>
@@ -372,7 +388,14 @@ const testimonials = [
           </p>
         </div>
         <div class="stat-media" data-reveal="scale" style="--reveal-i:1">
-          <img src="/images/dialerbot-home-05.webp" alt="Dialer Bot campaign performance" />
+          <img
+            src="/images/dialerbot-home-05.webp"
+            alt="Dialer Bot campaign performance"
+            loading="lazy"
+            decoding="async"
+            width="720"
+            height="480"
+          />
         </div>
         <div class="stat-card" data-reveal="up" data-lift style="--reveal-i:2">
           <div class="num">1:1</div>
@@ -396,7 +419,7 @@ const testimonials = [
           testimonials.map((t, i) => (
             <article class="testimonial" data-reveal="up" data-lift style={`--reveal-i: ${i % 3}`}>
               <div class="testimonial-head">
-                <img src={t.image} alt={t.name} />
+                <img src={t.image} alt={t.name} loading="lazy" decoding="async" width="56" height="56" />
                 <div>
                   <strong>{t.name}</strong>
                   <span>{t.role}</span>

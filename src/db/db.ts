@@ -400,34 +400,48 @@ async function initSchema() {
       FOREIGN KEY(user_id) REFERENCES users(id),
       FOREIGN KEY(job_id) REFERENCES jobs(id)
     );
+
+    CREATE TABLE IF NOT EXISTS _portal_meta (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL
+    );
   `);
 
-  await addColumn('users', 'headline', 'TEXT');
-  await addColumn('users', 'bio', 'TEXT');
-  await addColumn('users', 'last_visit', 'DATETIME');
-  await addColumn('jobs', 'location', "TEXT NOT NULL DEFAULT 'Islamabad / Remote'");
-  await addColumn('jobs', 'compensation', 'TEXT');
-  await addColumn('jobs', 'description', 'TEXT');
-  await addColumn('jobs', 'responsibilities', 'TEXT');
-  await addColumn('jobs', 'requirements', 'TEXT');
-  await addColumn('jobs', 'posted_at', 'DATETIME');
-  await addColumn('jobs', 'updated_at', 'DATETIME');
-  await addColumn('applications', 'updated_at', 'DATETIME');
-  await addColumn('applications', 'resume_path', 'TEXT');
-  await addColumn('applications', 'certifications_json', 'TEXT');
-  await addColumn('applications', 'work_mode', 'TEXT');
-  await addColumn('applications', 'availability', 'TEXT');
-  await addColumn('applications', 'current_salary', 'TEXT');
-  await addColumn('applications', 'expected_salary', 'TEXT');
-  await addColumn('applications', 'portfolio_url', 'TEXT');
-  await addColumn('applications', 'other_links', 'TEXT');
-  await addColumn('applications', 'notes', 'TEXT');
+  const SCHEMA_VERSION = '3';
+  const meta = await dbGet<{ value: string }>("SELECT value FROM _portal_meta WHERE key = 'schema_version'");
+  if (meta?.value !== SCHEMA_VERSION) {
+    await addColumn('users', 'headline', 'TEXT');
+    await addColumn('users', 'bio', 'TEXT');
+    await addColumn('users', 'last_visit', 'DATETIME');
+    await addColumn('jobs', 'location', "TEXT NOT NULL DEFAULT 'Islamabad / Remote'");
+    await addColumn('jobs', 'compensation', 'TEXT');
+    await addColumn('jobs', 'description', 'TEXT');
+    await addColumn('jobs', 'responsibilities', 'TEXT');
+    await addColumn('jobs', 'requirements', 'TEXT');
+    await addColumn('jobs', 'posted_at', 'DATETIME');
+    await addColumn('jobs', 'updated_at', 'DATETIME');
+    await addColumn('applications', 'updated_at', 'DATETIME');
+    await addColumn('applications', 'resume_path', 'TEXT');
+    await addColumn('applications', 'certifications_json', 'TEXT');
+    await addColumn('applications', 'work_mode', 'TEXT');
+    await addColumn('applications', 'availability', 'TEXT');
+    await addColumn('applications', 'current_salary', 'TEXT');
+    await addColumn('applications', 'expected_salary', 'TEXT');
+    await addColumn('applications', 'portfolio_url', 'TEXT');
+    await addColumn('applications', 'other_links', 'TEXT');
+    await addColumn('applications', 'notes', 'TEXT');
 
-  await dbExec(`
-    UPDATE jobs SET posted_at = created_at WHERE posted_at IS NULL;
-    UPDATE jobs SET updated_at = COALESCE(updated_at, created_at);
-    UPDATE applications SET updated_at = created_at WHERE updated_at IS NULL;
-  `);
+    await dbExec(`
+      UPDATE jobs SET posted_at = created_at WHERE posted_at IS NULL;
+      UPDATE jobs SET updated_at = COALESCE(updated_at, created_at);
+      UPDATE applications SET updated_at = created_at WHERE updated_at IS NULL;
+    `);
+
+    await dbRun(
+      "INSERT INTO _portal_meta (key, value) VALUES ('schema_version', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+      [SCHEMA_VERSION],
+    );
+  }
 
   await seed();
   await ensureRecruiterAccount();
