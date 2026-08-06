@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="168" height="36" viewBox="0 0 168 36" role="img" aria-label="Clearline">
+  <title>Clearline</title>
+  <g transform="translate(0,2)">
+    <path d="M16 1.5 L27.5 8.2 V21.8 L16 28.5 L4.5 21.8 V8.2 Z" fill="#12B5A0"/>
+    <circle cx="16" cy="15" r="5.5" fill="none" stroke="#fff" stroke-width="2.4"/>
+    <circle cx="16" cy="15" r="1.8" fill="#fff"/>
+  </g>
+  <text x="40" y="24" fill="#6B7280" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="600" font-style="italic" letter-spacing="-0.2">Clearline</text>
+</svg>

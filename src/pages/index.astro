@@ -29,12 +29,12 @@ const benefitFeatures = [
 ];
 
 const sponsors = [
-  { name: 'Northlane Dispatch', tip: 'Truck dispatch floor' },
-  { name: 'Harbor ACA', tip: 'ACA outbound floor' },
-  { name: 'Summit FE Desk', tip: 'Final Expense sales' },
-  { name: 'Clearline Call Co', tip: 'Inbound reception' },
-  { name: 'Peak HI Floor', tip: 'Health Insurance dialing' },
-  { name: 'Relay Freight Ops', tip: 'Broker dispatch desk' },
+  { src: '/images/sponsor-northlane.svg', name: 'Northlane', tip: 'Truck dispatch floor' },
+  { src: '/images/sponsor-harboraca.svg', name: 'HarborACA', tip: 'ACA outbound floor' },
+  { src: '/images/sponsor-summitfe.svg', name: 'SummitFE', tip: 'Final Expense sales' },
+  { src: '/images/sponsor-clearline.svg', name: 'Clearline', tip: 'Inbound reception' },
+  { src: '/images/sponsor-peakfloor.svg', name: 'PeakFloor', tip: 'Health Insurance dialing' },
+  { src: '/images/sponsor-relayops.svg', name: 'RelayOps', tip: 'Broker dispatch desk' },
 ];
 
 const spotlights = [
@@ -279,15 +279,17 @@ const testimonials = [
       <h2 class="section-title center" data-reveal>Built for dialing floors like these</h2>
       <div class="sponsors-logos">
         {sponsors.map((sponsor, i) => (
-          <div
-            class="sponsor-mark"
+          <img
+            src={sponsor.src}
+            alt={`${sponsor.name} — ${sponsor.tip}`}
             title={sponsor.tip}
+            loading="lazy"
+            decoding="async"
+            width="168"
+            height="36"
             data-reveal="fade"
             style={`--reveal-i: ${i}`}
-          >
-            <span class="sponsor-mark__badge" aria-hidden="true">{sponsor.name.slice(0, 1)}</span>
-            <span class="sponsor-mark__name">{sponsor.name}</span>
-          </div>
+          />
         ))}
       </div>
     </div>

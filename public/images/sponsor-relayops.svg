@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="168" height="36" viewBox="0 0 168 36" role="img" aria-label="RelayOps">
+  <title>RelayOps</title>
+  <g transform="translate(2,3)">
+    <path d="M4 24 C8 14, 12 10, 20 4" fill="none" stroke="#3B5BDB" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M10 26 C14 16, 18 12, 26 6" fill="none" stroke="#3B5BDB" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M16 28 C20 18, 24 14, 32 8" fill="none" stroke="#3B5BDB" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+  <text x="44" y="24" fill="#6B7280" font-family="'Palatino Linotype', Palatino, serif" font-size="15.5" font-weight="600" letter-spacing="1.2">RelayOps</text>
+</svg>
