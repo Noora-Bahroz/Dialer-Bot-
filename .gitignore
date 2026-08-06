@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# vercel build output
+.vercel/
+
 # local portal database
 data/portal.db
 data/portal.db-*
