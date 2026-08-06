@@ -641,6 +641,21 @@
   margin-top: 0.25rem;
 }
 
+.pr-lane__ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.25rem;
+  align-self: stretch;
+}
+
+.pr-lane__ctas .pr-btn {
+  margin-top: 0;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
 /* Include matrix â€” 3Ã—2 */
 .pr-include {
   list-style: none;

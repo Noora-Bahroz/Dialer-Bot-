@@ -6,7 +6,7 @@ import FeatureConsoleMock from '../components/FeatureConsoleMock.astro';
 import WarmHandoffMock from '../components/WarmHandoffMock.astro';
 import HeroOrbitMock from '../components/HeroOrbitMock.astro';
 import AeoDefinition from '../components/AeoDefinition.astro';
-import { site, wa } from '../data/site';
+import { wa, demo } from '../data/site';
 import { definedTermJsonLd, webPageJsonLd } from '../data/seo';
 import '../styles/global.css';
 
@@ -206,7 +206,7 @@ const testimonials = [
             <AeoDefinition term="Dialer Bot" definition={dialerBotDefinition} />
           </div>
           <div class="hero-actions" data-reveal style="--reveal-i:3">
-            <a class="btn btn-white" href={site.demoUrl} target="_blank" rel="noopener noreferrer">Try Live Demo</a>
+            <a class="btn btn-white" href={demo.homeHero} target="_blank" rel="noopener noreferrer">Try Live Demo</a>
             <a class="btn btn-glass" href={wa.start} target="_blank" rel="noopener noreferrer">
               WhatsApp Sales
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -339,7 +339,7 @@ const testimonials = [
                   </div>
                 ))}
               </div>
-              <a class="btn btn-chip" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+              <a class="btn btn-chip" href={demo.homeChip} target="_blank" rel="noopener noreferrer">
                 {row.cta}
               </a>
             </div>

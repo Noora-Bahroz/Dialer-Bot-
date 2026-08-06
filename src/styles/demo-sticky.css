@@ -1,0 +1,89 @@
+/* Mobile conversion bar — sits above the WhatsApp float */
+
+.demo-sticky {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .demo-sticky {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 70;
+    padding: 0.65rem 0.75rem calc(0.65rem + env(safe-area-inset-bottom, 0px));
+    background: rgba(16, 45, 35, 0.96);
+    border-top: 1px solid rgba(219, 254, 122, 0.28);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.22);
+  }
+
+  .demo-sticky__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    width: min(100%, 560px);
+    margin-inline: auto;
+    padding-right: 4.25rem; /* room for WhatsApp float */
+  }
+
+  .demo-sticky__copy {
+    margin: 0;
+    min-width: 0;
+    color: #f3f7f4;
+  }
+
+  .demo-sticky__copy strong {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .demo-sticky__copy span {
+    display: block;
+    font-size: 0.7rem;
+    line-height: 1.35;
+    color: rgba(243, 247, 244, 0.72);
+  }
+
+  .demo-sticky__actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 0.4rem;
+  }
+
+  .demo-sticky__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.35rem;
+    padding: 0.45rem 0.7rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .demo-sticky__btn--demo {
+    background: #dbfe7a;
+    color: #102d23;
+  }
+
+  .demo-sticky__btn--wa {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+  }
+
+  body:has(.demo-sticky) {
+    padding-bottom: 5.5rem;
+  }
+
+  .wa-float {
+    bottom: calc(4.85rem + env(safe-area-inset-bottom, 0px));
+  }
+}

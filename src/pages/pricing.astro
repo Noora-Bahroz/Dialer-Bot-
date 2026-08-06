@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
-import { wa, site } from '../data/site';
+import { wa, site, demo } from '../data/site';
 import { breadcrumbJsonLd } from '../data/seo';
 import '../styles/global.css';
 import '../styles/pricing-page.css';
@@ -74,11 +74,11 @@ const steps = [
             lane. Multi-bot floors and custom rules are quoted directly, not buried in a public matrix.
           </p>
           <div class="pr-actions">
-            <a class="pr-btn pr-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+            <a class="pr-btn pr-btn--solid" href={demo.pricing} target="_blank" rel="noopener noreferrer">
               Try live demo
             </a>
-            <a class="pr-btn pr-btn--ghost" href={wa.enterprise} target="_blank" rel="noopener noreferrer">
-              Enterprise quote
+            <a class="pr-btn pr-btn--ghost" href={wa.start} target="_blank" rel="noopener noreferrer">
+              Buy on WhatsApp
             </a>
           </div>
         </div>
@@ -166,12 +166,12 @@ const steps = [
 
               <a
                 class="pr-btn pr-btn--solid pr-dial__cta"
-                href={site.demoUrl}
+                href={demo.pricingStarter}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-plan-cta="starter"
               >
-                Try starter demo
+                Try starter demo — then WhatsApp
               </a>
             </div>
 
@@ -267,9 +267,14 @@ const steps = [
               Best when you need one bot on one book — ACA, FE, HI, dispatch, or inbound reception — without a
               custom compliance matrix.
             </p>
-            <a class="pr-btn pr-btn--solid" href={wa.start} target="_blank" rel="noopener noreferrer">
-              WhatsApp sales
-            </a>
+            <div class="pr-lane__ctas">
+              <a class="pr-btn pr-btn--solid" href={demo.pricingStarter} target="_blank" rel="noopener noreferrer">
+                Try starter demo
+              </a>
+              <a class="pr-btn pr-btn--ghost" href={wa.start} target="_blank" rel="noopener noreferrer">
+                WhatsApp to buy · ${site.pricePerBot}/bot
+              </a>
+            </div>
           </article>
 
           <article class="pr-lane pr-lane--enterprise" data-reveal="right" data-lift style="--reveal-i:1">

@@ -4,7 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import PageMastFx from '../../components/PageMastFx.astro';
 import AeoDefinition from '../../components/AeoDefinition.astro';
-import { wa, site } from '../../data/site';
+import { wa, demo } from '../../data/site';
 import { solutions } from '../../data/solutions';
 import {
   breadcrumbJsonLd,
@@ -60,7 +60,7 @@ const jsonLd = [
           <AeoDefinition term={solution.title} definition={solution.definition} />
           <p class="sl-deck">Built for: {solution.audience}</p>
           <div class="sl-actions">
-            <a class="sl-btn sl-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+            <a class="sl-btn sl-btn--solid" href={demo.solution} target="_blank" rel="noopener noreferrer">
               Try live demo
             </a>
             <a class="sl-btn sl-btn--ghost" href={wa.start} target="_blank" rel="noopener noreferrer">
@@ -132,7 +132,7 @@ const jsonLd = [
           )}
         </div>
         <div class="sl-actions">
-          <a class="sl-btn sl-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+          <a class="sl-btn sl-btn--solid" href={demo.solution} target="_blank" rel="noopener noreferrer">
             Open live demo
           </a>
           <a class="sl-btn sl-btn--ghost" href="/pricing">View pricing</a>

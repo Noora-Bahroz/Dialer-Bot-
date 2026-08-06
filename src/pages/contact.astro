@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
-import { wa, site } from '../data/site';
+import { wa, site, demo } from '../data/site';
 import { breadcrumbJsonLd } from '../data/seo';
 import '../styles/global.css';
 import '../styles/contact-page.css';
@@ -76,7 +76,7 @@ const reasons = [
             visit Office 12 in Pakistan Town Phase 2, Islamabad.
           </p>
           <div class="ct-actions">
-            <a class="ct-btn ct-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+            <a class="ct-btn ct-btn--solid" href={demo.contact} target="_blank" rel="noopener noreferrer">
               Open live demo
             </a>
             <a class="ct-btn ct-btn--ghost" href={wa.general} target="_blank" rel="noopener noreferrer">WhatsApp sales</a>
@@ -396,6 +396,16 @@ const reasons = [
               </label>
 
               <p class="ct-form__status" data-form-status role="status" aria-live="polite" hidden></p>
+              <a
+                class="ct-form__wa"
+                data-form-wa
+                href={wa.afterContact}
+                target="_blank"
+                rel="noopener noreferrer"
+                hidden
+              >
+                Continue on WhatsApp
+              </a>
             </div>
 
             <div class="ct-form__foot">
@@ -474,6 +484,7 @@ const reasons = [
 
   const statusEl = form?.querySelector<HTMLElement>('[data-form-status]');
   const submitBtn = form?.querySelector<HTMLButtonElement>('[data-form-submit]');
+  const waAfter = form?.querySelector<HTMLAnchorElement>('[data-form-wa]');
 
   const setStatus = (text: string, kind: 'ok' | 'err' | '') => {
     if (!statusEl) return;
@@ -496,6 +507,7 @@ const reasons = [
 
     if (!payload.name || !payload.email || !payload.message) {
       setStatus('Name, email, and message are required.', 'err');
+      if (waAfter) waAfter.hidden = true;
       return;
     }
 
@@ -504,6 +516,7 @@ const reasons = [
       submitBtn.textContent = 'Sending…';
     }
     setStatus('', '');
+    if (waAfter) waAfter.hidden = true;
 
     try {
       const res = await fetch('/api/contact', {
@@ -522,7 +535,8 @@ const reasons = [
       form.querySelectorAll('.ct-reason').forEach((el, i) => el.classList.toggle('is-on', i === 0));
       const firstReason = form.querySelector<HTMLInputElement>('input[name="reason"]');
       if (firstReason) firstReason.checked = true;
-      setStatus('Sent. We will reply to your email shortly.', 'ok');
+      setStatus('Sent. We will reply by email — continue on WhatsApp for a faster start.', 'ok');
+      if (waAfter) waAfter.hidden = false;
     } catch {
       setStatus('Network error. Check your connection or WhatsApp us.', 'err');
     } finally {

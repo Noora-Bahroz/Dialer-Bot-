@@ -1,4 +1,4 @@
-import { site } from './site';
+import { demo } from './site';
 
 export type SolutionPage = {
   slug: string;
@@ -106,7 +106,7 @@ export const solutions: SolutionPage[] = [
     related: [
       { label: 'Warm handoff', href: '/solutions/warm-handoff' },
       { label: 'Dispatch article', href: '/blog/truck-dispatch-bots-first-questions' },
-      { label: 'Live demo', href: site.demoUrl },
+      { label: 'Live demo', href: demo.solution },
     ],
   },
   {

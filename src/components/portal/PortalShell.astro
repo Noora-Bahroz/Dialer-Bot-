@@ -16,7 +16,14 @@ interface Props {
 const { title, description = 'Dialer Bot careers portal.', wide = false, jsonLd, noindex = false } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} jsonLd={jsonLd} noindex={noindex} smoothScroll={false}>
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={jsonLd}
+  noindex={noindex}
+  smoothScroll={false}
+  showDemoBar={false}
+>
   <Header slot="header" />
   <div class="pt">
     <div class:list={['pt-shell', { 'pt-shell--wide': wide }]}>

@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { posts, getPost } from '../../data/posts';
-import { wa, site } from '../../data/site';
+import { wa, demo } from '../../data/site';
 import { articleJsonLd, breadcrumbJsonLd } from '../../data/seo';
 import '../../styles/global.css';
 import '../../styles/blog-page.css';
@@ -83,7 +83,7 @@ const headings = [...post.content.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1])
               <p>WhatsApp campaign type and dialer stack — same builders who ship the bots.</p>
             </div>
             <div class="bl-article__cta">
-              <a class="bl-btn bl-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+              <a class="bl-btn bl-btn--solid" href={demo.blog} target="_blank" rel="noopener noreferrer">
                 Try live demo
               </a>
               <a class="bl-btn bl-btn--ghost" href={wa.general} target="_blank" rel="noopener noreferrer">WhatsApp sales</a>
@@ -111,7 +111,7 @@ const headings = [...post.content.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1])
             <div class="bl-post__panel bl-post__panel--cta">
               <p class="bl-post__panel-label">Talk to Dialer Bot</p>
               <p class="bl-post__panel-note">Try the live product, then message us for setup.</p>
-              <a class="bl-btn bl-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+              <a class="bl-btn bl-btn--solid" href={demo.blog} target="_blank" rel="noopener noreferrer">
                 Open live demo
               </a>
             </div>

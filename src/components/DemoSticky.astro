@@ -1,0 +1,31 @@
+---
+import { demo, wa } from '../data/site';
+import '../styles/demo-sticky.css';
+---
+
+<div class="demo-sticky" data-demo-sticky>
+  <div class="demo-sticky__inner">
+    <p class="demo-sticky__copy">
+      <strong>See Dialer Bot live</strong>
+      <span>Qualify a call in the demo — then WhatsApp to buy.</span>
+    </p>
+    <div class="demo-sticky__actions">
+      <a
+        class="demo-sticky__btn demo-sticky__btn--demo"
+        href={demo.sticky}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Try live demo
+      </a>
+      <a
+        class="demo-sticky__btn demo-sticky__btn--wa"
+        href={wa.start}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</div>

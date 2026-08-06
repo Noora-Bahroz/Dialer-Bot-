@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
-import { wa, site } from '../data/site';
+import { wa, site, demo } from '../data/site';
 import { breadcrumbJsonLd } from '../data/seo';
 import '../styles/global.css';
 import '../styles/company-page.css';
@@ -75,7 +75,7 @@ const principles = [
             WhatsApp whenever the floor needs us.
           </p>
           <div class="co-actions">
-            <a class="co-btn co-btn--solid" href={site.demoUrl} target="_blank" rel="noopener noreferrer">
+            <a class="co-btn co-btn--solid" href={demo.company} target="_blank" rel="noopener noreferrer">
               Try live demo
             </a>
             <a class="co-btn co-btn--ghost" href={wa.general} target="_blank" rel="noopener noreferrer">WhatsApp the team</a>

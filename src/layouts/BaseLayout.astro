@@ -1,4 +1,5 @@
 ---
+import DemoSticky from '../components/DemoSticky.astro';
 import WhatsAppFloat from '../components/WhatsAppFloat.astro';
 import {
   DEFAULT_DESCRIPTION,
@@ -18,6 +19,8 @@ interface Props {
   noindex?: boolean;
   /** Smooth Lenis scroll — off on portal for snappier TTI */
   smoothScroll?: boolean;
+  /** Sticky mobile demo bar — off on portal / noindex pages */
+  showDemoBar?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
@@ -28,8 +31,11 @@ const {
   ogType = 'website',
   noindex = false,
   smoothScroll = true,
+  showDemoBar,
   jsonLd,
 } = Astro.props;
+
+const demoBar = showDemoBar ?? !noindex;
 
 const pageTitle = title.includes('Dialer Bot') ? title : `${title} | Dialer Bot`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -105,6 +111,7 @@ const fontHref =
       <slot />
     </main>
     <slot name="footer" />
+    {demoBar && <DemoSticky />}
     <WhatsAppFloat />
 
     <script define:vars={{ smoothScroll }}>

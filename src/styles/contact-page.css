@@ -811,6 +811,29 @@
   border: 1px solid #f0c4c4;
 }
 
+.ct-form__wa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.65rem;
+  min-height: 2.6rem;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  background: #1e322d;
+  color: #dbfe7a;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.ct-form__wa[hidden] {
+  display: none !important;
+}
+
+.ct-form__wa:hover {
+  background: #102d23;
+}
+
 .ct-form__note {
   margin: 0;
   font-size: 0.8125rem;
