@@ -1,4 +1,4 @@
-/* Mobile conversion bar — stacked above the WhatsApp float */
+/* Mobile conversion bar — WhatsApp via sticky CTA (float hidden when bar shows) */
 
 .demo-sticky {
   display: none;
@@ -85,15 +85,12 @@
 
   /* Clearance for stacked bar + safe area */
   body:has(.demo-sticky) {
-    padding-bottom: calc(7.75rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(7.25rem + env(safe-area-inset-bottom, 0px));
   }
 
-  /* Float sits above the bar, not beside it */
-  .wa-float {
-    bottom: calc(6.85rem + env(safe-area-inset-bottom, 0px));
-    right: max(0.85rem, env(safe-area-inset-right, 0px));
-    width: 52px;
-    height: 52px;
+  /* Sticky bar already has WhatsApp — hide the round float on mobile */
+  body:has(.demo-sticky) .wa-float {
+    display: none;
   }
 }
 
@@ -110,9 +107,5 @@
 
   body:has(.demo-sticky) {
     padding-bottom: calc(6.85rem + env(safe-area-inset-bottom, 0px));
-  }
-
-  .wa-float {
-    bottom: calc(5.95rem + env(safe-area-inset-bottom, 0px));
   }
 }
