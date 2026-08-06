@@ -7,6 +7,7 @@ import {
   absoluteUrl,
   organizationJsonLd,
   websiteJsonLd,
+  siteNavigationJsonLd,
 } from '../data/seo';
 import '../styles/reveal.css';
 import '../styles/mast.css';
@@ -43,7 +44,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = absoluteUrl(image);
 const robots = noindex ? 'noindex, nofollow' : 'index, follow';
 
-const baseSchemas = noindex ? [] : [organizationJsonLd(), websiteJsonLd()];
+const baseSchemas = noindex ? [] : [organizationJsonLd(), websiteJsonLd(), siteNavigationJsonLd()];
 const extraSchemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 const schemas = [...baseSchemas, ...extraSchemas];
 
@@ -84,7 +85,14 @@ const fontHref =
     <meta name="twitter:image:alt" content="Dialer Bot — AI voice bots for calling floors" />
     <meta name="twitter:domain" content="dialerbot.online" />
 
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="application-name" content="Dialer Bot" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="text/plain" title="LLM context" href="/llms.txt" />
     <link rel="alternate" hrefLang="en" href={canonical} />

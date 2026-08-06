@@ -36,8 +36,15 @@ export function organizationJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: site.name,
+    alternateName: 'DialerBot',
     url: SITE_URL,
-    logo: absoluteUrl('/images/dialerbot-logo-black.svg'),
+    logo: {
+      '@type': 'ImageObject',
+      url: absoluteUrl('/images/dialerbot-logo-square.png'),
+      width: 512,
+      height: 512,
+    },
+    image: absoluteUrl('/images/dialerbot-logo-square.png'),
     email: site.email,
     telephone: site.phoneDisplay,
     address: {
@@ -52,6 +59,7 @@ export function organizationJsonLd() {
       contactType: 'sales',
       availableLanguage: ['English'],
     },
+    sameAs: [site.demoUrl],
   };
 }
 
@@ -62,19 +70,53 @@ export function websiteJsonLd() {
     name: site.name,
     url: SITE_URL,
     description: DEFAULT_DESCRIPTION,
+    inLanguage: 'en',
     publisher: {
       '@type': 'Organization',
       name: site.name,
       logo: {
         '@type': 'ImageObject',
-        url: absoluteUrl('/images/dialerbot-logo-black.svg'),
+        url: absoluteUrl('/images/dialerbot-logo-square.png'),
+        width: 512,
+        height: 512,
       },
     },
+    hasPart: [
+      { '@type': 'WebPage', name: 'Features', url: absoluteUrl('/features') },
+      { '@type': 'WebPage', name: 'Pricing', url: absoluteUrl('/pricing') },
+      { '@type': 'WebPage', name: 'Contact', url: absoluteUrl('/contact') },
+      { '@type': 'WebPage', name: 'Careers', url: absoluteUrl('/careers') },
+      { '@type': 'WebPage', name: 'Blog', url: absoluteUrl('/blog') },
+      { '@type': 'WebPage', name: 'Company', url: absoluteUrl('/company') },
+    ],
     potentialAction: {
       '@type': 'ViewAction',
       name: 'Try live demo',
       target: site.demoUrl,
     },
+  };
+}
+
+/** Helps Google understand primary nav destinations (sitelinks are still algorithmic). */
+export function siteNavigationJsonLd() {
+  const links = [
+    { name: 'Features', path: '/features' },
+    { name: 'Pricing', path: '/pricing' },
+    { name: 'Careers', path: '/careers' },
+    { name: 'Blog', path: '/blog' },
+    { name: 'Company', path: '/company' },
+    { name: 'Contact', path: '/contact' },
+  ];
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Primary navigation',
+    itemListElement: links.map((link, i) => ({
+      '@type': 'SiteNavigationElement',
+      position: i + 1,
+      name: link.name,
+      url: absoluteUrl(link.path),
+    })),
   };
 }
 
@@ -161,7 +203,9 @@ export function articleJsonLd(post: {
       name: site.name,
       logo: {
         '@type': 'ImageObject',
-        url: absoluteUrl('/images/dialerbot-logo-black.svg'),
+        url: absoluteUrl('/images/dialerbot-logo-square.png'),
+        width: 512,
+        height: 512,
       },
     },
     mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
@@ -201,7 +245,7 @@ export function jobPostingJsonLd(job: {
       '@type': 'Organization',
       name: site.name,
       sameAs: SITE_URL,
-      logo: absoluteUrl('/images/dialerbot-logo-black.svg'),
+      logo: absoluteUrl('/images/dialerbot-logo-square.png'),
     },
     jobLocation: {
       '@type': 'Place',
