@@ -1414,7 +1414,35 @@ h4 {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: var(--sp-60) var(--sp-70);
+  gap: var(--sp-40) var(--sp-50);
+}
+
+.sponsor-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #3d4a45;
+}
+
+.sponsor-mark__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 6px;
+  background: #1e322d;
+  color: #dbfe7a;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.sponsor-mark__name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 .sponsors-logos img {
