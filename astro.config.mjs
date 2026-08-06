@@ -5,7 +5,10 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   output: 'server',
-  adapter: vercel(),
+  adapter: vercel({
+    // Mumbai — closest to Turso ap-south-1 and Pakistan visitors
+    regions: ['bom1'],
+  }),
   site: 'https://dialerbot.online',
   trailingSlash: 'never',
   integrations: [

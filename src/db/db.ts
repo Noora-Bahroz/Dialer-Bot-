@@ -431,8 +431,12 @@ async function initSchema() {
 
   await seed();
   await ensureRecruiterAccount();
-  await migrateLegacyJobs();
-  await syncSeedJobs();
+
+  // Heavy migrations/seed sync only when explicitly requested (not every serverless cold start)
+  if (env('PORTAL_SYNC_SEED') === 'true') {
+    await migrateLegacyJobs();
+    await syncSeedJobs();
+  }
 }
 
 let readyPromise: Promise<void> | null = null;
