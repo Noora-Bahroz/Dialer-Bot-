@@ -129,7 +129,14 @@ if (Astro.request.method === 'POST') {
       await dbRun("UPDATE users SET last_active = CURRENT_TIMESTAMP WHERE id = ?", [user!.id]);
       return Astro.redirect('/applicant/dashboard?applied=1');
     } catch (err) {
-      error = err instanceof Error ? err.message : 'Could not submit application.';
+      const msg = err instanceof Error ? err.message : 'Could not submit application.';
+      // Surface a clearer hint when Blob store access mode is wrong.
+      if (/access denied|forbidden|valid token/i.test(msg)) {
+        error =
+          'Upload failed due to storage access settings. Please try again, or contact support if it keeps failing.';
+      } else {
+        error = msg;
+      }
     }
   }
 }

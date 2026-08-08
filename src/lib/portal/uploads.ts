@@ -38,6 +38,12 @@ function blobToken() {
   return env('BLOB_READ_WRITE_TOKEN') || undefined;
 }
 
+/** Must match the Vercel Blob store mode (public vs private). Wrong mode → Forbidden on put. */
+function blobAccess(): 'public' | 'private' {
+  const mode = env('BLOB_ACCESS').toLowerCase();
+  return mode === 'private' ? 'private' : 'public';
+}
+
 function ensureDir(dir: string) {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 }
@@ -88,9 +94,9 @@ export async function saveUpload(
   const contentType = MIME[ext] || 'application/octet-stream';
 
   if (blobEnabled()) {
-    // Private: only readable via authenticated /portal/download (existing public blobs stay readable).
+    // access must match the store type in Vercel Storage (this project uses a public store).
     const blob = await put(`portal/${userId}/${stored}`, buf, {
-      access: 'private',
+      access: blobAccess(),
       contentType,
       token: blobToken(),
       addRandomSuffix: false,
@@ -129,8 +135,9 @@ async function openRemoteBlob(storedPath: string): Promise<{
   const token = blobToken();
 
   if (token) {
-    // New uploads are private; legacy resumes may still be public. Try both — no DB migration.
-    for (const access of ['private', 'public'] as const) {
+    // Prefer the configured store mode, then the other (covers legacy rows).
+    const order = blobAccess() === 'private' ? (['private', 'public'] as const) : (['public', 'private'] as const);
+    for (const access of order) {
       try {
         const result = await get(storedPath, { access, token, useCache: false });
         if (result.statusCode === 200 && result.stream) {
