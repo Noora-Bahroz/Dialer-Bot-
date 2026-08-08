@@ -377,6 +377,50 @@ h4 {
   cursor: pointer;
 }
 
+/* ---------- Below-fold containment (PageSpeed mobile TBT / style work) ---------- */
+.aeo-solutions,
+.benefits,
+.sponsors,
+.spotlight,
+.service-row,
+.success,
+.stats,
+.testimonials {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}
+
+@media (max-width: 900px) {
+  .vc.is-inview .vc-shell,
+  .vc.is-inview .vc-meta__cell,
+  .vc.is-inview .vc-mascot__stage,
+  .vc.is-inview .vc-msg,
+  .vc.is-inview .vc-rail__online,
+  .vc.is-inview.is-live .vc-pipe__item.is-active::after,
+  .ent.is-inview,
+  .ent.is-inview .rx-card.is-on::after,
+  .ent.is-inview .ent-table tr.is-on td:first-child::after,
+  .ent.is-inview .rx-progress i,
+  .ent.is-inview .ent-mini-bar i,
+  .ent.is-inview .sync-seat.bot,
+  .ent.is-inview .sync-seat.agent,
+  .ent.is-inview .sync-seat.is-on,
+  .ent.is-inview .ent-status.live,
+  .ent.is-inview .motive-card.is-on,
+  .softcast.is-inview .softcast-search::after,
+  .softcast.is-inview .softcast-row.is-on,
+  .softcast.is-inview .softcast-tag,
+  .sponsors-bash.is-inview .sponsors-bash__glow,
+  .sponsors-bash.is-inview .sponsors-bash__stage,
+  .spotlight-card.is-inview .spotlight-card__media {
+    animation: none !important;
+  }
+
+  .sponsors-bash__track {
+    animation-duration: 55s !important;
+  }
+}
+
 /* ---------- Hero ---------- */
 .hero {
   background-color: var(--accent-1);
@@ -421,10 +465,10 @@ h4 {
 }
 
 .announcement .badge {
-  background: var(--accent-9);
-  color: #fff;
+  background: #dbfe7a;
+  color: #102d23;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.5px;
   padding: 4px 12px;
   border-radius: 6px;
@@ -1194,13 +1238,13 @@ h4 {
     transform: translateX(0);
   }
   to {
-    transform: translateX(-33.333%);
+    transform: translateX(-50%);
   }
 }
 
 @keyframes sponsors-bash-rtl {
   from {
-    transform: translateX(-33.333%);
+    transform: translateX(-50%);
   }
   to {
     transform: translateX(0);
@@ -1695,7 +1739,7 @@ h4 {
 
 .ent-status.live {
   background: var(--e-soft);
-  color: var(--e-green);
+  color: #176b42;
 }
 
 .ent-status.rec {
@@ -1735,7 +1779,7 @@ h4 {
 .ent-link {
   font-size: 11.5px;
   font-weight: 600;
-  color: var(--e-green);
+  color: #176b42;
   padding: 0;
 }
 
@@ -1998,7 +2042,7 @@ h4 {
 .ent-code.tone-fe {
   background: #fff3e4;
   border-color: #f0d2a8;
-  color: #a16207;
+  color: #854d0e;
 }
 
 .ent-code.tone-hi {
@@ -2010,7 +2054,7 @@ h4 {
 .ent-code.tone-td {
   background: #eeeaff;
   border-color: #c9c0f5;
-  color: #5b4bb5;
+  color: #4338ca;
 }
 
 .ent-code.tone-custom {
@@ -2031,12 +2075,12 @@ h4 {
 
 .ent-pill.on {
   background: var(--e-soft);
-  color: var(--e-green);
+  color: #176b42;
 }
 
 .ent-pill.off {
   background: #f1f1f1;
-  color: var(--e-muted);
+  color: #4f5b55;
 }
 
 /* Outbound â€” denser, taller campaign board */
@@ -2492,7 +2536,7 @@ h4 {
   font-style: normal;
   font-size: 11px;
   font-weight: 500;
-  color: var(--e-muted);
+  color: #4f5b55;
 }
 
 .rx-progress {
@@ -3063,12 +3107,12 @@ h4 {
 .studio-voice-state {
   font-size: 10px;
   font-weight: 700;
-  color: var(--e-muted);
+  color: #4f5b55;
   flex-shrink: 0;
 }
 
 .studio-voice.is-on .studio-voice-state {
-  color: #2f9d63;
+  color: #176b42;
 }
 
 .studio-grid {
@@ -3103,7 +3147,7 @@ h4 {
 .studio-pane-h span {
   font-size: 10.5px;
   font-weight: 600;
-  color: var(--e-muted);
+  color: #4f5b55;
 }
 
 .studio-fields {
@@ -3250,7 +3294,7 @@ h4 {
 .studio-log time {
   font-size: 10.5px;
   font-weight: 600;
-  color: rgba(231, 239, 234, 0.45);
+  color: rgba(231, 239, 234, 0.72);
   font-variant-numeric: tabular-nums;
 }
 

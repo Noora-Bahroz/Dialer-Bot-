@@ -38,8 +38,8 @@ const sponsors = [
 ];
 
 const sponsorRails = [
-  { key: 'a', items: [...sponsors, ...sponsors, ...sponsors] },
-  { key: 'b', items: [...sponsors].reverse().concat([...sponsors].reverse(), [...sponsors].reverse()) },
+  { key: 'a', items: [...sponsors, ...sponsors] },
+  { key: 'b', items: [...sponsors].reverse().concat([...sponsors].reverse()) },
 ];
 
 const spotlights = [
@@ -345,7 +345,11 @@ const testimonials = [
               <div>
                 <h3>{card.title}</h3>
                 <a class="btn btn-outline-white" href="/features">
-                  Learn More
+                  {i === 0
+                    ? 'Explore inbound features'
+                    : i === 1
+                      ? 'Explore outbound features'
+                      : 'Explore monitoring features'}
                 </a>
               </div>
             </article>

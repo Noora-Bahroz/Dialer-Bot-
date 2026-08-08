@@ -105,7 +105,7 @@ const activity = [
     <div class="vc-main">
       <header class="vc-head">
         <div class="vc-head__copy">
-          <h3 data-vc-title>Gate → warm transfer</h3>
+          <p class="vc-head__title" data-vc-title>Gate → warm transfer</p>
           <p class="vc-deck" data-vc-deck>Qualify, score, then warm handoff.</p>
         </div>
         <div class="vc-head__actions">
@@ -388,6 +388,8 @@ const activity = [
         return;
       }
       if (!liveOn || !inView || reduced) return;
+      // Skip micro UI ticks on phones — style thrash shows up as TBT.
+      if (window.matchMedia('(max-width: 900px)').matches) return;
       const c = confs[Math.floor(Math.random() * confs.length)];
       const ms = 240 + Math.floor(Math.random() * 80);
       if (endEl) {

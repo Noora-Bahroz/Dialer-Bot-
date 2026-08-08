@@ -506,6 +506,9 @@ const campaigns = [
     if (!root.classList.contains('ent')) return;
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobile =
+      window.matchMedia('(max-width: 900px)').matches ||
+      window.matchMedia('(pointer: coarse)').matches;
     let inView = false;
     let counted = false;
     let loopId = 0;
@@ -562,7 +565,7 @@ const campaigns = [
     };
 
     const startLoop = () => {
-      if (loopId || reduced) return;
+      if (loopId || reduced || mobile) return;
       loopId = window.setInterval(rotateHighlight, 3200);
     };
 
@@ -612,7 +615,7 @@ const campaigns = [
         (entries) => {
           entries.forEach((entry) => {
             inView = entry.isIntersecting;
-            root.classList.toggle('is-inview', inView && !reduced);
+            root.classList.toggle('is-inview', inView && !reduced && !mobile);
             if (inView) {
               runCountUp();
               startLoop();
@@ -626,7 +629,7 @@ const campaigns = [
       io.observe(root);
     } else {
       inView = true;
-      if (!reduced) root.classList.add('is-inview');
+      if (!reduced && !mobile) root.classList.add('is-inview');
       runCountUp();
       startLoop();
     }
