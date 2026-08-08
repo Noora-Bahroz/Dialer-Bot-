@@ -10,8 +10,7 @@
   transition:
     opacity var(--reveal-dur) var(--reveal-ease),
     transform var(--reveal-dur) var(--reveal-ease);
-  transition-delay: calc(var(--reveal-i, 0) * 0.08s);
-  will-change: opacity, transform;
+    transition-delay: calc(var(--reveal-i, 0) * 0.08s);
 }
 
 [data-reveal='fade'] {
@@ -53,6 +52,25 @@
 
 [data-lift]:hover {
   transform: translateY(-4px);
+}
+
+/* Above-fold hero must paint immediately for LCP / SEO (no opacity:0 wait on JS) */
+.hero .hero-copy [data-reveal],
+.hero .hero-copy h1,
+.hero .hero-copy .lead,
+.hero .hero-actions {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+  transition: none;
+}
+
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -71,7 +71,7 @@ const campaigns = [
       <div class="ent-kpi-row rx-kpis">
         <button type="button" class="ent-kpi" data-mock>
           <span>Answered</span>
-          <strong>186</strong>
+          <strong data-ent-count data-to="186" data-fmt="int">186</strong>
         </button>
         <button type="button" class="ent-kpi" data-mock>
           <span>Avg qualify</span>
@@ -79,7 +79,7 @@ const campaigns = [
         </button>
         <button type="button" class="ent-kpi" data-mock>
           <span>Routed</span>
-          <strong>71%</strong>
+          <strong data-ent-count data-to="71" data-fmt="pct">71%</strong>
         </button>
       </div>
 
@@ -145,15 +145,15 @@ const campaigns = [
       <div class="ent-kpi-row out-kpis">
         <button type="button" class="ent-kpi" data-mock>
           <span>Dials today</span>
-          <strong>4,283</strong>
+          <strong data-ent-count data-to="4283" data-fmt="comma">4,283</strong>
         </button>
         <button type="button" class="ent-kpi" data-mock>
           <span>Qualified</span>
-          <strong>300</strong>
+          <strong data-ent-count data-to="300" data-fmt="int">300</strong>
         </button>
         <button type="button" class="ent-kpi" data-mock>
           <span>Live bots</span>
-          <strong>18</strong>
+          <strong data-ent-count data-to="18" data-fmt="int">18</strong>
         </button>
       </div>
 
@@ -439,7 +439,7 @@ const campaigns = [
         </button>
         <button type="button" class="ent-kpi" data-mock>
           <span>Warm handoff</span>
-          <strong>41%</strong>
+          <strong data-ent-count data-to="41" data-fmt="pct">41%</strong>
           <em>of dialed volume</em>
         </button>
       </div>
@@ -503,6 +503,75 @@ const campaigns = [
 
 <script>
   document.querySelectorAll('[data-viz]').forEach((root) => {
+    if (!root.classList.contains('ent')) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let inView = false;
+    let counted = false;
+    let loopId = 0;
+
+    const formatCount = (n, fmt) => {
+      const v = Math.round(n);
+      if (fmt === 'pct') return `${v}%`;
+      if (fmt === 'comma') return v.toLocaleString('en-US');
+      return String(v);
+    };
+
+    const runCountUp = () => {
+      if (counted || reduced) return;
+      counted = true;
+      root.querySelectorAll('[data-ent-count]').forEach((el) => {
+        const to = Number(el.getAttribute('data-to') || '0');
+        const fmt = el.getAttribute('data-fmt') || 'int';
+        const start = performance.now();
+        const dur = 1100;
+        const tick = (now) => {
+          const t = Math.min(1, (now - start) / dur);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = formatCount(to * eased, fmt);
+          if (t < 1) requestAnimationFrame(tick);
+          else el.textContent = formatCount(to, fmt);
+        };
+        requestAnimationFrame(tick);
+      });
+    };
+
+    const rotateHighlight = () => {
+      if (!inView || reduced) return;
+      const cards = Array.from(root.querySelectorAll('.rx-card'));
+      if (cards.length) {
+        const on = cards.findIndex((c) => c.classList.contains('is-on'));
+        const next = (on + 1) % cards.length;
+        cards.forEach((c) => c.classList.remove('is-on'));
+        cards[next].classList.add('is-on');
+      }
+
+      const rows = Array.from(root.querySelectorAll('.ent-table tbody tr'));
+      if (rows.length) {
+        const on = rows.findIndex((r) => r.classList.contains('is-on'));
+        const next = (on + 1) % rows.length;
+        rows.forEach((r) => r.classList.remove('is-on'));
+        rows[next].classList.add('is-on');
+      }
+
+      const seats = Array.from(root.querySelectorAll('.sync-seat.bot, .sync-seat.agent'));
+      if (seats.length) {
+        seats.forEach((s) => s.classList.remove('is-on'));
+        seats[Math.floor(Math.random() * seats.length)].classList.add('is-on');
+      }
+    };
+
+    const startLoop = () => {
+      if (loopId || reduced) return;
+      loopId = window.setInterval(rotateHighlight, 3200);
+    };
+
+    const stopLoop = () => {
+      if (!loopId) return;
+      window.clearInterval(loopId);
+      loopId = 0;
+    };
+
     root.querySelectorAll('[data-mock]').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
@@ -537,5 +606,29 @@ const campaigns = [
         target.classList.add('is-on');
       });
     });
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            inView = entry.isIntersecting;
+            root.classList.toggle('is-inview', inView && !reduced);
+            if (inView) {
+              runCountUp();
+              startLoop();
+            } else {
+              stopLoop();
+            }
+          });
+        },
+        { threshold: 0.28 },
+      );
+      io.observe(root);
+    } else {
+      inView = true;
+      if (!reduced) root.classList.add('is-inview');
+      runCountUp();
+      startLoop();
+    }
   });
 </script>

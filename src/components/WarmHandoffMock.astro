@@ -59,12 +59,49 @@ const ghosts = [1, 2, 3];
 
 <script>
   document.querySelectorAll('.softcast[data-viz]').forEach((root) => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let pulseTimer = 0;
+
     root.querySelectorAll('[data-mock]').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
         el.classList.add('is-pressed');
         window.setTimeout(() => el.classList.remove('is-pressed'), 150);
+
+        if (el.classList.contains('softcast-row')) {
+          root.querySelectorAll('.softcast-row').forEach((r) => r.classList.remove('is-on'));
+          el.classList.add('is-on');
+        }
       });
     });
+
+    const nudgeSelect = () => {
+      const row = root.querySelector('.softcast-row.is-on');
+      if (!row) return;
+      row.classList.remove('is-flash');
+      void row.offsetWidth;
+      row.classList.add('is-flash');
+    };
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const on = entry.isIntersecting && !reduced;
+            root.classList.toggle('is-inview', on);
+            if (entry.isIntersecting && !reduced) {
+              if (!pulseTimer) pulseTimer = window.setInterval(nudgeSelect, 4200);
+            } else if (pulseTimer) {
+              window.clearInterval(pulseTimer);
+              pulseTimer = 0;
+            }
+          });
+        },
+        { threshold: 0.3 },
+      );
+      io.observe(root);
+    } else if (!reduced) {
+      root.classList.add('is-inview');
+    }
   });
 </script>

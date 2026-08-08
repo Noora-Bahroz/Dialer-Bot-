@@ -151,6 +151,9 @@ const navItems = [
 <script>
   const root = document.querySelector('[data-demo-mock]');
   if (root) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let pipeTimer = 0;
+
     root.querySelectorAll('[data-mock-btn], [data-mock-nav], [data-mock-step]').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
@@ -177,5 +180,46 @@ const navItems = [
         li.classList.add('active');
       });
     });
+
+    const advancePipe = () => {
+      const items = Array.from(root.querySelectorAll('.dm-pipeline li'));
+      if (!items.length) return;
+      let active = items.findIndex((li) => li.classList.contains('active'));
+      if (active < 0) active = 0;
+      const next = (active + 1) % items.length;
+      items.forEach((li, i) => {
+        li.classList.toggle('done', i < next);
+        li.classList.toggle('active', i === next);
+      });
+    };
+
+    const startPipe = () => {
+      if (pipeTimer || reduced) return;
+      pipeTimer = window.setInterval(advancePipe, 2800);
+    };
+
+    const stopPipe = () => {
+      if (!pipeTimer) return;
+      window.clearInterval(pipeTimer);
+      pipeTimer = 0;
+    };
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const on = entry.isIntersecting && !reduced;
+            root.classList.toggle('is-inview', on);
+            if (entry.isIntersecting) startPipe();
+            else stopPipe();
+          });
+        },
+        { threshold: 0.25 },
+      );
+      io.observe(root);
+    } else if (!reduced) {
+      root.classList.add('is-inview');
+      startPipe();
+    }
   }
 </script>

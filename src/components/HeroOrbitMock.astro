@@ -208,6 +208,12 @@ const activity = [
 
 <script>
   document.querySelectorAll('[data-vc]').forEach((root) => {
+    // Tear down prior HMR / remount timers so stale closures stop throwing.
+    if (typeof root.__vcTeardown === 'function') {
+      root.__vcTeardown();
+      root.__vcTeardown = null;
+    }
+
     const live = root.querySelector('[data-vc-live]');
     const startBtn = root.querySelector('[data-vc-start]');
     const hangBtn = root.querySelector('[data-vc-hang]');
@@ -231,10 +237,18 @@ const activity = [
     const mascotLabel = root.querySelector('[data-vc-mascot-label]');
     const lottieMount = root.querySelector('[data-vc-lottie]');
     let lottieAnim = null;
+    let tick = 0;
+    let life = 0;
+    let demo = 0;
+    let pipeI = 1;
+    let liveOn = true;
+    let seats = 12;
+    const clock = { secs: 48 };
+    let inView = false;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const loadLottie = () => {
       if (!lottieMount || lottieMount.dataset.ready === '1') return;
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const boot = () => {
         if (!window.lottie) return;
         lottieAnim = window.lottie.loadAnimation({
@@ -259,12 +273,6 @@ const activity = [
       s.onload = boot;
       document.head.appendChild(s);
     };
-    let tick = 0;
-    let life = 0;
-    let demo = 0;
-    let pipeI = 1;
-    let liveOn = true;
-    let seats = 12;
 
     const confs = ['0.94', '0.96', '0.91', '0.88', '0.97'];
 
@@ -316,7 +324,6 @@ const activity = [
       if (!topLine || !topWho || !topText) return;
       if (on) {
         topLine.classList.remove('bot', 'you');
-        
       } else {
         topLine.classList.remove('sys');
         topLine.classList.add('bot');
@@ -352,7 +359,7 @@ const activity = [
       markTransfer(false);
       showTyping(false);
       setPipe(1);
-      secs = 48;
+      clock.secs = 48;
       if (intent) intent.textContent = 'what_is_this';
       if (last) last.textContent = '“I don’t know what you mean.”';
       setLive(true);
@@ -360,18 +367,17 @@ const activity = [
 
     setLive(true);
     setPipe(1);
-    loadLottie();
 
     tick = window.setInterval(() => {
       if (!root.isConnected) {
         window.clearInterval(tick);
         return;
       }
-      if (!liveOn) return;
-      secs += 1;
+      if (!liveOn || !inView) return;
+      clock.secs += 1;
       if (timerEl) {
-        const m = Math.floor(secs / 60);
-        const s = String(secs % 60).padStart(2, '0');
+        const m = Math.floor(clock.secs / 60);
+        const s = String(clock.secs % 60).padStart(2, '0');
         timerEl.textContent = `${m}:${s}`;
       }
     }, 1000);
@@ -381,7 +387,7 @@ const activity = [
         window.clearInterval(life);
         return;
       }
-      if (!liveOn) return;
+      if (!liveOn || !inView || reduced) return;
       const c = confs[Math.floor(Math.random() * confs.length)];
       const ms = 240 + Math.floor(Math.random() * 80);
       if (endEl) {
@@ -417,21 +423,54 @@ const activity = [
       }, 1800);
     };
 
+    root.__vcTeardown = () => {
+      window.clearInterval(tick);
+      window.clearInterval(life);
+      window.clearTimeout(demo);
+      if (lottieAnim) {
+        try {
+          lottieAnim.destroy();
+        } catch {
+          /* ignore */
+        }
+        lottieAnim = null;
+        if (lottieMount) lottieMount.dataset.ready = '0';
+      }
+    };
+
     if ('IntersectionObserver' in window) {
+      let demoStarted = false;
+      let lottieStarted = false;
       const io = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting) {
+            inView = entry.isIntersecting;
+            root.classList.toggle('is-inview', inView && !reduced);
+            if (inView && !demoStarted) {
+              demoStarted = true;
               startDemo();
-              io.disconnect();
+            }
+            if (inView && !lottieStarted) {
+              lottieStarted = true;
+              // Defer Lottie until visible — skip heavy CDN on tiny screens
+              const narrow = window.matchMedia('(max-width: 720px)').matches;
+              if (!narrow) loadLottie();
             }
           });
         },
-        { threshold: 0.3 },
+        { threshold: 0.25 },
       );
       io.observe(root);
+      const prev = root.__vcTeardown;
+      root.__vcTeardown = () => {
+        io.disconnect();
+        prev?.();
+      };
     } else {
+      inView = true;
+      if (!reduced) root.classList.add('is-inview');
       startDemo();
+      if (!window.matchMedia('(max-width: 720px)').matches) loadLottie();
     }
   });
 </script>

@@ -9,7 +9,6 @@ import AeoDefinition from '../components/AeoDefinition.astro';
 import { wa, demo } from '../data/site';
 import { definedTermJsonLd, webPageJsonLd } from '../data/seo';
 import '../styles/global.css';
-import '../styles/mobile-layout.css';
 
 export const prerender = true;
 
@@ -176,6 +175,7 @@ const testimonials = [
   title="Dialer Bot | AI Voice Bots for Inbound & Outbound Calling"
   description="AI voice bots that qualify inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoff closable leads to your agents."
   image="/images/dialerbot-home-01.webp"
+  preloadImages={['/images/dialerbot-bg-image.webp']}
   jsonLd={[
     webPageJsonLd({
       name: 'Dialer Bot | AI Voice Bots for Inbound & Outbound Calling',
@@ -193,7 +193,7 @@ const testimonials = [
     <div class="hero-inner">
       <div class="hero-grid">
         <div class="hero-copy">
-          <div class="announcement" data-reveal style="--reveal-i:0">
+          <div class="announcement">
             <span class="badge">NEW</span>
             <p>AI Voice Bots for Modern Dialing Floors</p>
             <span class="arrow" aria-hidden="true">
@@ -202,13 +202,13 @@ const testimonials = [
               </svg>
             </span>
           </div>
-          <h1 data-reveal style="--reveal-i:1">Dialer Bot qualifies the call so your agents don't have to</h1>
-          <p class="lead" data-reveal style="--reveal-i:2">
+          <h1>Dialer Bot qualifies the call so your agents don't have to</h1>
+          <p class="lead">
             AI voice bots for inbound reception and outbound campaigns. Dialer Bot asks the first questions,
             fine-tunes the replies, and only hands off leads worth an agent’s time — for call centers, truck
             dispatch, ACA, FE, HI, and every floor that still dials by hand.
           </p>
-          <div class="hero-actions" data-reveal style="--reveal-i:3">
+          <div class="hero-actions">
             <a class="btn btn-white" href={demo.homeHero} target="_blank" rel="noopener noreferrer">Try Live Demo</a>
             <a class="btn btn-glass" href={wa.start} target="_blank" rel="noopener noreferrer">
               WhatsApp Sales
@@ -218,7 +218,7 @@ const testimonials = [
             </a>
           </div>
         </div>
-        <div class="hero-visual" data-reveal="right" style="--reveal-i:2">
+        <div class="hero-visual" data-reveal="right" style="--reveal-i:0">
           <HeroOrbitMock />
         </div>
       </div>
@@ -303,7 +303,7 @@ const testimonials = [
                       src={sponsor.src}
                       alt={i < sponsors.length ? `${sponsor.name} — ${sponsor.tip}` : ''}
                       aria-hidden={i >= sponsors.length ? 'true' : undefined}
-                      loading={i < 6 ? 'eager' : 'lazy'}
+                      loading="lazy"
                       decoding="async"
                       width="136"
                       height="40"
@@ -330,8 +330,17 @@ const testimonials = [
               class="spotlight-card"
               data-reveal="up"
               data-lift
-              style={`background-image:url(${card.image}); --reveal-i: ${i}`}
+              style={`--reveal-i: ${i}`}
             >
+              <img
+                class="spotlight-card__media"
+                src={card.image}
+                alt=""
+                width="720"
+                height="900"
+                loading="lazy"
+                decoding="async"
+              />
               <div />
               <div>
                 <h3>{card.title}</h3>
@@ -385,7 +394,7 @@ const testimonials = [
       <div class="success-grid">
         <div class="success-copy" data-reveal="left">
           <p class="section-label">Our Motive</p>
-          <h2>Stop burning people on the first five minutes</h2>
+          <h3>Stop burning people on the first five minutes</h3>
           <p class="lead">
             Across call centers, truck dispatch desks, insurance campaigns, and reception lines, the same work
             repeats: ask a few questions, log the answers, decide if a human should stay on the line. Dialer Bot
@@ -495,3 +504,32 @@ const testimonials = [
 
   <Footer slot="footer" />
 </BaseLayout>
+
+<script>
+  (() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const bash = document.querySelector('.sponsors-bash');
+    const cards = document.querySelectorAll('.spotlight-card');
+
+    /** @param {Element | null} el */
+    const watch = (el) => {
+      if (!el || reduced) return;
+      if (!('IntersectionObserver' in window)) {
+        el.classList.add('is-inview');
+        return;
+      }
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            entry.target.classList.toggle('is-inview', entry.isIntersecting);
+          });
+        },
+        { threshold: 0.2 },
+      );
+      io.observe(el);
+    };
+
+    watch(bash);
+    cards.forEach((card) => watch(card));
+  })();
+</script>

@@ -10,7 +10,6 @@ import {
   siteNavigationJsonLd,
 } from '../data/seo';
 import '../styles/reveal.css';
-import '../styles/mast.css';
 import '../styles/mobile-layout.css';
 
 interface Props {
@@ -23,6 +22,8 @@ interface Props {
   smoothScroll?: boolean;
   /** Sticky mobile demo bar — off on portal / noindex pages */
   showDemoBar?: boolean;
+  /** Preload LCP / above-fold images (absolute site paths) */
+  preloadImages?: string[];
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
@@ -34,6 +35,7 @@ const {
   noindex = false,
   smoothScroll = true,
   showDemoBar,
+  preloadImages = [],
   jsonLd,
 } = Astro.props;
 
@@ -96,6 +98,16 @@ const fontHref =
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="text/plain" title="LLM context" href="/llms.txt" />
     <link rel="alternate" hrefLang="en" href={canonical} />
+    <link rel="alternate" hrefLang="x-default" href={canonical} />
+    {
+      preloadImages.map((src) =>
+        src.endsWith('.webp') ? (
+          <link rel="preload" as="image" href={src} type="image/webp" fetchpriority="high" />
+        ) : (
+          <link rel="preload" as="image" href={src} fetchpriority="high" />
+        ),
+      )
+    }
     <link rel="dns-prefetch" href="//wa.me" />
     <link rel="dns-prefetch" href="//demo.dialerbot.online" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -124,6 +136,8 @@ const fontHref =
     <WhatsAppFloat />
 
     <script define:vars={{ smoothScroll }}>
+      document.documentElement.dataset.smoothScroll = smoothScroll ? '1' : '0';
+
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       const revealNodes = document.querySelectorAll('[data-reveal]');
@@ -144,12 +158,16 @@ const fontHref =
           revealNodes.forEach((el) => io.observe(el));
         }
       }
+    </script>
+    <script>
+      // Bundled module (not define:vars) so Vite can resolve `lenis`.
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const smoothScroll = document.documentElement.dataset.smoothScroll === '1';
 
-      // Defer Lenis until after first paint so LCP/TTI stay snappy
       if (smoothScroll && !reduced) {
         const startLenis = () => {
-          import('lenis').then(({ default: Lenis }) => {
-            import('lenis/dist/lenis.css');
+          Promise.all([import('lenis'), import('lenis/dist/lenis.css')]).then(([mod]) => {
+            const Lenis = mod.default;
             const lenis = new Lenis({
               duration: 1.65,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
