@@ -394,17 +394,17 @@ const buildFilterHref = (status: string, job: string, mode: string, q: string) =
                       {app.resume_path && (
                         <a
                           class="pt-file-link"
-                          href={`/portal/download?app=${app.id}&path=${encodeURIComponent(app.resume_path)}`}
+                          href={`/portal/download?app=${app.id}&file=resume`}
                           target="_blank"
                           rel="noopener"
                         >
                           CV / Resume
                         </a>
                       )}
-                      {app.certifications.map((cert) => (
+                      {app.certifications.map((cert, i) => (
                         <a
                           class="pt-file-link"
-                          href={`/portal/download?app=${app.id}&path=${encodeURIComponent(cert.path)}`}
+                          href={`/portal/download?app=${app.id}&file=cert&i=${i}`}
                           target="_blank"
                           rel="noopener"
                         >

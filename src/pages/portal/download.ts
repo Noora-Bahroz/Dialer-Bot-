@@ -1,9 +1,46 @@
 import type { APIRoute } from 'astro';
 import { dbGet, ensureDb } from '../../db/db';
 import { getSessionUser } from '../../lib/portal/auth';
-import { isRemoteUploadPath, openUploadStream } from '../../lib/portal/uploads';
+import { openUploadStream } from '../../lib/portal/uploads';
 
 export const prerender = false;
+
+type CertRow = { path: string; originalName?: string };
+
+function resolveStoredPath(
+  app: {
+    resume_path: string | null;
+    certifications_json: string | null;
+  },
+  url: URL,
+): string | null {
+  const file = (url.searchParams.get('file') || '').toLowerCase();
+  if (file === 'resume') {
+    return app.resume_path;
+  }
+  if (file === 'cert') {
+    const idx = Number(url.searchParams.get('i') || 0);
+    try {
+      const certs = JSON.parse(app.certifications_json || '[]') as CertRow[];
+      return certs[idx]?.path || null;
+    } catch {
+      return null;
+    }
+  }
+
+  // Legacy links that still pass ?path=… (kept so old bookmarks keep working).
+  const legacyPath = url.searchParams.get('path') || '';
+  if (!legacyPath) return null;
+  const allowed = new Set<string>();
+  if (app.resume_path) allowed.add(app.resume_path);
+  try {
+    const certs = JSON.parse(app.certifications_json || '[]') as CertRow[];
+    for (const c of certs) if (c?.path) allowed.add(c.path);
+  } catch {
+    /* ignore */
+  }
+  return allowed.has(legacyPath) ? legacyPath : null;
+}
 
 export const GET: APIRoute = async ({ request, url }) => {
   await ensureDb();
@@ -12,10 +49,9 @@ export const GET: APIRoute = async ({ request, url }) => {
     return new Response('Unauthorized', { status: 401 });
   }
 
-  const filePath = url.searchParams.get('path') || '';
   const appId = Number(url.searchParams.get('app') || 0);
-  if (!filePath || !appId) {
-    return new Response('Missing file', { status: 400 });
+  if (!appId) {
+    return new Response('Missing application', { status: 400 });
   }
 
   const app = await dbGet<{
@@ -42,32 +78,18 @@ export const GET: APIRoute = async ({ request, url }) => {
     return new Response('Forbidden', { status: 403 });
   }
 
-  const allowed = new Set<string>();
-  if (app.resume_path) allowed.add(app.resume_path);
-  if (app.certifications_json) {
-    try {
-      const certs = JSON.parse(app.certifications_json) as { path: string }[];
-      for (const c of certs) if (c?.path) allowed.add(c.path);
-    } catch {
-      /* ignore */
-    }
-  }
-
-  if (!allowed.has(filePath)) {
+  const filePath = resolveStoredPath(app, url);
+  if (!filePath) {
     return new Response('Forbidden', { status: 403 });
-  }
-
-  // Public Vercel Blob URLs: redirect after auth (DOCX opens reliably).
-  if (isRemoteUploadPath(filePath)) {
-    return Response.redirect(filePath, 302);
   }
 
   try {
     const file = await openUploadStream(filePath);
     const headers: Record<string, string> = {
       'Content-Type': file.contentType,
-      'Content-Disposition': `inline; filename="${file.filename}"`,
+      'Content-Disposition': `attachment; filename="${file.filename.replace(/"/g, '')}"`,
       'Cache-Control': 'private, no-store',
+      'X-Content-Type-Options': 'nosniff',
     };
     if (file.size != null) headers['Content-Length'] = String(file.size);
     return new Response(file.stream, { headers });

@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, writeFileSync, createReadStream, statSync } from
 import { join, extname, basename } from 'path';
 import { randomBytes } from 'crypto';
 import { Readable } from 'stream';
-import { put } from '@vercel/blob';
+import { put, get } from '@vercel/blob';
 import { getUploadsRoot } from './paths';
 
 const UPLOAD_ROOT = getUploadsRoot();
@@ -32,6 +32,10 @@ function env(key: string) {
 
 function blobEnabled() {
   return Boolean(env('BLOB_READ_WRITE_TOKEN'));
+}
+
+function blobToken() {
+  return env('BLOB_READ_WRITE_TOKEN') || undefined;
 }
 
 function ensureDir(dir: string) {
@@ -84,10 +88,11 @@ export async function saveUpload(
   const contentType = MIME[ext] || 'application/octet-stream';
 
   if (blobEnabled()) {
+    // Private: only readable via authenticated /portal/download (existing public blobs stay readable).
     const blob = await put(`portal/${userId}/${stored}`, buf, {
-      access: 'public',
+      access: 'private',
       contentType,
-      token: env('BLOB_READ_WRITE_TOKEN'),
+      token: blobToken(),
       addRandomSuffix: false,
     });
     return { path: blob.url, originalName: original, size: file.size };
@@ -114,7 +119,47 @@ export async function saveUploads(
   return saved;
 }
 
-/** Stream a stored upload after auth. Supports Vercel Blob URLs and local disk paths. */
+async function openRemoteBlob(storedPath: string): Promise<{
+  stream: ReadableStream;
+  contentType: string;
+  size?: number;
+  filename: string;
+}> {
+  const filename = basename(new URL(storedPath).pathname) || 'download';
+  const token = blobToken();
+
+  if (token) {
+    // New uploads are private; legacy resumes may still be public. Try both — no DB migration.
+    for (const access of ['private', 'public'] as const) {
+      try {
+        const result = await get(storedPath, { access, token, useCache: false });
+        if (result.statusCode === 200 && result.stream) {
+          return {
+            stream: result.stream,
+            contentType: result.blob.contentType || 'application/octet-stream',
+            size: result.blob.size ?? undefined,
+            filename,
+          };
+        }
+      } catch {
+        /* try next access mode */
+      }
+    }
+  }
+
+  // Fallback for legacy public blobs if token get fails.
+  const res = await fetch(storedPath);
+  if (!res.ok || !res.body) throw new Error('File missing');
+  const sizeHeader = res.headers.get('content-length');
+  return {
+    stream: res.body,
+    contentType: res.headers.get('content-type') || 'application/octet-stream',
+    size: sizeHeader ? Number(sizeHeader) : undefined,
+    filename,
+  };
+}
+
+/** Stream a stored upload after auth. Supports private/public Vercel Blob URLs and local disk. */
 export async function openUploadStream(storedPath: string): Promise<{
   stream: ReadableStream;
   contentType: string;
@@ -122,17 +167,7 @@ export async function openUploadStream(storedPath: string): Promise<{
   filename: string;
 }> {
   if (isRemoteUploadPath(storedPath)) {
-    const res = await fetch(storedPath);
-    if (!res.ok || !res.body) throw new Error('File missing');
-    const contentType = res.headers.get('content-type') || 'application/octet-stream';
-    const sizeHeader = res.headers.get('content-length');
-    const filename = basename(new URL(storedPath).pathname) || 'download';
-    return {
-      stream: res.body,
-      contentType,
-      size: sizeHeader ? Number(sizeHeader) : undefined,
-      filename,
-    };
+    return openRemoteBlob(storedPath);
   }
 
   const abs = absoluteUploadPath(storedPath);
