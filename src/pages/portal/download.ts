@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
-import { dbGet, ensureDb } from '../../../db/db';
-import { getSessionUser } from '../../../lib/portal/auth';
-import { openUploadStream } from '../../../lib/portal/uploads';
+import { dbGet, ensureDb } from '../../db/db';
+import { getSessionUser } from '../../lib/portal/auth';
+import { isRemoteUploadPath, openUploadStream } from '../../lib/portal/uploads';
 
 export const prerender = false;
 
@@ -55,6 +55,11 @@ export const GET: APIRoute = async ({ request, url }) => {
 
   if (!allowed.has(filePath)) {
     return new Response('Forbidden', { status: 403 });
+  }
+
+  // Public Vercel Blob URLs: redirect after auth (DOCX opens reliably).
+  if (isRemoteUploadPath(filePath)) {
+    return Response.redirect(filePath, 302);
   }
 
   try {
