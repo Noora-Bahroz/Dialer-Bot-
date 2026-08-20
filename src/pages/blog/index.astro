@@ -24,11 +24,11 @@ function formatDate(iso: string) {
 ---
 
 <BaseLayout
-  title="Insights | Dialer Bot"
-  description="Dialer Bot insights from live dialing floors — warm handoff, opener packs, pace, dispatch, vault, and pricing."
+  title="Blog | DialerBot"
+  description="Practical ideas for AI-powered calling teams — qualification, dialers, voice AI, campaigns, QA, and sales operations."
   jsonLd={breadcrumbJsonLd([
     { name: 'Home', path: '/' },
-    { name: 'Insights', path: '/blog' },
+    { name: 'Blog', path: '/blog' },
   ])}
 >
   <Header slot="header" />
@@ -41,15 +41,19 @@ function formatDate(iso: string) {
           <nav class="bl-crumb" aria-label="Breadcrumb">
             <a href="/">Home</a>
             <span aria-hidden="true">/</span>
-            <span>Insights</span>
+            <span>Blog</span>
           </nav>
-          <p class="bl-brand">Dialer Bot</p>
+          <p class="bl-brand">The DialerBot Blog</p>
         </div>
 
         <div class="bl-mast__title">
-          <h1>Insights</h1>
+          <h1>Practical ideas for AI-powered calling teams.</h1>
           <p class="bl-deck">
-            Notes from live dialing floors — qualification, handoff, pace, and what actually survives QA week.
+            No AI hype. No generic chatbot articles. Just practical strategies for building, running, and improving AI
+            voice campaigns inside real call-center operations.
+          </p>
+          <p class="bl-deck" style="margin-top:0.5rem;opacity:0.85">
+            Qualification · Dialers · Voice AI · Campaigns · QA · Sales Operations
           </p>
         </div>
 
@@ -71,7 +75,7 @@ function formatDate(iso: string) {
             }
           </div>
           <a class="bl-btn bl-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
-            Ask a question
+            Talk to Us
           </a>
         </div>
       </div>
@@ -94,7 +98,7 @@ function formatDate(iso: string) {
                 <h2>{featured.title}</h2>
                 <p>{featured.excerpt}</p>
                 <em>
-                  {formatDate(featured.date)} · {featured.author}
+                  {formatDate(featured.date)} · {featured.author} · Read article →
                 </em>
               </div>
             </a>
@@ -120,9 +124,17 @@ function formatDate(iso: string) {
           }
         </ul>
         <p class="bl-empty" data-bl-empty hidden>No posts in that topic yet.</p>
+
+        <div style="text-align:center;margin-top:3rem" data-reveal>
+          <p style="margin-bottom:1rem;font-size:1.1rem;font-weight:600">
+            Have a calling problem you're trying to solve?
+          </p>
+          <a class="bl-btn bl-btn--solid" href={wa.general} target="_blank" rel="noopener noreferrer">
+            Talk to Us
+          </a>
+        </div>
       </div>
     </section>
-
   </div>
 
   <Footer slot="footer" />

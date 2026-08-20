@@ -10,46 +10,48 @@ import '../styles/company-page.css';
 
 export const prerender = true;
 
-const arc = [
+const beliefs = [
   {
     n: '01',
-    title: 'The problem',
-    text: 'Floors burned seats on openers and tire-kickers while closers waited for conversations worth having.',
+    title: 'AI should work with your team',
+    text: 'Human agents remain critical for complex conversations, negotiation, empathy, and closing.',
   },
   {
     n: '02',
-    title: 'The build',
-    text: 'Humanized voices, locked first questions, adaptive follow-ups, and warm handoffs into dialers teams already run.',
+    title: 'Automation should be measurable',
+    text: 'Every campaign should give operators enough information to understand what happened and improve it.',
   },
   {
     n: '03',
-    title: 'Today',
-    text: 'Inbound and outbound teams across insurance, dispatch, and sales — supported from Islamabad.',
+    title: 'Integration matters',
+    text: 'The best AI system is not useful if it forces a call center to throw away the infrastructure it already depends on.',
+  },
+  {
+    n: '04',
+    title: 'Simplicity wins',
+    text: 'A calling team should understand what the bot is doing, why it transferred a call, and what happened afterward.',
+  },
+  {
+    n: '05',
+    title: "Don't automate for the sake of automation",
+    text: "The objective isn't to make the AI talk more. The objective is to make the operation perform better.",
   },
 ];
 
-const principles = [
-  {
-    n: '01',
-    title: 'Floor-first',
-    text: 'If it does not survive a live campaign morning, it does not ship.',
-  },
-  {
-    n: '02',
-    title: 'Honest qualification',
-    text: 'Filter noise. Never invent interest. Optimize for cleaner handoffs.',
-  },
-  {
-    n: '03',
-    title: 'Close enough to care',
-    text: 'WhatsApp reaches the builders in Islamabad — not a ticket queue abroad.',
-  },
+const careAbout = [
+  'Talk time',
+  'Qualification rate',
+  'Transfer quality',
+  'Agent productivity',
+  'Campaign performance',
+  'Call quality',
+  'Reliability',
 ];
 ---
 
 <BaseLayout
-  title="Company | Dialer Bot"
-  description="About Dialer Bot — AI voice qualification built in Islamabad for dialers, truck dispatch, and insurance calling floors."
+  title="Company | DialerBot"
+  description="We build AI for the people who spend their day on the phone. DialerBot helps call centers automate repetitive conversations and connect qualified prospects with human agents."
   image="/images/dialerbot-company-05.webp"
   jsonLd={breadcrumbJsonLd([
     { name: 'Home', path: '/' },
@@ -68,17 +70,23 @@ const principles = [
             <span aria-hidden="true">/</span>
             <span>Company</span>
           </nav>
-          <p class="co-brand">Dialer Bot</p>
-          <h1>Built beside the dialers, not above them</h1>
+          <p class="co-brand">About DialerBot</p>
+          <h1>We build AI for the people who spend their day on the phone.</h1>
           <p class="co-deck">
-            We protect agent time — greet, ask, confirm, then warm a seat. From Office 12 in Islamabad, on
-            WhatsApp whenever the floor needs us.
+            DialerBot is an AI voice platform built for calling teams. We help call centers automate repetitive
+            conversations, qualify leads, answer inbound calls, and connect qualified prospects with human agents.
+          </p>
+          <p class="co-deck" style="margin-top:0.75rem">
+            We don't believe AI should replace every person on a calling floor. We believe it should remove the work
+            that doesn't require one.
           </p>
           <div class="co-actions">
             <a class="co-btn co-btn--solid" href={demo.company} target="_blank" rel="noopener noreferrer">
-              Try live demo
+              Try the Live Demo
             </a>
-            <a class="co-btn co-btn--ghost" href={wa.general} target="_blank" rel="noopener noreferrer">WhatsApp the team</a>
+            <a class="co-btn co-btn--ghost" href={wa.general} target="_blank" rel="noopener noreferrer">
+              Talk to the Team
+            </a>
           </div>
         </div>
 
@@ -114,28 +122,24 @@ const principles = [
       </div>
     </header>
 
-    <section class="co-section" aria-labelledby="co-story-title">
+    <section class="co-section" aria-labelledby="co-mission-title">
       <div class="co-shell co-story">
         <div class="co-story__copy" data-reveal="left">
-          <p class="co-kicker">Our story</p>
-          <h2 id="co-story-title">From noisy floors to cleaner handoffs</h2>
+          <p class="co-kicker">Our mission</p>
+          <h2 id="co-mission-title">Make every human conversation more valuable.</h2>
           <p>
-            Dialer Bot was shaped beside real calling teams — ACA and final expense books, health insurance
-            blitzes, truck dispatch desks, and inbound lines that rang whether anyone was ready.
+            Call centers handle thousands of conversations every day. Many of those conversations start the same way —
+            the same questions, the same qualification, the same objections, the same data collection.
           </p>
           <p>
-            The pattern was always the same: talent stuck on intake, closers underused, supervisors juggling pace
-            with too few hands. We did not set out to replace agents. We set out to protect their time.
-          </p>
-          <p>
-            That idea — simple on a slide, hard on a live dialer — is still the center of every release we ship
-            from Islamabad.
+            DialerBot turns that repetitive first layer into an AI-powered workflow so human agents can focus on the
+            conversations where they create the most value.
           </p>
         </div>
         <figure class="co-story__media" data-reveal="right" style="--reveal-i:1">
           <img
             src="/images/dialerbot-company-05.webp"
-            alt="Dialer Bot office at Office 12, Pakistan Town Phase 2, Islamabad"
+            alt="DialerBot office in Islamabad"
             width="640"
             height="520"
           />
@@ -147,36 +151,43 @@ const principles = [
       </div>
     </section>
 
-    <section class="co-section co-section--tint" aria-labelledby="co-arc-title">
+    <section class="co-section co-section--tint" aria-labelledby="co-story-title">
       <div class="co-shell">
         <div class="co-section__head" data-reveal>
-          <p class="co-kicker">How we got here</p>
-          <h2 id="co-arc-title">A short arc. A long floor day.</h2>
+          <p class="co-kicker">Our story</p>
+          <h2 id="co-story-title">Built from the call-center workflow up.</h2>
         </div>
-        <ol class="co-arc">
-          {
-            arc.map((item, i) => (
-              <li data-reveal="up" style={`--reveal-i: ${i}`}>
-                <span>{item.n}</span>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </li>
-            ))
-          }
-        </ol>
+        <div class="co-story__copy" data-reveal style="max-width:48rem;margin-inline:auto">
+          <p>
+            DialerBot started with a simple observation: call-center agents spend too much time qualifying conversations
+            that never become opportunities.
+          </p>
+          <p>
+            The technology existed to automate parts of that process, but many AI voice products were designed around
+            generic customer-service use cases rather than the realities of high-volume calling.
+          </p>
+          <p>
+            So we built DialerBot around the workflow itself:
+            <strong> Dialer → AI conversation → Qualification → Human handoff → Outcome.</strong>
+          </p>
+          <p>
+            The result is an AI layer that can fit into an existing calling operation rather than forcing the entire
+            operation to change.
+          </p>
+        </div>
       </div>
     </section>
 
-    <section class="co-section" aria-labelledby="co-principles-title">
+    <section class="co-section" aria-labelledby="co-beliefs-title">
       <div class="co-shell">
         <div class="co-section__head" data-reveal>
-          <p class="co-kicker">Operating principles</p>
-          <h2 id="co-principles-title">Three commitments on every bot</h2>
+          <p class="co-kicker">What we believe</p>
+          <h2 id="co-beliefs-title">Principles that guide every release</h2>
         </div>
         <ul class="co-principles">
           {
-            principles.map((item, i) => (
-              <li data-reveal="up" data-lift style={`--reveal-i: ${i}`}>
+            beliefs.map((item, i) => (
+              <li data-reveal="up" data-lift style={`--reveal-i: ${i % 3}`}>
                 <span>{item.n}</span>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -187,6 +198,41 @@ const principles = [
       </div>
     </section>
 
+    <section class="co-section co-section--tint" aria-labelledby="co-diff-title">
+      <div class="co-shell">
+        <div class="co-section__head" data-reveal>
+          <p class="co-kicker">Why we are different</p>
+          <h2 id="co-diff-title">We think like a calling team.</h2>
+          <p style="max-width:40rem;margin:0.75rem auto 0;opacity:0.85">
+            An AI voice bot isn't impressive when it's demonstrated in a perfect demo. It's useful when it survives a
+            real campaign.
+          </p>
+        </div>
+        <ol class="co-arc">
+          {
+            careAbout.map((item, i) => (
+              <li data-reveal="up" style={`--reveal-i: ${i % 4}`}>
+                <span>{String(i + 1).padStart(2, '0')}</span>
+                <h3>{item}</h3>
+                <p>We care about this because floor operators do.</p>
+              </li>
+            ))
+          }
+        </ol>
+        <div class="co-actions" style="justify-content:center;margin-top:2.5rem" data-reveal>
+          <a class="co-btn co-btn--solid" href={demo.company} target="_blank" rel="noopener noreferrer">
+            Try the Live Demo
+          </a>
+          <a class="co-btn co-btn--ghost" href={wa.general} target="_blank" rel="noopener noreferrer">
+            Talk to DialerBot
+          </a>
+        </div>
+        <p style="text-align:center;margin-top:1.25rem;max-width:36rem;margin-inline:auto;opacity:0.8" data-reveal>
+          Have a call-center workflow that should be automated? Show us the process. We'll help you figure out where AI
+          can actually make a difference.
+        </p>
+      </div>
+    </section>
   </div>
 
   <Footer slot="footer" />

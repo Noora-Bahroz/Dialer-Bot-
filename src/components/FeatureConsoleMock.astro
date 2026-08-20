@@ -414,55 +414,55 @@ const campaigns = [
 
 {
   variant === 'motive' && (
-    <div class="ent ent-motive" data-viz aria-label="Floor efficiency panel">
+    <div class="ent ent-motive" data-viz aria-label="Floor workflow panel">
       <div class="ent-toolbar">
         <div>
-          <p class="ent-kicker">Floor impact</p>
-          <h3>First five minutes</h3>
+          <p class="ent-kicker">Floor workflow</p>
+          <h3>First conversation → human close</h3>
         </div>
         <div class="ent-toolbar-actions">
-          <span class="ent-status live">Improving</span>
-          <button type="button" class="ent-btn quiet" data-mock>Last 7 days</button>
+          <span class="ent-status live">Live</span>
+          <button type="button" class="ent-btn quiet" data-mock>Campaign view</button>
         </div>
       </div>
 
       <div class="ent-kpi-row motive-kpis">
         <button type="button" class="ent-kpi" data-mock>
-          <span>Intake time</span>
-          <strong>−60%</strong>
-          <em>vs manual openers</em>
+          <span>AI handles</span>
+          <strong>Greeting</strong>
+          <em>First questions & intent</em>
         </button>
         <button type="button" class="ent-kpi" data-mock>
-          <span>Seats on openers</span>
-          <strong>12 → 5</strong>
-          <em>7 seats freed</em>
+          <span>Qualify</span>
+          <strong>Criteria met?</strong>
+          <em>Then decide the path</em>
         </button>
         <button type="button" class="ent-kpi" data-mock>
-          <span>Warm handoff</span>
-          <strong data-ent-count data-to="41" data-fmt="pct">41%</strong>
-          <em>of dialed volume</em>
+          <span>Agents handle</span>
+          <strong>The close</strong>
+          <em>Only qualified conversations</em>
         </button>
       </div>
 
       <div class="motive-compare">
         <button type="button" class="motive-card" data-mock>
-          <span class="motive-card-label">Before</span>
-          <strong>12 agents</strong>
-          <em>Burned on first contact</em>
+          <span class="motive-card-label">Without DialerBot</span>
+          <strong>Agents on every opener</strong>
+          <em>Repetitive first-stage work</em>
           <ul>
             <li>Raw dials hit live seats</li>
-            <li>Tire-kickers consume time</li>
-            <li>Hold & hangups pile up</li>
+            <li>Unqualified calls burn talk time</li>
+            <li>Closers wait for better conversations</li>
           </ul>
         </button>
         <button type="button" class="motive-card is-on" data-mock>
-          <span class="motive-card-label">With Dialer Bot</span>
-          <strong>5 agents</strong>
-          <em>Focused on closers only</em>
+          <span class="motive-card-label">With DialerBot</span>
+          <strong>Agents on the close</strong>
+          <em>AI owns the first conversation</em>
           <ul>
-            <li>Bot owns questions 1–5</li>
-            <li>Warm leads only transfer</li>
-            <li>Same floor throughput</li>
+            <li>Bot greets and qualifies</li>
+            <li>Warm transfers with context</li>
+            <li>Humans focus where they add value</li>
           </ul>
         </button>
       </div>
@@ -470,32 +470,32 @@ const campaigns = [
       <div class="ent-panel motive-split">
         <div class="ent-panel-h">
           <span>Ownership split</span>
-          <span>Talk time share</span>
+          <span>Who owns which stage</span>
         </div>
         <div class="motive-stack" data-mock role="presentation">
-          <i class="bot" style="width:72%" />
-          <i class="agent" style="width:28%" />
+          <i class="bot" style="width:65%" />
+          <i class="agent" style="width:35%" />
         </div>
         <div class="motive-legend">
           <button type="button" data-mock>
             <span class="swatch bot" />
-            Bot clears
-            <strong>72%</strong>
+            Bot clears first stage
+            <strong>AI</strong>
           </button>
           <button type="button" data-mock>
             <span class="swatch agent" />
             Agent closes
-            <strong>28%</strong>
+            <strong>Human</strong>
           </button>
         </div>
       </div>
 
       <div class="motive-footer">
         <div>
-          <strong>Seat math that sticks</strong>
-          <em>Hardcoded openers first · qualify · then hand off</em>
+          <strong>Fewer low-value calls. Better human conversations.</strong>
+          <em>Dialer → AI conversation → Qualification → Human handoff</em>
         </div>
-        <button type="button" class="ent-btn solid" data-mock>See breakdown</button>
+        <button type="button" class="ent-btn solid" data-mock>See workflow</button>
       </div>
     </div>
   )

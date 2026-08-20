@@ -13,210 +13,225 @@ import '../styles/global.css';
 export const prerender = true;
 
 const dialerBotDefinition =
-  'Dialer Bot is an AI voice bot platform that qualifies inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoffs only closable leads to human agents with context.';
+  'DialerBot is an AI voice platform for call centers. Your dialer finds the calls; DialerBot handles the first conversation; your agents talk only to qualified people.';
 
 const benefitFeatures = [
   {
     icon: '/images/dialerbot-elements.svg',
-    title: 'Qualify Calls Before Agents Pick Up',
-    text: 'Dialer Bot asks the first round of questions on every inbound and outbound call, so your team only spends time on leads that are ready to talk.',
+    title: 'AI handles the first conversation',
+    text: 'Greeting, qualification questions, intent, and basic information — so agents are not stuck on the same five questions all day.',
   },
   {
     icon: '/images/dialerbot-elements-1.svg',
-    title: 'Stay in Sync With Your Dialer',
-    text: 'The bot matches the pace of your dialer in real time. When volume spikes, it keeps up. When the queue slows, it does too — no wasted seats, no stalled campaigns.',
+    title: 'Your agents handle the close',
+    text: 'Interested leads, complex questions, negotiation, and customer conversations reach humans with context already collected.',
   },
 ];
 
-const sponsors = [
-  { src: '/images/sponsor-northlane.svg', name: 'Northlane', tip: 'Truck dispatch floor' },
-  { src: '/images/sponsor-harboraca.svg', name: 'HarborACA', tip: 'ACA outbound floor' },
-  { src: '/images/sponsor-summitfe.svg', name: 'SummitFE', tip: 'Final Expense sales' },
-  { src: '/images/sponsor-clearline.svg', name: 'Clearline', tip: 'Inbound reception' },
-  { src: '/images/sponsor-peakfloor.svg', name: 'PeakFloor', tip: 'Health Insurance dialing' },
-  { src: '/images/sponsor-relayops.svg', name: 'RelayOps', tip: 'Broker dispatch desk' },
+const howItWorks = [
+  {
+    n: '01',
+    title: 'Connect your calling system',
+    text: 'Keep the workflow your team already knows. Connect DialerBot to your dialer, SIP infrastructure, or calling environment.',
+  },
+  {
+    n: '02',
+    title: 'Give the bot your campaign',
+    text: 'Define your script, qualification questions, rules, transfer conditions, and campaign goals.',
+  },
+  {
+    n: '03',
+    title: 'AI talks to the lead',
+    text: 'DialerBot speaks naturally, asks questions, understands responses, and follows the conversation instead of simply reading a script.',
+  },
+  {
+    n: '04',
+    title: 'Qualify the conversation',
+    text: 'The bot determines whether the lead meets your criteria and records the relevant information.',
+  },
+  {
+    n: '05',
+    title: 'Transfer the right calls',
+    text: 'Qualified conversations can be transferred to the appropriate human agent with the information collected by the bot.',
+  },
+  {
+    n: '06',
+    title: 'Review everything',
+    text: 'Keep call records, transcripts, outcomes, and campaign information in one place for monitoring and QA.',
+  },
 ];
 
-const sponsorRails = [
-  { key: 'a', items: [...sponsors, ...sponsors] },
-  { key: 'b', items: [...sponsors].reverse().concat([...sponsors].reverse()) },
+const valueProps = [
+  {
+    title: 'Qualify before a human picks up',
+    text: 'Let AI handle the repetitive first stage of every campaign and reduce the number of low-value conversations reaching your agents.',
+  },
+  {
+    title: 'Keep your existing dialer',
+    text: 'DialerBot is designed to work alongside the infrastructure your call center already uses instead of forcing you to replace your entire stack.',
+  },
+  {
+    title: 'Warm-transfer qualified leads',
+    text: "Don't send an agent into a conversation blind. Transfer the call with the relevant context already collected.",
+  },
+  {
+    title: 'Run campaigns around the clock',
+    text: 'Use AI for outbound campaigns, inbound reception, overflow handling, callbacks, lead qualification, and other repetitive calling workflows.',
+  },
 ];
 
 const spotlights = [
   {
     image: '/images/dialerbot-home-01.webp',
-    title: 'Inbound receptionist,  never misses a call',
+    title: 'Inbound reception that answers and routes',
   },
   {
     image: '/images/dialerbot-home-02.webp',
-    title: 'Outbound bots ready for ACA, FE, HI & more',
+    title: 'Outbound campaigns that qualify before the transfer',
   },
   {
     image: '/images/dialerbot-home-03.webp',
-    title: 'Live logs, recordings, and call monitoring',
+    title: 'Recordings, transcripts, and campaign monitoring',
   },
 ];
 
 const serviceRows = [
   {
     reverse: false,
-    label: 'Inbound Voice Bots',
-    title: 'A digital receptionist that qualifies every caller',
+    label: 'Outbound Sales',
+    title: 'Let AI make first contact',
     points: [
-      { icon: '/images/dialerbot-elements.svg', text: 'Answer and greet callers around the clock' },
-      { icon: '/images/dialerbot-elements-2.svg', text: 'Ask scripted intake questions with natural replies' },
-      { icon: '/images/dialerbot-elements-3.svg', text: 'Route warm leads straight to the right agent' },
-      { icon: '/images/dialerbot-analysis-text-link.svg', text: 'Cut hold times and empty agent hours' },
+      { icon: '/images/dialerbot-radial.svg', text: 'AI opens the call and qualifies the prospect' },
+      { icon: '/images/dialerbot-target-02.svg', text: 'Interested leads transfer to your sales team' },
+      { icon: '/images/dialerbot-crowdfunding.svg', text: 'Unqualified conversations end without burning a seat' },
+      { icon: '/images/dialerbot-computer-dollar.svg', text: 'Built for high-volume outbound floors' },
     ],
-    mock: 'inbound' as const,
-    cta: 'See inbound qualification',
+    mock: 'outbound' as const,
+    cta: 'See outbound in demo',
   },
   {
     reverse: true,
-    label: 'Outbound Campaigns',
-    title: 'Ready-to-go bots for every call-center campaign',
+    label: 'Inbound Reception',
+    title: 'Answer, collect, and route',
     points: [
-      { icon: '/images/dialerbot-radial.svg', text: 'ACA, FE, HI, and custom campaign scripts' },
-      { icon: '/images/dialerbot-target-02.svg', text: 'Fine-tuned responses that feel human, not robotic' },
-      { icon: '/images/dialerbot-crowdfunding.svg', text: 'Filter tire-kickers before agents dial back' },
-      { icon: '/images/dialerbot-computer-dollar.svg', text: 'Built for truck dispatch, insurance, and sales floors' },
+      { icon: '/images/dialerbot-elements.svg', text: 'Answer incoming calls around the clock' },
+      { icon: '/images/dialerbot-elements-2.svg', text: 'Collect information and identify what the caller needs' },
+      { icon: '/images/dialerbot-elements-3.svg', text: 'Route the conversation to the right person' },
+      { icon: '/images/dialerbot-analysis-text-link.svg', text: 'Keep overflow and after-hours calls from falling through' },
     ],
-    mock: 'outbound' as const,
-    cta: 'Explore campaign bots',
+    mock: 'inbound' as const,
+    cta: 'See inbound in demo',
   },
   {
     reverse: false,
     label: 'Dialer Integration',
-    title: 'Plugs into your dialer and matches its pace',
+    title: 'Work with the stack you already run',
     points: [
-      { icon: '/images/dialerbot-elements-4.svg', text: 'Connects with the dialers call centers already run' },
-      { icon: '/images/dialerbot-discover-circle.svg', text: 'Self-paced — adjusts to live dialer speed' },
-      { icon: '/images/dialerbot-bulb-charge.svg', text: 'Handles first contact so agents focus on closers' },
-      { icon: '/images/dialerbot-cloud-upload.svg', text: 'Scales across seats without adding headcount' },
+      { icon: '/images/dialerbot-elements-4.svg', text: 'Connect to your dialer, SIP, or calling environment' },
+      { icon: '/images/dialerbot-discover-circle.svg', text: 'Keep the workflow your team already knows' },
+      { icon: '/images/dialerbot-bulb-charge.svg', text: 'AI operates as the conversation layer — not a full stack replacement' },
+      { icon: '/images/dialerbot-cloud-upload.svg', text: 'Scale campaigns without rebuilding your floor' },
     ],
     mock: 'dialer' as const,
-    cta: 'Learn about dialer sync',
+    cta: 'Talk about your dialer',
   },
   {
     reverse: true,
-    label: 'Voice, LLM & Backend',
-    title: 'Humanized voices, modern models, custom control',
+    label: 'Campaign Control',
+    title: 'Scripts, rules, and monitoring in one place',
     points: [
-      { icon: '/images/dialerbot-cloud-upload.svg', text: 'Humanized voices from speakers around the world' },
-      { icon: '/images/dialerbot-clock.svg', text: 'Advanced LLMs for understanding and replies' },
-      { icon: '/images/dialerbot-hourglass.svg', text: 'Custom backend for recording, logs, and monitoring' },
-      { icon: '/images/dialerbot-paragraph-bullets-point-01.svg', text: 'Hardcoded first questions with fine-tuned follow-ups' },
+      { icon: '/images/dialerbot-cloud-upload.svg', text: 'Natural AI conversations instead of rigid IVR flows' },
+      { icon: '/images/dialerbot-clock.svg', text: 'Campaign-specific scripts, questions, and outcomes' },
+      { icon: '/images/dialerbot-hourglass.svg', text: 'Recordings, transcripts, and call outcomes for QA' },
+      { icon: '/images/dialerbot-paragraph-bullets-point-01.svg', text: 'Monitor active calls, transfers, and campaign results' },
     ],
     mock: 'backend' as const,
-    cta: 'See how Dialer Bot works',
+    cta: 'Explore platform features',
   },
 ];
 
-const successPoints = [
-  {
-    icon: '/images/dialerbot-icon.png',
-    title: 'Fewer Seats, Same Throughput',
-    text: 'Let the bot clear the first few questions so your agents spend their day on conversations that convert.',
-  },
-  {
-    icon: '/images/dialerbot-icon-1.png',
-    title: 'Built for Calling Floors',
-    text: 'Whether you run ACA, final expense, health insurance, truck dispatch, or general inbound — Dialer Bot fits the workflow you already have.',
-  },
+const featuresList = [
+  { title: 'Natural AI conversations', text: 'Give prospects a real conversational experience instead of a rigid IVR-style flow.' },
+  { title: 'Campaign-specific scripts', text: 'Create different questions, rules, prompts, and outcomes for each campaign.' },
+  { title: 'Qualification and intent scoring', text: 'Determine whether a conversation meets your criteria before involving a human agent.' },
+  { title: 'Warm transfers', text: 'Send qualified calls directly to the right agent with context.' },
+  { title: 'Call recordings and transcripts', text: 'Review conversations, investigate outcomes, and improve campaign performance.' },
+  { title: 'Dialer integration', text: 'Connect DialerBot to your existing calling infrastructure.' },
+  { title: 'Campaign monitoring', text: 'See active calls, campaign activity, transfers, and outcomes.' },
+  { title: 'CRM integration', text: 'Push lead status, dispositions, collected information, and outcomes into your workflow.' },
 ];
 
-const testimonials = [
-  {
-    name: 'Marcus Hale',
-    role: 'Call center operations lead',
-    image: '/images/dialerbot-pricing-01.webp',
-    quote:
-      'Dialer Bot takes the first pass on every outbound dial. Our agents only jump in when someone is actually qualified. We cut wasted talk time almost overnight.',
-  },
-  {
-    name: 'Priya Nandakumar',
-    role: 'Insurance campaign manager',
-    image: '/images/dialerbot-pricing-02.webp',
-    quote:
-      'We run ACA and FE side by side. Having ready campaign bots with fine-tuned replies meant we did not rebuild scripts from scratch for each vertical.',
-  },
-  {
-    name: 'Derek Ortiz',
-    role: 'Fleet dispatch supervisor',
-    image: '/images/dialerbot-pricing-03.webp',
-    quote:
-      'Inbound used to pile up on our dispatch line. The receptionist bot asks the basics, logs the call, and only routes what needs a human. Drivers get answers faster.',
-  },
-  {
-    name: 'Angela Brooks',
-    role: 'Health insurance sales director',
-    image: '/images/dialerbot-pricing-04.webp',
-    quote:
-      'The voices sound natural enough that prospects stay on the line. Pair that with dialer pacing and our HI campaigns finally stopped burning agent hours on dead air.',
-  },
-  {
-    name: 'Jamal Reeves',
-    role: 'Outbound floor manager',
-    image: '/images/dialerbot-pricing-05.webp',
-    quote:
-      'Recordings, logs, and live monitoring live in one place. When compliance asks what was said, we pull it in seconds instead of digging through three tools.',
-  },
-  {
-    name: 'Sofia Martins',
-    role: 'Contact center owner',
-    image: '/images/dialerbot-pricing-06.webp',
-    quote:
-      'We were hiring just to cover qualification. Dialer Bot handles that layer now. Same dialer, fewer seats, and agents who are less burned out at the end of the day.',
-  },
+const useCases = [
+  { title: 'Outbound Sales', text: 'Let AI make the first contact, qualify the prospect, and transfer interested leads to your sales team.' },
+  { title: 'Lead Qualification', text: 'Ask your qualification questions consistently on every call and pass the results to your CRM or agents.' },
+  { title: 'Inbound Reception', text: 'Answer incoming calls, collect information, identify what the caller needs, and route the conversation.' },
+  { title: 'Insurance Campaigns', text: 'Build campaign-specific qualification flows for insurance and other structured sales operations.' },
+  { title: 'Dispatch', text: 'Handle initial questions, collect essential information, and route calls that require a dispatcher.' },
+  { title: 'Custom Campaigns', text: 'Build the conversation around your own script, questions, rules, and transfer logic.' },
+];
+
+const callCenterNeeds = [
+  'High-volume calling',
+  'Campaign-specific conversations',
+  'Qualification logic',
+  'Fast transfers',
+  'Call monitoring',
+  'Agent workflows',
+  'Dialer integration',
 ];
 ---
 
 <BaseLayout
-  title="Dialer Bot | AI Voice Bots for Inbound & Outbound Calling"
-  description="AI voice bots that qualify inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoff closable leads to your agents."
+  title="DialerBot | AI Voice Agents for Call Centers"
+  description="Your dialer finds the calls. DialerBot handles the first conversation. Your agents talk only to qualified people."
   image="/images/dialerbot-home-01.webp"
   preloadImages={['/images/dialerbot-bg-image.webp']}
   jsonLd={[
     webPageJsonLd({
-      name: 'Dialer Bot | AI Voice Bots for Inbound & Outbound Calling',
+      name: 'DialerBot | AI Voice Agents for Call Centers',
       description:
-        'AI voice bots that qualify inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoff closable leads to your agents.',
+        'Your dialer finds the calls. DialerBot handles the first conversation. Your agents talk only to qualified people.',
       path: '/',
     }),
-    definedTermJsonLd('Dialer Bot', dialerBotDefinition, '/'),
+    definedTermJsonLd('DialerBot', dialerBotDefinition, '/'),
   ]}
 >
   <Header slot="header" />
 
-  <!-- a1-hero-banner -->
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-grid">
         <div class="hero-copy">
           <div class="announcement">
-            <span class="badge">NEW</span>
-            <p>AI Voice Bots for Modern Dialing Floors</p>
+            <span class="badge">AI</span>
+            <p>AI Voice Agents for Call Centers</p>
             <span class="arrow" aria-hidden="true">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
             </span>
           </div>
-          <h1>Dialer Bot qualifies the call so your agents don't have to</h1>
+          <h1>Let AI handle the first conversation. Let your agents handle the close.</h1>
           <p class="lead">
-            AI voice bots for inbound reception and outbound campaigns. Dialer Bot asks the first questions,
-            fine-tunes the replies, and only hands off leads worth an agent’s time — for call centers, truck
-            dispatch, ACA, FE, HI, and every floor that still dials by hand.
+            DialerBot works with your existing calling workflow to answer calls, speak with leads, ask your
+            qualification questions, understand responses, and transfer qualified conversations to your human agents.
+          </p>
+          <p class="lead" style="opacity:0.9;margin-top:0.75rem;font-weight:600">
+            More qualified conversations. Less time wasted on unqualified calls.
           </p>
           <div class="hero-actions">
             <a class="btn btn-white" href={demo.homeHero} target="_blank" rel="noopener noreferrer">Try Live Demo</a>
             <a class="btn btn-glass" href={wa.start} target="_blank" rel="noopener noreferrer">
-              WhatsApp Sales
+              Talk to Sales
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
             </a>
           </div>
+          <p style="margin:1rem 0 0;font-size:0.85rem;opacity:0.75;max-width:36rem;line-height:1.45">
+            Built for inbound and outbound calling teams. Connect your dialer, configure your campaign, and put your AI
+            agent to work.
+          </p>
         </div>
         <div class="hero-visual" data-reveal="right" style="--reveal-i:0">
           <HeroOrbitMock />
@@ -225,35 +240,36 @@ const testimonials = [
     </div>
   </section>
 
-  <section class="aeo-solutions wrap" aria-label="Dialer Bot solutions">
-    <p class="section-label" data-reveal>Answer-ready solutions</p>
-    <h2 class="section-title" data-reveal style="--reveal-i:1">Built for the floors people search for</h2>
+  <section class="aeo-solutions wrap" aria-label="DialerBot promise">
+    <p class="section-label" data-reveal>The promise</p>
+    <h2 class="section-title" data-reveal style="--reveal-i:1">
+      Your dialer finds the calls. DialerBot handles the conversation. Your agents close the opportunities.
+    </h2>
     <div data-reveal style="--reveal-i:1.5">
-      <AeoDefinition term="Dialer Bot" definition={dialerBotDefinition} />
+      <AeoDefinition term="DialerBot" definition={dialerBotDefinition} />
     </div>
     <div class="aeo-solutions__grid">
-      <a class="aeo-solutions__card" href="/solutions/aca-voice-bot" data-reveal="up" style="--reveal-i:0">
-        <strong>ACA voice bot</strong>
-        <span>Compliant openers, scored intent, warm handoff for ACA / FE / HI.</span>
+      <a class="aeo-solutions__card" href="/solutions/warm-handoff" data-reveal="up" style="--reveal-i:0">
+        <strong>Warm transfer</strong>
+        <span>Qualified conversations reach agents with context — not cold dumps.</span>
       </a>
-      <a class="aeo-solutions__card" href="/solutions/truck-dispatch-bot" data-reveal="up" style="--reveal-i:1">
-        <strong>Truck dispatch bot</strong>
-        <span>First logistics questions answered before a dispatcher joins.</span>
+      <a class="aeo-solutions__card" href="/features" data-reveal="up" style="--reveal-i:1">
+        <strong>Campaign control</strong>
+        <span>Scripts, qualification rules, monitoring, and recordings in one platform.</span>
       </a>
-      <a class="aeo-solutions__card" href="/solutions/warm-handoff" data-reveal="up" style="--reveal-i:2">
-        <strong>Warm handoff</strong>
-        <span>Context-rich transfers instead of cold dumps into seats.</span>
+      <a class="aeo-solutions__card" href="/pricing" data-reveal="up" style="--reveal-i:2">
+        <strong>Start with one bot</strong>
+        <span>From $35 per bot. Scale when your floor is ready.</span>
       </a>
     </div>
   </section>
 
-  <!-- benifits -->
   <section class="benefits" id="features">
     <div class="wrap">
       <div class="benefits-head" data-reveal>
         <div>
-          <p class="section-label">Built for Calling Teams</p>
-          <h2 class="section-title wide">What Dialer Bot takes off your agents’ plates</h2>
+          <p class="section-label">The problem</p>
+          <h2 class="section-title wide">Your agents shouldn't spend their day asking the same five questions.</h2>
         </div>
       </div>
 
@@ -262,7 +278,12 @@ const testimonials = [
           <WarmHandoffMock />
         </div>
         <div>
-          <h3>First-contact qualification that saves seats, time, and budget</h3>
+          <h3>DialerBot takes care of the first conversation.</h3>
+          <p class="desc" style="margin-bottom:1.25rem">
+            Agents spend valuable minutes greeting prospects, repeating qualification questions, handling “I'm not
+            interested,” collecting basic information, and waiting for someone who may never become a customer. That
+            work has to happen — but it does not always need a human.
+          </p>
           {
             benefitFeatures.map((f) => (
               <div class="benefits-feature">
@@ -279,38 +300,16 @@ const testimonials = [
     </div>
   </section>
 
-  <!-- sponsors-section -->
-  <section class="sponsors" aria-label="Demo dialing floors">
+  <section class="sponsors" aria-label="How DialerBot works">
     <div class="wrap">
-      <p class="section-label center" data-reveal>Demo floors</p>
-      <h2 class="section-title center" data-reveal style="--reveal-i:1">Built for dialing floors like these</h2>
-    </div>
-
-    <div class="sponsors-bash" data-reveal style="--reveal-i:2">
-      <div class="sponsors-bash__glow" aria-hidden="true"></div>
-      <div class="sponsors-bash__stage">
+      <p class="section-label center" data-reveal>How it works</p>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">From dial to qualified conversation in seconds.</h2>
+      <div class="aeo-solutions__grid" style="margin-top:2rem">
         {
-          sponsorRails.map((rail) => (
-            <div class:list={['sponsors-bash__rail', `sponsors-bash__rail--${rail.key}`]}>
-              <div class="sponsors-bash__track">
-                {rail.items.map((sponsor, i) => (
-                  <div
-                    class="sponsors-bash__chip"
-                    style={`--chip-i: ${i % sponsors.length}`}
-                    title={sponsor.tip}
-                  >
-                    <img
-                      src={sponsor.src}
-                      alt={i < sponsors.length ? `${sponsor.name} — ${sponsor.tip}` : ''}
-                      aria-hidden={i >= sponsors.length ? 'true' : undefined}
-                      loading="lazy"
-                      decoding="async"
-                      width="136"
-                      height="40"
-                    />
-                  </div>
-                ))}
-              </div>
+          howItWorks.map((step, i) => (
+            <div class="aeo-solutions__card" data-reveal="up" style={`--reveal-i: ${i % 3}`}>
+              <strong>{step.n} — {step.title}</strong>
+              <span>{step.text}</span>
             </div>
           ))
         }
@@ -318,20 +317,14 @@ const testimonials = [
     </div>
   </section>
 
-  <!-- feature-spotlight-grid -->
   <section class="spotlight">
     <div class="spotlight-inner">
-      <p class="section-label center" data-reveal>Where Dialer Bot Fits</p>
-      <h2 class="section-title center" data-reveal style="--reveal-i:1">One platform for the calls your team used to handle by hand.</h2>
+      <p class="section-label center" data-reveal>Core value</p>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">One AI layer between your dialer and your agents.</h2>
       <div class="spotlight-grid">
         {
           spotlights.map((card, i) => (
-            <article
-              class="spotlight-card"
-              data-reveal="up"
-              data-lift
-              style={`--reveal-i: ${i}`}
-            >
+            <article class="spotlight-card" data-reveal="up" data-lift style={`--reveal-i: ${i}`}>
               <img
                 class="spotlight-card__media"
                 src={card.image}
@@ -345,21 +338,26 @@ const testimonials = [
               <div>
                 <h3>{card.title}</h3>
                 <a class="btn btn-outline-white" href="/features">
-                  {i === 0
-                    ? 'Explore inbound features'
-                    : i === 1
-                      ? 'Explore outbound features'
-                      : 'Explore monitoring features'}
+                  {valueProps[i]?.title || 'Explore features'}
                 </a>
               </div>
             </article>
           ))
         }
       </div>
+      <div class="aeo-solutions__grid" style="margin-top:2.5rem">
+        {
+          valueProps.map((v, i) => (
+            <div class="aeo-solutions__card" data-reveal="up" style={`--reveal-i: ${i}`}>
+              <strong>{v.title}</strong>
+              <span>{v.text}</span>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </section>
 
-  <!-- service-section — sticky stack already handles motion; no reveal here -->
   <section class="service">
     <div class="wrap">
       {
@@ -376,7 +374,12 @@ const testimonials = [
                   </div>
                 ))}
               </div>
-              <a class="btn btn-chip" href={demo.homeChip} target="_blank" rel="noopener noreferrer">
+              <a
+                class="btn btn-chip"
+                href={row.mock === 'backend' ? '/features' : demo.homeChip}
+                target={row.mock === 'backend' ? undefined : '_blank'}
+                rel={row.mock === 'backend' ? undefined : 'noopener noreferrer'}
+              >
                 {row.cta}
               </a>
             </div>
@@ -389,119 +392,79 @@ const testimonials = [
     </div>
   </section>
 
-  <!-- success-section -->
   <section class="success" id="company">
     <div class="wrap">
-      <p class="section-label center" data-reveal>Why Dialer Bot</p>
-      <h2 class="section-title center" data-reveal style="--reveal-i:1">Less manual calling. More conversations that matter.</h2>
+      <p class="section-label center" data-reveal>Use cases</p>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">Built for real calling operations.</h2>
+      <div class="aeo-solutions__grid" style="margin-top:2rem">
+        {
+          useCases.map((u, i) => (
+            <div class="aeo-solutions__card" data-reveal="up" style={`--reveal-i: ${i % 3}`}>
+              <strong>{u.title}</strong>
+              <span>{u.text}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-      <div class="success-grid">
+  <section class="stats" id="pricing">
+    <div class="wrap">
+      <p class="section-label center" data-reveal>Features</p>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">Everything you need to run an AI calling campaign.</h2>
+      <div class="aeo-solutions__grid" style="margin-top:2rem">
+        {
+          featuresList.map((f, i) => (
+            <div class="aeo-solutions__card" data-reveal="up" style={`--reveal-i: ${i % 3}`}>
+              <strong>{f.title}</strong>
+              <span>{f.text}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="wrap">
+      <p class="section-label center" data-reveal>Why DialerBot</p>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">Built for call centers—not generic chatbots.</h2>
+      <p class="lead center" data-reveal style="--reveal-i:2;max-width:42rem;margin-inline:auto">
+        Generic voice assistants are often designed for reception desks, appointments, and simple customer service.
+        Call centers need something different.
+      </p>
+      <div class="aeo-solutions__grid" style="margin-top:2rem">
+        {
+          callCenterNeeds.map((need, i) => (
+            <div class="aeo-solutions__card" data-reveal="up" style={`--reveal-i: ${i % 3}`}>
+              <strong>{need}</strong>
+              <span>DialerBot is built around that environment.</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="success-grid" style="margin-top:3rem">
         <div class="success-copy" data-reveal="left">
-          <p class="section-label">Our Motive</p>
-          <h3>Stop burning people on the first five minutes</h3>
+          <p class="section-label">Operations</p>
+          <h3>Give your agents fewer calls—and better calls.</h3>
           <p class="lead">
-            Across call centers, truck dispatch desks, insurance campaigns, and reception lines, the same work
-            repeats: ask a few questions, log the answers, decide if a human should stay on the line. Dialer Bot
-            owns that layer — with humanized voices, advanced language models, and a custom backend for recording,
-            logs, and monitoring — so your people can focus on closing, solving, and dispatching.
+            Your goal isn't to replace every person on your floor. Your goal is to make every agent more productive.
+            DialerBot handles repetitive conversations so your team can spend more time on the calls that actually
+            require human judgment.
           </p>
-          <div class="success-points">
-            {
-              successPoints.map((point) => (
-                <div>
-                  <img src={point.icon} alt="" loading="lazy" decoding="async" width="24" height="24" />
-                  <h3>{point.title}</h3>
-                  <p>{point.text}</p>
-                </div>
-              ))
-            }
+          <p class="lead" style="font-weight:700">
+            AI handles the repetitive work. People handle the important conversations.
+          </p>
+          <div class="hero-actions" style="margin-top:1.5rem">
+            <a class="btn btn-chip" href={demo.homeHero} target="_blank" rel="noopener noreferrer">Try the Live Demo</a>
+            <a class="btn btn-chip" href={wa.start} target="_blank" rel="noopener noreferrer">Talk to Sales</a>
           </div>
         </div>
         <div class="success-media" data-reveal="right" style="--reveal-i:1">
           <FeatureConsoleMock variant="motive" />
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- a3-statistics -->
-  <section class="stats" id="pricing">
-    <div class="wrap">
-      <p class="section-label center" data-reveal>Results on the Floor</p>
-      <h2 class="section-title center" data-reveal style="--reveal-i:1">What teams see when Dialer Bot takes the first pass</h2>
-
-      <div class="stats-top">
-        <div class="stat-media" data-reveal="left">
-          <img
-            src="/images/dialerbot-home-04.webp"
-            alt="Dialer Bot reducing agent workload"
-            loading="lazy"
-            decoding="async"
-            width="720"
-            height="480"
-          />
-        </div>
-        <div class="stat-card" data-reveal="right" data-lift style="--reveal-i:1">
-          <div class="num">60%</div>
-          <h3>Less agent time on raw qualification</h3>
-          <p>
-            Hardcoded opening questions and fine-tuned follow-ups clear the noise before a live agent ever picks up
-            the call.
-          </p>
-        </div>
-      </div>
-
-      <div class="stats-bottom">
-        <div class="stat-card" data-reveal="up" data-lift>
-          <div class="num">24/7</div>
-          <h3>Inbound coverage without extra seats</h3>
-          <p>
-            Reception bots answer, qualify, and route around the clock — so after-hours callers and overflow queues
-            stop falling through.
-          </p>
-        </div>
-        <div class="stat-media" data-reveal="scale" style="--reveal-i:1">
-          <img
-            src="/images/dialerbot-home-05.webp"
-            alt="Dialer Bot campaign performance"
-            loading="lazy"
-            decoding="async"
-            width="720"
-            height="480"
-          />
-        </div>
-        <div class="stat-card" data-reveal="up" data-lift style="--reveal-i:2">
-          <div class="num">1:1</div>
-          <h3>Pace matched to your dialer</h3>
-          <p>
-            Self-paced sync keeps the bot moving with live dialer speed. No backlog when you ramp, no idle bots when
-            you ease off.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- testimonials -->
-  <section class="testimonials">
-    <div class="wrap">
-      <p class="section-label center" data-reveal>From Floors That Dial Every Day</p>
-      <h2 class="section-title center" data-reveal style="--reveal-i:1">What operators say after Dialer Bot goes live</h2>
-      <div class="testimonial-grid">
-        {
-          testimonials.map((t, i) => (
-            <article class="testimonial" data-reveal="up" data-lift style={`--reveal-i: ${i % 3}`}>
-              <div class="testimonial-head">
-                <img src={t.image} alt={t.name} loading="lazy" decoding="async" width="56" height="56" />
-                <div>
-                  <strong>{t.name}</strong>
-                  <span>{t.role}</span>
-                </div>
-              </div>
-              <p>{t.quote}</p>
-            </article>
-          ))
-        }
       </div>
     </div>
   </section>
@@ -512,7 +475,6 @@ const testimonials = [
 <script>
   (() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const bash = document.querySelector('.sponsors-bash');
     const cards = document.querySelectorAll('.spotlight-card');
 
     /** @param {Element | null} el */
@@ -533,7 +495,6 @@ const testimonials = [
       io.observe(el);
     };
 
-    watch(bash);
     cards.forEach((card) => watch(card));
   })();
 </script>

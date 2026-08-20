@@ -25,6 +25,9 @@ data/portal.db
 data/portal.db-*
 data/uploads/
 
+# exported applicant CVs (local only — do not commit)
+AI ENGINEER CVS/
+
 # macOS-specific files
 .DS_Store
 

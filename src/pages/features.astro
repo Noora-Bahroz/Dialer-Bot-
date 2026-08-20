@@ -12,88 +12,87 @@ import '../styles/features-page.css';
 export const prerender = true;
 
 const featuresDefinition =
-  'Dialer Bot features are the controls under live call qualification — intent scoring, opener packs, compliance gates, transcript vault, affinity routing, and pace governance — so bots ask first and agents only take warm, scored handoffs.';
+  'DialerBot features help call centers build, launch, monitor, and improve AI voice campaigns — from the first greeting to the final handoff.';
 
 const matrix = [
   {
     n: '01',
-    title: 'Intent scoring',
-    text: 'Every answer moves a live score. Soft maybes stay with the bot; hard yeses transfer warm.',
+    title: 'AI Voice Conversations',
+    text: 'Your bot can hold a real conversation — listen, understand responses, ask follow-ups, and keep the call moving.',
   },
   {
     n: '02',
-    title: 'Opener packs',
-    text: 'Version ACA, FE, HI, and dispatch openers. A/B packs, freeze winners, retire duds.',
+    title: 'Campaign Scripts',
+    text: 'Create a separate conversation flow for every campaign: opening message, questions, objections, transfer and end-call rules.',
   },
   {
     n: '03',
-    title: 'Compliance gates',
-    text: 'Consent, quiet hours, and DNC checks run before the pitch — bad calls never hit a seat.',
+    title: 'Qualification & Intent',
+    text: 'Set the criteria that define a qualified conversation. Qualified → transfer. Uncertain → continue. Not qualified → end or disposition.',
   },
   {
     n: '04',
-    title: 'Voice roster',
-    text: 'Swap language and voice per campaign without rewriting qualification logic.',
+    title: 'Warm Transfer',
+    text: 'Transfer to a human agent with the context collected during the AI conversation — not a cold “how can I help you?” start.',
   },
   {
     n: '05',
-    title: 'Transcript vault',
-    text: 'Searchable audio and text so ops find ZIP or intent labels in seconds.',
+    title: 'Dialer Integration',
+    text: 'Connect DialerBot with your existing dialer, SIP environment, or calling infrastructure. AI operates as the conversation layer.',
   },
   {
     n: '06',
-    title: 'Affinity routing',
-    text: 'Warm handoffs prefer the seat that already owns that book of business.',
+    title: 'Call Recording & Transcripts',
+    text: 'Review recordings, transcripts, lead responses, disposition, transfer reason, campaign, and call outcome for QA.',
   },
   {
     n: '07',
-    title: 'Disposition hooks',
-    text: 'Push qualified, callback, DNC, and dead into CRM the moment the bot decides.',
+    title: 'Campaign Management',
+    text: 'Run different AI agents for different campaigns — each with its own voice, script, qualification rules, and operating hours.',
   },
   {
     n: '08',
-    title: 'Pace governor',
-    text: 'Cap concurrent bots to dialer RPM and throttle when agent seats saturate.',
+    title: 'Monitoring & Analytics',
+    text: 'Monitor calls, active conversations, qualified leads, transfers, completed calls, and campaign outcomes over time.',
   },
 ];
 
 const modules = [
   {
-    kicker: 'Qualification',
-    title: 'Hardcoded first questions. Flexible follow-ups.',
-    body: 'Turns one through three stay locked for QA and compliance. After intent starts to form, Dialer Bot clarifies hesitation and only escalates when the score crosses your handoff threshold.',
-    items: ['Script lock on early turns', 'Adaptive clarification loops', 'Configurable handoff score'],
+    kicker: 'Script Control',
+    title: 'Keep critical language consistent.',
+    body: 'Keep opening questions and compliance language consistent while allowing the AI to respond naturally around them.',
+    items: ['Locked critical turns', 'Natural follow-up responses', 'Campaign-specific rules'],
   },
   {
-    kicker: 'Operations',
-    title: 'Built for people who live in dialers.',
-    body: 'Supervisors monitor live status and pull vault clips without leaving the ops rhythm they already have. Agents inherit context — what was asked, what was confirmed, why the lead is worth time.',
-    items: ['Live monitoring hooks', 'Warm context on transfer', 'Seat-level affinity rules'],
+    kicker: 'Smart Follow-Ups',
+    title: 'Handle unexpected answers.',
+    body: 'The conversation does not have to end when a prospect gives an unexpected answer. Clarify, handle objections, and continue qualification.',
+    items: ['Objection handling', 'Clarifying questions', 'Continue or transfer logic'],
   },
   {
-    kicker: 'Reliability',
-    title: 'When the line matters, the bot stays on it.',
-    body: 'Health checks and graceful degrade paths keep qualification running when a trunk or model endpoint hiccups — with alerts before the floor feels dead air.',
-    items: ['Endpoint health pings', 'Failover routing', 'Ops-facing alert hooks'],
+    kicker: 'Agent Routing',
+    title: 'Send the right calls to the right team.',
+    body: 'Send qualified calls to the appropriate team, campaign, or agent — with CRM and webhook connections for the systems you already use.',
+    items: ['Team / campaign routing', 'CRM & webhooks', 'Voice and language per campaign'],
   },
 ];
 ---
 
 <BaseLayout
-  title="Features | Dialer Bot"
-  description="Dialer Bot features — intent scoring, opener packs, compliance gates, transcript vault, affinity routing, and pace control for calling floors."
+  title="Features | DialerBot"
+  description="Everything you need to automate the first conversation — AI voice campaigns, qualification, warm transfers, dialer integration, and monitoring."
   jsonLd={[
     breadcrumbJsonLd([
       { name: 'Home', path: '/' },
       { name: 'Features', path: '/features' },
     ]),
-    definedTermJsonLd('Dialer Bot features', featuresDefinition, '/features'),
+    definedTermJsonLd('DialerBot features', featuresDefinition, '/features'),
   ]}
 >
   <Header slot="header" />
 
   <div class="fx">
-    <!-- Masthead: single composition, brand-led -->
     <header class="fx-mast page-mast" data-mast>
       <PageMastFx />
       <div class="fx-shell fx-mast__grid">
@@ -103,51 +102,43 @@ const modules = [
             <span aria-hidden="true">/</span>
             <span>Features</span>
           </nav>
-          <p class="fx-brand">Dialer Bot</p>
-          <h1>Platform features for floors that already dial</h1>
-          <AeoDefinition term="Dialer Bot features" definition={featuresDefinition} tone="dark" />
+          <p class="fx-brand">DialerBot</p>
+          <h1>Everything you need to automate the first conversation.</h1>
+          <AeoDefinition term="DialerBot features" definition={featuresDefinition} tone="dark" />
           <p class="fx-deck">
-            The controls under qualification — scoring, scripting, compliance, vault, routing, and pace.
+            Build, launch, monitor, and improve AI voice campaigns — from the first greeting to the final handoff.
             Starter bots from ${site.pricePerBot}.
           </p>
           <div class="fx-actions">
             <a class="fx-btn fx-btn--solid" href={demo.features} target="_blank" rel="noopener noreferrer">
-              Try live demo
+              See Live Demo
             </a>
-            <a class="fx-btn fx-btn--ghost" href={wa.start} target="_blank" rel="noopener noreferrer">WhatsApp sales</a>
+            <a class="fx-btn fx-btn--ghost" href={wa.start} target="_blank" rel="noopener noreferrer">Talk to Sales</a>
           </div>
-          <p class="fx-niche-links">
-            Niche pages:
-            <a href="/solutions/aca-voice-bot">ACA voice bot</a>
-            ·
-            <a href="/solutions/truck-dispatch-bot">Truck dispatch bot</a>
-            ·
-            <a href="/solutions/warm-handoff">Warm handoff</a>
-          </p>
         </div>
 
         <aside class="fx-mast__aside" aria-label="Feature snapshot">
           <div class="fx-snapshot">
             <div class="fx-snapshot__top">
               <p class="fx-snapshot__label">At a glance</p>
-              <span class="fx-snapshot__badge">Live layer</span>
+              <span class="fx-snapshot__badge">AI voice platform</span>
             </div>
             <dl class="fx-snapshot__grid">
               <div>
-                <dt>Surface</dt>
-                <dd>Qualification layer</dd>
+                <dt>Focus</dt>
+                <dd>First conversation</dd>
               </div>
               <div>
                 <dt>Modules</dt>
-                <dd>8 core controls</dd>
+                <dd>8 core capabilities</dd>
               </div>
               <div>
                 <dt>Handoff</dt>
-                <dd>Warm · scored</dd>
+                <dd>Warm transfer</dd>
               </div>
               <div>
                 <dt>Sales path</dt>
-                <dd>WhatsApp</dd>
+                <dd>Live demo · WhatsApp</dd>
               </div>
             </dl>
           </div>
@@ -155,14 +146,13 @@ const modules = [
       </div>
     </header>
 
-    <!-- Symmetric capability matrix -->
     <section class="fx-section" aria-labelledby="fx-matrix-title">
       <div class="fx-shell">
         <div class="fx-section__head" data-reveal>
-          <p class="fx-kicker">Capability matrix</p>
-          <h2 id="fx-matrix-title">Eight controls. One qualification layer.</h2>
+          <p class="fx-kicker">Feature grid</p>
+          <h2 id="fx-matrix-title">Eight capabilities. One calling workflow.</h2>
           <p class="fx-section__deck">
-            Equal weight, equal cells — every module ops can actually configure.
+            Clear tools for operators evaluating DialerBot — without internal jargon getting in the way.
           </p>
         </div>
 
@@ -180,25 +170,24 @@ const modules = [
       </div>
     </section>
 
-    <!-- Detail modules: same column rhythm every time -->
     <section class="fx-section fx-section--tint" aria-labelledby="fx-modules-title">
       <div class="fx-shell">
         <div class="fx-section__head" data-reveal>
-          <p class="fx-kicker">How it holds together</p>
-          <h2 id="fx-modules-title">Three layers behind the matrix</h2>
+          <p class="fx-kicker">Advanced</p>
+          <h2 id="fx-modules-title">Built around the way call centers actually operate.</h2>
           <p class="fx-section__deck">
-            The matrix is what you can tune. These three layers are how those controls work together in production —
-            under real RPM, handoff pressure, and QA scrutiny.
+            Script control, smart follow-ups, routing, CRM connections, voice configuration, and reliability —
+            designed for high-volume floors.
           </p>
         </div>
 
-        <div class="fx-arch" aria-label="Architecture map">
+        <div class="fx-arch" aria-label="Advanced capabilities">
           <div class="fx-arch__flow" data-reveal>
-            <span>Qualification</span>
+            <span>Script</span>
             <i aria-hidden="true"></i>
-            <span>Operations</span>
+            <span>Follow-up</span>
             <i aria-hidden="true"></i>
-            <span>Reliability</span>
+            <span>Route</span>
           </div>
 
           <div class="fx-arch__grid">
@@ -221,9 +210,15 @@ const modules = [
             }
           </div>
         </div>
+
+        <div class="fx-actions" style="justify-content:center;margin-top:2.5rem" data-reveal>
+          <a class="fx-btn fx-btn--solid" href={demo.features} target="_blank" rel="noopener noreferrer">
+            Launch Live Demo
+          </a>
+          <a class="fx-btn fx-btn--ghost" href={wa.start} target="_blank" rel="noopener noreferrer">Talk to Sales</a>
+        </div>
       </div>
     </section>
-
   </div>
 
   <Footer slot="footer" />

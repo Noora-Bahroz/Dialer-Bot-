@@ -3,7 +3,7 @@ import { site } from './site';
 export const SITE_URL = `https://${site.domain}`;
 export const DEFAULT_OG_IMAGE = '/images/dialerbot-home-01.webp';
 export const DEFAULT_DESCRIPTION =
-  'AI voice bots that qualify inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoff closable leads to agents.';
+  'Your dialer finds the calls. DialerBot handles the first conversation. Your agents talk only to qualified people.';
 
 function parseMonthlySalaryRange(compensation: string | null) {
   if (!compensation) return null;
