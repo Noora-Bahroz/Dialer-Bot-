@@ -20,6 +20,12 @@ export default defineConfig({
         !page.includes('/recruiter/') &&
         !/\/careers\/\d+\/apply/.test(page) &&
         !page.includes('/api/'),
+      serialize(item) {
+        // Keep homepage + paths aligned with absoluteUrl() / trailingSlash:never
+        const bare = item.url.replace(/\/$/, '');
+        item.url = bare || 'https://dialerbot.online';
+        return item;
+      },
     }),
   ],
 });

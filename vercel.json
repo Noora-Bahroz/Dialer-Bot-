@@ -1,5 +1,17 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -12,6 +24,26 @@
           "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
         }
       ]
+    },
+    {
+      "source": "/login",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/applicant/(.*)",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/recruiter/(.*)",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/careers/(.*)/apply",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     },
     {
       "source": "/images/(.*)",
@@ -59,7 +91,7 @@
       ]
     },
     {
-      "source": "/(robots.txt|llms.txt|llms-full.txt|llm.txt|humans.txt|sitemap-index.xml|sitemap-0.xml)",
+      "source": "/(robots.txt|llms.txt|llms-full.txt|llm.txt|humans.txt|sitemap-index.xml|sitemap-0.xml|sitemap-jobs.xml)",
       "headers": [
         {
           "key": "Cache-Control",

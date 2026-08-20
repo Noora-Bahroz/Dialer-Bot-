@@ -20,7 +20,7 @@ const company = [
   { label: 'About', href: '/company' },
   { label: 'Careers', href: '/careers' },
   { label: 'Contact', href: '/contact' },
-  { label: 'Applicant login', href: '/login' },
+  { label: 'Applicant login', href: '/login', nofollow: true },
 ];
 
 const resources = [
@@ -176,7 +176,9 @@ const quick = [
           <ul>
             {company.map((link) => (
               <li>
-                <a href={link.href}>{link.label}</a>
+                <a href={link.href} rel={'nofollow' in link && link.nofollow ? 'nofollow' : undefined}>
+                  {link.label}
+                </a>
               </li>
             ))}
           </ul>

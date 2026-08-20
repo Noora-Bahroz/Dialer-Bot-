@@ -45,10 +45,12 @@ function parseMonthlySalaryRange(compensation: string | null) {
   };
 }
 
+/** Absolute URL with trailingSlash:never — homepage has no trailing slash. */
 export function absoluteUrl(path = '/') {
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
-  const clean = path.startsWith('/') ? path : `/${path}`;
-  return new URL(clean, SITE_URL).href;
+  const clean = (path.startsWith('/') ? path : `/${path}`).replace(/\/+$/, '') || '/';
+  if (clean === '/') return SITE_URL;
+  return `${SITE_URL}${clean}`;
 }
 
 export function organizationJsonLd() {

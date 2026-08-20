@@ -42,7 +42,8 @@ const {
 const demoBar = showDemoBar ?? !noindex;
 
 const pageTitle = title.includes('Dialer Bot') ? title : `${title} | Dialer Bot`;
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
+// Match sitemap + trailingSlash:never (homepage without trailing slash)
+const canonical = absoluteUrl(Astro.url.pathname);
 const ogImage = absoluteUrl(image);
 const robots = noindex ? 'noindex, nofollow' : 'index, follow';
 

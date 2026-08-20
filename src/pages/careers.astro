@@ -98,11 +98,11 @@ const hiringSteps = [
           <div class="cr-actions">
             {
               session?.role === 'applicant' ? (
-                <a class="cr-btn cr-btn--solid" href="/applicant/dashboard">Your dashboard</a>
+                <a class="cr-btn cr-btn--solid" href="/applicant/dashboard" rel="nofollow">Your dashboard</a>
               ) : session?.role === 'recruiter' ? (
-                <a class="cr-btn cr-btn--solid" href="/recruiter/dashboard">Recruiter hub</a>
+                <a class="cr-btn cr-btn--solid" href="/recruiter/dashboard" rel="nofollow">Recruiter hub</a>
               ) : (
-                <a class="cr-btn cr-btn--solid" href="/login">Sign in to apply</a>
+                <a class="cr-btn cr-btn--solid" href="/login" rel="nofollow">Sign in to apply</a>
               )
             }
             <a class="cr-btn cr-btn--ghost" href="/company">About the company</a>
