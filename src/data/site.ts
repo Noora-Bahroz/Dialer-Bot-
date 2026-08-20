@@ -10,7 +10,10 @@ export const site = {
   address: {
     line1: 'Office 12',
     line2: 'Pakistan Town Phase 2',
-    city: 'Islamabad, Pakistan',
+    city: 'Islamabad',
+    region: 'Islamabad Capital Territory',
+    postalCode: '44000',
+    country: 'PK',
   },
   pricePerBot: 35,
 } as const;

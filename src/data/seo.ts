@@ -7,10 +7,30 @@ export const DEFAULT_DESCRIPTION =
 
 function parseMonthlySalaryRange(compensation: string | null) {
   if (!compensation) return null;
-  const nums = compensation.match(/\d[\d,]*/g)?.map((n) => Number(n.replaceAll(',', ''))).filter((n) => Number.isFinite(n)) || [];
+  const raw = compensation.trim();
+  if (/unpaid/i.test(raw)) {
+    return {
+      '@type': 'MonetaryAmount',
+      currency: 'PKR',
+      value: {
+        '@type': 'QuantitativeValue',
+        value: 0,
+        unitText: 'MONTH',
+      },
+    };
+  }
+  // Commission / equity-only roles don't have a fixed base salary Google can validate.
+  if (/commission/i.test(raw) && !/\d/.test(raw)) return null;
+
+  const nums =
+    compensation
+      .match(/\d[\d,]*/g)
+      ?.map((n) => Number(n.replaceAll(',', '')))
+      .filter((n) => Number.isFinite(n)) || [];
   if (!nums.length) return null;
 
-  const [min, max] = nums.length >= 2 ? [Math.min(nums[0], nums[1]), Math.max(nums[0], nums[1])] : [nums[0], nums[0]];
+  const [min, max] =
+    nums.length >= 2 ? [Math.min(nums[0], nums[1]), Math.max(nums[0], nums[1])] : [nums[0], nums[0]];
   if (min <= 0 || max <= 0) return null;
 
   return {
@@ -50,8 +70,10 @@ export function organizationJsonLd() {
     address: {
       '@type': 'PostalAddress',
       streetAddress: `${site.address.line1}, ${site.address.line2}`,
-      addressLocality: 'Islamabad',
-      addressCountry: 'PK',
+      addressLocality: site.address.city,
+      addressRegion: site.address.region,
+      postalCode: site.address.postalCode,
+      addressCountry: site.address.country,
     },
     contactPoint: {
       '@type': 'ContactPoint',
@@ -228,8 +250,13 @@ export function jobPostingJsonLd(job: {
     : job.type.toLowerCase().includes('contract') ? 'CONTRACTOR'
     : 'FULL_TIME';
   const salary = parseMonthlySalaryRange(job.compensation);
+  const isRemote = /remote/i.test(job.location);
 
-  return {
+  const posted = new Date(`${job.posted_at}T12:00:00Z`);
+  const validThrough = new Date(posted);
+  validThrough.setUTCDate(validThrough.getUTCDate() + 90);
+
+  const posting: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'JobPosting',
     title: job.title,
@@ -240,6 +267,7 @@ export function jobPostingJsonLd(job: {
       value: String(job.id),
     },
     datePosted: job.posted_at,
+    validThrough: validThrough.toISOString().slice(0, 10),
     employmentType: employment,
     hiringOrganization: {
       '@type': 'Organization',
@@ -251,17 +279,29 @@ export function jobPostingJsonLd(job: {
       '@type': 'Place',
       address: {
         '@type': 'PostalAddress',
-        addressLocality: job.location.includes('Remote') ? 'Remote' : 'Islamabad',
-        addressCountry: 'PK',
+        streetAddress: `${site.address.line1}, ${site.address.line2}`,
+        addressLocality: site.address.city,
+        addressRegion: site.address.region,
+        postalCode: site.address.postalCode,
+        addressCountry: site.address.country,
       },
     },
     applicantLocationRequirements: {
       '@type': 'Country',
       name: 'PK',
     },
-    baseSalary: salary || undefined,
     directApply: true,
     industry: job.niche,
     url: absoluteUrl(`/careers/${job.id}`),
   };
+
+  if (isRemote) {
+    posting.jobLocationType = 'TELECOMMUTE';
+  }
+
+  if (salary) {
+    posting.baseSalary = salary;
+  }
+
+  return posting;
 }
