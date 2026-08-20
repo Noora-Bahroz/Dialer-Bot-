@@ -74,6 +74,15 @@
 
 .bl-mast__top .bl-crumb {
   margin: 0;
+  color: rgba(243, 247, 244, 0.55);
+}
+
+.bl-mast__top .bl-crumb a {
+  color: rgba(243, 247, 244, 0.55);
+}
+
+.bl-mast__top .bl-crumb a:hover {
+  color: var(--bl-lime);
 }
 
 .bl-crumb a {
@@ -99,10 +108,16 @@
 
 .bl-mast__title {
   display: grid;
-  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
-  gap: 0.75rem 1.5rem;
-  align-items: end;
-  margin-bottom: 1rem;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+  align-items: start;
+  margin-bottom: 1.25rem;
+  max-width: 46rem;
+}
+
+.bl-mast__title .bl-brand {
+  margin: 0;
+  color: var(--bl-lime);
 }
 
 .bl-mast h1 {
@@ -111,14 +126,22 @@
   line-height: 1.12;
   letter-spacing: -0.035em;
   font-weight: 750;
+  color: #fff;
 }
 
 .bl-deck {
   margin: 0;
-  max-width: 36rem;
+  max-width: 40rem;
   font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--bl-muted);
+  line-height: 1.55;
+  color: rgba(243, 247, 244, 0.72);
+}
+
+.bl-deck--topics {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgba(243, 247, 244, 0.55);
 }
 
 .bl-article-head .bl-brand {
