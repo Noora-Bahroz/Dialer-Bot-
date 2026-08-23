@@ -72,6 +72,78 @@ const SEED_JOBS: SeedJob[] = [
     ],
   },
   {
+    niche: 'Design',
+    title: 'Graphic Designer Intern',
+    type: 'Internship · Remote · Flexible',
+    location: 'Islamabad · Remote',
+    compensation: 'Unpaid internship',
+    blurb:
+      'Create on-brand visuals for Dialer Bot — social graphics, campaign assets, and marketing collateral that feel sharp on a calling-floor product.',
+    description:
+      'Dialer Bot is hiring a Graphic Designer Intern for unpaid, remote work with flexible hours. You will turn briefs into polished visuals for social, ads, decks, and product marketing. Share a portfolio link when you apply — we care about taste and execution, not formal credentials.',
+    responsibilities: [
+      'Design social posts, ad creatives, and lightweight campaign graphics',
+      'Maintain visual consistency with Dialer Bot brand colors, type, and tone',
+      'Prepare export-ready files for web and paid channels',
+      'Iterate quickly from feedback and ship on weekly marketing cycles',
+    ],
+    requirements: [
+      'Portfolio with marketing or brand design samples (required)',
+      'Comfort with Figma, Canva, or Adobe creative tools',
+      'Eye for clean B2B / SaaS visual language',
+      'Self-managed, responsive over WhatsApp or email',
+      'No degree required — show the work',
+    ],
+  },
+  {
+    niche: 'UI/UX',
+    title: 'UI/UX Designer Intern',
+    type: 'Internship · Remote · Flexible',
+    location: 'Islamabad · Remote',
+    compensation: 'Unpaid internship',
+    blurb:
+      'Shape flows, wireframes, and UI polish for a live voice-bot product — marketing site, careers portal, and in-product surfaces.',
+    description:
+      'We need a UI/UX Designer Intern who can think in user journeys and ship clear interfaces. You will wireframe flows, refine component layouts, and improve usability across dialerbot.online and internal tools. Unpaid internship, remote, flexible schedule. Apply with a portfolio or case study link.',
+    responsibilities: [
+      'Wireframe and prototype key user flows for marketing and portal pages',
+      'Improve layout hierarchy, spacing, and mobile usability',
+      'Document UX decisions and hand off specs to engineering',
+      'Run quick usability passes and iterate from real feedback',
+    ],
+    requirements: [
+      'Portfolio with UI/UX case studies or shipped screens (required)',
+      'Comfort with Figma (or similar) for wireframes and high-fidelity UI',
+      'Basic understanding of responsive web patterns',
+      'Clear written communication for handoffs',
+      'No degree required — show how you think and ship',
+    ],
+  },
+  {
+    niche: 'Content',
+    title: 'Content Creator Intern',
+    type: 'Internship · Remote · Flexible',
+    location: 'Islamabad · Remote',
+    compensation: 'Unpaid internship',
+    blurb:
+      'Write and package content that explains Dialer Bot to call-center operators — blog posts, social clips, scripts, and floor-ready messaging.',
+    description:
+      'Dialer Bot is opening a Content Creator Intern role for builders who can explain technical products in plain language. You will draft blog posts, social copy, short video scripts, and sales-adjacent messaging for B2B call-center buyers. Unpaid, remote, flexible. Apply with writing samples or a content portfolio link.',
+    responsibilities: [
+      'Draft blog posts, LinkedIn copy, and short-form social content',
+      'Turn product features into operator-friendly explanations',
+      'Support lightweight video or carousel scripts for marketing',
+      'Maintain a consistent voice aligned with Dialer Bot positioning',
+    ],
+    requirements: [
+      'Writing samples or content portfolio (required)',
+      'Clear English — B2B or SaaS writing experience is a plus',
+      'Comfort researching call-center, dialer, or AI voice topics',
+      'Fast iteration from editorial feedback',
+      'No degree required — show published or draft work',
+    ],
+  },
+  {
     niche: 'Growth',
     title: 'Digital Marketing & Client Hunting (Commission-Based)',
     type: 'Part-time / Full-time · Remote',
@@ -445,11 +517,11 @@ async function initSchema() {
 
   await seed();
   await ensureRecruiterAccount();
+  await syncSeedJobs();
 
-  // Heavy migrations/seed sync only when explicitly requested (not every serverless cold start)
+  // One-off legacy backfill — only when explicitly requested
   if (env('PORTAL_SYNC_SEED') === 'true') {
     await migrateLegacyJobs();
-    await syncSeedJobs();
   }
 }
 
