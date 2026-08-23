@@ -31,9 +31,9 @@ const SEED_JOBS: SeedJob[] = [
     location: 'Islamabad · Remote',
     compensation: 'Unpaid internship',
     blurb:
-      'Frontend internship for fast learners who can ship polished pages and UI improvements with close feedback loops.',
+      'Unpaid internship — ship polished pages and UI improvements on live marketing and portal surfaces with close feedback loops.',
     description:
-      'We are opening an unpaid Frontend Intern role for candidates who want practical product experience. You will work on live pages, improve UX details, and learn by shipping. Apply through the portal and share your best samples.',
+      'Unpaid Frontend Intern role for candidates who want practical product experience. You will work on live pages, improve UX details, and learn by shipping. Apply through the portal and share your best samples.',
     responsibilities: [
       'Build and refine responsive UI sections for marketing and portal pages',
       'Implement design tweaks quickly with clean, reusable markup and CSS',
@@ -49,14 +49,14 @@ const SEED_JOBS: SeedJob[] = [
   },
   {
     niche: 'Design',
-    title: 'Graphic Designer Intern',
+    title: 'Graphic Designer Intern (Paid)',
     type: 'Internship · Remote · Flexible',
     location: 'Islamabad · Remote',
-    compensation: 'Unpaid internship',
+    compensation: 'PKR 20,000 - 35,000/month (based on portfolio & skill)',
     blurb:
-      'Create on-brand visuals for Dialer Bot — social graphics, campaign assets, and marketing collateral that feel sharp on a calling-floor product.',
+      'Paid internship — create on-brand visuals for Dialer Bot: social graphics, campaign assets, and marketing collateral for a calling-floor product.',
     description:
-      'Dialer Bot is hiring a Graphic Designer Intern for unpaid, remote work with flexible hours. You will turn briefs into polished visuals for social, ads, decks, and product marketing. Share a portfolio link when you apply — we care about taste and execution, not formal credentials.',
+      'Dialer Bot is hiring a paid Graphic Designer Intern for remote work with flexible hours. Monthly stipend based on portfolio quality and execution speed. You will turn briefs into polished visuals for social, ads, decks, and product marketing. Share a portfolio link when you apply.',
     responsibilities: [
       'Design social posts, ad creatives, and lightweight campaign graphics',
       'Maintain visual consistency with Dialer Bot brand colors, type, and tone',
@@ -73,14 +73,14 @@ const SEED_JOBS: SeedJob[] = [
   },
   {
     niche: 'UI/UX',
-    title: 'UI/UX Designer Intern',
+    title: 'UI/UX Designer Intern (Paid)',
     type: 'Internship · Remote · Flexible',
     location: 'Islamabad · Remote',
-    compensation: 'Unpaid internship',
+    compensation: 'PKR 25,000 - 40,000/month (based on portfolio & skill)',
     blurb:
-      'Shape flows, wireframes, and UI polish for a live voice-bot product — marketing site, careers portal, and in-product surfaces.',
+      'Paid internship — shape flows, wireframes, and UI polish for a live voice-bot product: marketing site, careers portal, and in-product surfaces.',
     description:
-      'We need a UI/UX Designer Intern who can think in user journeys and ship clear interfaces. You will wireframe flows, refine component layouts, and improve usability across dialerbot.online and internal tools. Unpaid internship, remote, flexible schedule. Apply with a portfolio or case study link.',
+      'We need a paid UI/UX Designer Intern who can think in user journeys and ship clear interfaces. Monthly stipend based on portfolio and output. You will wireframe flows, refine component layouts, and improve usability across dialerbot.online and internal tools. Remote, flexible schedule. Apply with a portfolio or case study link.',
     responsibilities: [
       'Wireframe and prototype key user flows for marketing and portal pages',
       'Improve layout hierarchy, spacing, and mobile usability',
@@ -97,14 +97,14 @@ const SEED_JOBS: SeedJob[] = [
   },
   {
     niche: 'Content',
-    title: 'Content Creator Intern',
+    title: 'Content Creator Intern (Unpaid)',
     type: 'Internship · Remote · Flexible',
     location: 'Islamabad · Remote',
     compensation: 'Unpaid internship',
     blurb:
-      'Write and package content that explains Dialer Bot to call-center operators — blog posts, social clips, scripts, and floor-ready messaging.',
+      'Unpaid internship — write and package content that explains Dialer Bot to call-center operators: blog posts, social clips, scripts, and floor-ready messaging.',
     description:
-      'Dialer Bot is opening a Content Creator Intern role for builders who can explain technical products in plain language. You will draft blog posts, social copy, short video scripts, and sales-adjacent messaging for B2B call-center buyers. Unpaid, remote, flexible. Apply with writing samples or a content portfolio link.',
+      'Dialer Bot is opening an unpaid Content Creator Intern role for builders who can explain technical products in plain language. You will draft blog posts, social copy, short video scripts, and sales-adjacent messaging for B2B call-center buyers. Remote, flexible. Apply with writing samples or a content portfolio link.',
     responsibilities: [
       'Draft blog posts, LinkedIn copy, and short-form social content',
       'Turn product features into operator-friendly explanations',
@@ -361,6 +361,9 @@ async function syncSeedJobs() {
 
   const closedJobTitles = [
     'AI Engineer (Urgent Hiring)',
+    'Graphic Designer Intern',
+    'UI/UX Designer Intern',
+    'Content Creator Intern',
     'Conversation Designer',
     'Realtime Voice Platform Engineer',
     'Floor Success Specialist',
