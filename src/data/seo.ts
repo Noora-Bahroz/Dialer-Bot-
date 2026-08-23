@@ -1,4 +1,5 @@
 import { site } from './site';
+import { parseDbDate } from '../lib/portal/format';
 
 export const SITE_URL = `https://${site.domain}`;
 export const DEFAULT_OG_IMAGE = '/images/dialerbot-home-01.webp';
@@ -254,7 +255,7 @@ export function jobPostingJsonLd(job: {
   const salary = parseMonthlySalaryRange(job.compensation);
   const isRemote = /remote/i.test(job.location);
 
-  const posted = new Date(`${job.posted_at}T12:00:00Z`);
+  const posted = parseDbDate(job.posted_at) ?? new Date();
   const validThrough = new Date(posted);
   validThrough.setUTCDate(validThrough.getUTCDate() + 90);
 
@@ -268,7 +269,7 @@ export function jobPostingJsonLd(job: {
       name: site.name,
       value: String(job.id),
     },
-    datePosted: job.posted_at,
+    datePosted: posted.toISOString().slice(0, 10),
     validThrough: validThrough.toISOString().slice(0, 10),
     employmentType: employment,
     hiringOrganization: {

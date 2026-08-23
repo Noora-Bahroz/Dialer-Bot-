@@ -25,30 +25,6 @@ type SeedJob = {
 
 const SEED_JOBS: SeedJob[] = [
   {
-    niche: 'AI Engineering',
-    title: 'AI Engineer (Urgent Hiring)',
-    type: 'Full-time · Remote · Flexible',
-    location: 'Islamabad · Remote',
-    compensation: 'PKR 40,000 - 60,000 (based on skill)',
-    blurb:
-      'Immediate opening for builders who have worked on AI voice bots and can execute quickly with modern AI APIs. Apply now for immediate start.',
-    description:
-      'Contactivity is hiring immediately for an AI Engineer. If you have built or worked on AI voice bots and prefer fast execution over process-heavy teams, this role is for you. We care about real output and ownership, not degrees or formal titles. Apply through this portal for an immediate start.',
-    responsibilities: [
-      'Build and improve AI voice bot flows for real user conversations',
-      'Integrate and ship features using AI tools and APIs',
-      'Prototype quickly, test in production-like scenarios, and iterate fast',
-      'Own tasks independently and collaborate when blockers appear',
-    ],
-    requirements: [
-      'Experience building or working with AI voice bots (mandatory)',
-      'Strong hands-on skills with AI tools and APIs',
-      'Fast execution mindset (builders welcome, vibe coders can apply)',
-      'Self-driven and independent',
-      'No degree or formal experience required',
-    ],
-  },
-  {
     niche: 'Frontend',
     title: 'Frontend Intern (Unpaid)',
     type: 'Internship · Remote · Flexible',
@@ -383,7 +359,8 @@ async function syncSeedJobs() {
     );
   }
 
-  const oldMockTitles = [
+  const closedJobTitles = [
+    'AI Engineer (Urgent Hiring)',
     'Conversation Designer',
     'Realtime Voice Platform Engineer',
     'Floor Success Specialist',
@@ -395,9 +372,9 @@ async function syncSeedJobs() {
     `
     UPDATE jobs
     SET status = 'closed', updated_at = CURRENT_TIMESTAMP
-    WHERE title IN (${oldMockTitles.map(() => '?').join(',')})
+    WHERE title IN (${closedJobTitles.map(() => '?').join(',')})
   `,
-    oldMockTitles,
+    closedJobTitles,
   );
 }
 
