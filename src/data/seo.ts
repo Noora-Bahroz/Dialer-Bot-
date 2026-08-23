@@ -4,7 +4,7 @@ import { parseDbDate } from '../lib/portal/format';
 export const SITE_URL = `https://${site.domain}`;
 export const DEFAULT_OG_IMAGE = '/images/dialerbot-home-01.webp';
 export const DEFAULT_DESCRIPTION =
-  'Your dialer finds the calls. DialerBot handles the first conversation. Your agents talk only to qualified people.';
+  'AI outbound calling bot for dialers and call centers. DialerBot qualifies leads on the first conversation, integrates with your dialer, and warm-transfers closable opportunities to agents.';
 
 function parseMonthlySalaryRange(compensation: string | null) {
   if (!compensation) return null;

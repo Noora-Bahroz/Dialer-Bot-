@@ -13,7 +13,11 @@ import '../styles/global.css';
 export const prerender = true;
 
 const dialerBotDefinition =
-  'DialerBot is an AI voice platform for call centers. Your dialer finds the calls; DialerBot handles the first conversation; your agents talk only to qualified people.';
+  'DialerBot is an AI outbound calling platform for call centers. Your dialer finds the calls; DialerBot runs the first conversation; your agents talk only to qualified people.';
+
+const homeTitle = 'AI Outbound Calling Bot for Dialers | DialerBot';
+const homeDescription =
+  'Automate AI outbound calling before agents pick up. DialerBot integrates with your dialer, qualifies leads on the first conversation, and warm-transfers closable opportunities.';
 
 const benefitFeatures = [
   {
@@ -182,15 +186,14 @@ const callCenterNeeds = [
 ---
 
 <BaseLayout
-  title="DialerBot | AI Voice Agents for Call Centers"
-  description="Your dialer finds the calls. DialerBot handles the first conversation. Your agents talk only to qualified people."
+  title={homeTitle}
+  description={homeDescription}
   image="/images/dialerbot-home-01.webp"
   preloadImages={['/images/dialerbot-bg-image.webp']}
   jsonLd={[
     webPageJsonLd({
-      name: 'DialerBot | AI Voice Agents for Call Centers',
-      description:
-        'Your dialer finds the calls. DialerBot handles the first conversation. Your agents talk only to qualified people.',
+      name: homeTitle,
+      description: homeDescription,
       path: '/',
     }),
     definedTermJsonLd('DialerBot', dialerBotDefinition, '/'),
