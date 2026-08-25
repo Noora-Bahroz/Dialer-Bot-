@@ -363,7 +363,9 @@ async function syncSeedJobs() {
     'AI Engineer (Urgent Hiring)',
     'Graphic Designer Intern',
     'UI/UX Designer Intern',
+    'UI/UX Designer Intern (Paid)',
     'Content Creator Intern',
+    'Content Creator Intern (Unpaid)',
     'Conversation Designer',
     'Realtime Voice Platform Engineer',
     'Floor Success Specialist',
@@ -378,6 +380,22 @@ async function syncSeedJobs() {
     WHERE title IN (${closedJobTitles.map(() => '?').join(',')})
   `,
     closedJobTitles,
+  );
+}
+
+async function shouldSyncSeedJobs() {
+  if (env('PORTAL_SYNC_SEED') === 'true') return true;
+  const row = await dbGet<{ value: string }>("SELECT value FROM _portal_meta WHERE key = 'seed_sync_at'");
+  if (!row?.value) return true;
+  const last = Date.parse(row.value);
+  if (Number.isNaN(last)) return true;
+  return Date.now() - last > 60 * 60 * 1000;
+}
+
+async function markSeedSynced() {
+  await dbRun(
+    "INSERT INTO _portal_meta (key, value) VALUES ('seed_sync_at', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+    [new Date().toISOString()],
   );
 }
 
@@ -497,7 +515,10 @@ async function initSchema() {
 
   await seed();
   await ensureRecruiterAccount();
-  await syncSeedJobs();
+  if (await shouldSyncSeedJobs()) {
+    await syncSeedJobs();
+    await markSeedSynced();
+  }
 
   // One-off legacy backfill — only when explicitly requested
   if (env('PORTAL_SYNC_SEED') === 'true') {

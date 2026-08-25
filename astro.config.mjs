@@ -8,6 +8,7 @@ export default defineConfig({
   adapter: vercel({
     // Mumbai — closest to Turso ap-south-1 and Pakistan visitors
     regions: ['bom1'],
+    maxDuration: 60,
   }),
   site: 'https://dialerbot.online',
   trailingSlash: 'never',

@@ -2,16 +2,15 @@
 import PortalLayout from '../../../layouts/PortalLayout.astro';
 import { dbGet, dbRun, getJob } from '../../../db/db';
 import { requireRole } from '../../../lib/portal/auth';
-import { saveUpload, saveUploads } from '../../../lib/portal/uploads';
+import { saveUpload, saveUploads, blobUploadEnabled, blobAccess, registerClientUpload, MAX_CERT_FILES } from '../../../lib/portal/uploads';
 
 export const prerender = false;
 
+const useBlobUpload = blobUploadEnabled();
+const blobAccessMode = blobAccess();
+
 const { id } = Astro.params;
-const { user, redirect } = await requireRole(
-  Astro,
-  'applicant',
-  `/login?next=${encodeURIComponent(Astro.url.pathname)}`,
-);
+const { user, redirect } = await requireRole(Astro, 'applicant');
 if (redirect) return redirect;
 
 const job = await getJob(id!);
@@ -54,24 +53,23 @@ if (Astro.request.method === 'POST') {
   if (existing) {
     error = 'You already applied for this role.';
   } else {
-    const data = await Astro.request.formData();
-
-    formValues.availability = String(data.get('availability') || '').trim();
-    formValues.work_mode = String(data.get('work_mode') || '').trim();
-    formValues.current_salary = String(data.get('current_salary') || '').trim();
-    formValues.expected_salary = String(data.get('expected_salary') || '').trim();
-    formValues.portfolio_url = String(data.get('portfolio_url') || '').trim();
-    formValues.linkedin_url = String(data.get('linkedin_url') || '').trim();
-    formValues.other_links = String(data.get('other_links') || '').trim();
-    formValues.notes = String(data.get('notes') || '').trim();
-    formValues.cover_letter = String(data.get('cover_letter') || '').trim();
-    formValues.headline = String(data.get('headline') || '').trim();
-
-    const workModes = new Set(WORK_MODES.map((m) => m.value));
-
-    const mergeLinks = [formValues.linkedin_url, formValues.other_links].filter(Boolean).join('\n');
-
     try {
+      const data = await Astro.request.formData();
+
+      formValues.availability = String(data.get('availability') || '').trim();
+      formValues.work_mode = String(data.get('work_mode') || '').trim();
+      formValues.current_salary = String(data.get('current_salary') || '').trim();
+      formValues.expected_salary = String(data.get('expected_salary') || '').trim();
+      formValues.portfolio_url = String(data.get('portfolio_url') || '').trim();
+      formValues.linkedin_url = String(data.get('linkedin_url') || '').trim();
+      formValues.other_links = String(data.get('other_links') || '').trim();
+      formValues.notes = String(data.get('notes') || '').trim();
+      formValues.cover_letter = String(data.get('cover_letter') || '').trim();
+      formValues.headline = String(data.get('headline') || '').trim();
+
+      const workModes = new Set(WORK_MODES.map((m) => m.value));
+      const mergeLinks = [formValues.linkedin_url, formValues.other_links].filter(Boolean).join('\n');
+
       if (!workModes.has(formValues.work_mode as (typeof WORK_MODES)[number]['value'])) {
         throw new Error('Please choose Remote, On-site, or Hybrid.');
       }
@@ -94,10 +92,38 @@ if (Astro.request.method === 'POST') {
         }
       }
 
-      const resume = await saveUpload(data.get('resume') as File | null, user!.id, 'resume');
-      if (!resume) throw new Error('Please attach your CV / resume (DOCX only, max 8 MB).');
+      const resumeUrl = String(data.get('resume_url') || '').trim();
+      const resumeName = String(data.get('resume_name') || '').trim();
+      const resumeSize = Number(data.get('resume_size') || 0);
+      const certsPayload = String(data.get('certifications_payload') || '').trim();
 
-      const certifications = await saveUploads(data.getAll('certifications'), user!.id, 'cert');
+      let resume;
+      if (resumeUrl && useBlobUpload) {
+        resume = registerClientUpload(resumeUrl, user!.id, 'resume', resumeName || 'resume.pdf', resumeSize);
+      } else {
+        resume = await saveUpload(data.get('resume') as File | null, user!.id, 'resume');
+      }
+      if (!resume) throw new Error('Please attach your CV / resume (PDF or DOCX, max 8 MB).');
+
+      let certifications;
+      if (certsPayload && useBlobUpload) {
+        type CertPayload = { url: string; name: string; size: number };
+        let parsed: CertPayload[];
+        try {
+          parsed = JSON.parse(certsPayload) as CertPayload[];
+        } catch {
+          throw new Error('Certification upload failed. Please try again.');
+        }
+        if (!Array.isArray(parsed)) parsed = [];
+        if (parsed.length > MAX_CERT_FILES) {
+          throw new Error(`You can attach up to ${MAX_CERT_FILES} certification files.`);
+        }
+        certifications = parsed.map((cert) =>
+          registerClientUpload(cert.url, user!.id, 'cert', cert.name || 'certificate', Number(cert.size) || 0),
+        );
+      } else {
+        certifications = await saveUploads(data.getAll('certifications'), user!.id, 'cert');
+      }
 
       await dbRun(
         `
@@ -130,8 +156,9 @@ if (Astro.request.method === 'POST') {
       return Astro.redirect('/applicant/dashboard?applied=1');
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Could not submit application.';
-      // Surface a clearer hint when Blob store access mode is wrong.
-      if (/access denied|forbidden|valid token/i.test(msg)) {
+      if (/payload too large|body exceeded|413|request entity too large/i.test(msg)) {
+        error = 'Upload too large. Keep your resume under 8 MB and attach at most 3 certificate files.';
+      } else if (/access denied|forbidden|valid token/i.test(msg)) {
         error =
           'Upload failed due to storage access settings. Please try again, or contact support if it keeps failing.';
       } else {
@@ -172,7 +199,15 @@ if (Astro.request.method === 'POST') {
         )}
 
         {!existing && (
-          <form method="POST" enctype="multipart/form-data" class="pt-apply-form" id="apply-form">
+          <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="pt-apply-form"
+            id="apply-form"
+            data-blob-upload={useBlobUpload ? '1' : '0'}
+            data-user-id={user!.id}
+            data-max-cert-files={MAX_CERT_FILES}
+          >
             <!-- 1. Profile -->
             <section class="pt-step">
               <div class="pt-step__head">
@@ -211,7 +246,7 @@ if (Astro.request.method === 'POST') {
                   <input
                     type="file"
                     name="resume"
-                    accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                     required
                     data-upload="resume"
                   />
@@ -228,7 +263,7 @@ if (Astro.request.method === 'POST') {
                       </svg>
                     </span>
                     <strong class="pt-upload__title">CV / Resume <span class="pt-req">*</span></strong>
-                    <span class="pt-upload__hint">DOCX only · max 8 MB</span>
+                    <span class="pt-upload__hint">PDF or DOCX · max 8 MB</span>
                     <span class="pt-upload__name" data-filename>Click to choose file</span>
                   </span>
                 </label>
@@ -253,7 +288,7 @@ if (Astro.request.method === 'POST') {
                       </svg>
                     </span>
                     <strong class="pt-upload__title">Certifications <em>optional</em></strong>
-                    <span class="pt-upload__hint">PDF, Word, or images · multiple OK</span>
+                    <span class="pt-upload__hint">PDF, Word, or images · up to 3 files · 8 MB each</span>
                     <span class="pt-upload__name" data-filename>Click to add files</span>
                   </span>
                 </label>
@@ -506,7 +541,12 @@ if (Astro.request.method === 'POST') {
   </div>
 </PortalLayout>
 
-<script>
+<script define:vars={{ maxCertFiles: MAX_CERT_FILES, blobAccessMode }}>
+  import { upload } from '@vercel/blob/client';
+
+  const MAX_RESUME_BYTES = 8 * 1024 * 1024;
+  const MAX_CERT_BYTES = 8 * 1024 * 1024;
+
   function wireUploads() {
     document.querySelectorAll<HTMLInputElement>('[data-upload]').forEach((input) => {
       const label = input.closest('.pt-upload');
@@ -530,6 +570,112 @@ if (Astro.request.method === 'POST') {
     });
   }
 
+  function extOf(name: string) {
+    const dot = name.lastIndexOf('.');
+    return dot >= 0 ? name.slice(dot).toLowerCase() : '';
+  }
+
+  async function uploadViaBlob(userId: number, file: File, kind: 'resume' | 'cert') {
+    const ext = extOf(file.name) || (kind === 'resume' ? '.pdf' : '.bin');
+    const pathname = `portal/${userId}/${kind}-${Date.now()}-${Math.random().toString(16).slice(2)}${ext}`;
+    const blob = await upload(pathname, file, {
+      access: blobAccessMode,
+      handleUploadUrl: '/api/portal/upload',
+    });
+    return { url: blob.url, name: file.name, size: file.size };
+  }
+
+  function wireApplySubmit() {
+    const form = document.getElementById('apply-form') as HTMLFormElement | null;
+    if (!form || form.dataset.blobUpload !== '1') return;
+
+    const userId = Number(form.dataset.userId || 0);
+    const certLimit = Number(form.dataset.maxCertFiles || maxCertFiles) || 3;
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!userId) return;
+
+      const resumeInput = form.querySelector<HTMLInputElement>('[data-upload="resume"]');
+      const certInput = form.querySelector<HTMLInputElement>('[data-upload="certs"]');
+      const resumeFile = resumeInput?.files?.[0];
+
+      if (!resumeFile) {
+        form.reportValidity();
+        return;
+      }
+      if (resumeFile.size > MAX_RESUME_BYTES) {
+        alert('Resume must be under 8 MB.');
+        return;
+      }
+      const resumeExt = extOf(resumeFile.name);
+      if (resumeExt !== '.pdf' && resumeExt !== '.docx') {
+        alert('Resume must be a PDF or DOCX file.');
+        return;
+      }
+
+      const certFiles = certInput?.files ? Array.from(certInput.files) : [];
+      if (certFiles.length > certLimit) {
+        alert(`You can attach up to ${certLimit} certification files.`);
+        return;
+      }
+      for (const file of certFiles) {
+        if (file.size > MAX_CERT_BYTES) {
+          alert(`Each certification file must be under 8 MB (${file.name}).`);
+          return;
+        }
+      }
+
+      const originalText = submitBtn?.textContent || 'Submit application';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Uploading files…';
+      }
+
+      try {
+        const resume = await uploadViaBlob(userId, resumeFile, 'resume');
+        const certs = [];
+        for (const file of certFiles) {
+          certs.push(await uploadViaBlob(userId, file, 'cert'));
+        }
+
+        for (const name of ['resume_url', 'resume_name', 'resume_size', 'certifications_payload']) {
+          form.querySelector(`input[name="${name}"]`)?.remove();
+        }
+
+        const addHidden = (name: string, value: string) => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = name;
+          input.value = value;
+          form.appendChild(input);
+        };
+
+        addHidden('resume_url', resume.url);
+        addHidden('resume_name', resume.name);
+        addHidden('resume_size', String(resume.size));
+        addHidden('certifications_payload', JSON.stringify(certs));
+
+        resumeInput?.removeAttribute('name');
+        certInput?.removeAttribute('name');
+
+        form.submit();
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Upload failed. Please try again.';
+        alert(message);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
+    });
+  }
+
   wireUploads();
-  document.addEventListener('astro:page-load', wireUploads);
+  wireApplySubmit();
+  document.addEventListener('astro:page-load', () => {
+    wireUploads();
+    wireApplySubmit();
+  });
 </script>

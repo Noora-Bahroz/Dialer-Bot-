@@ -8,7 +8,15 @@ import { getUploadsRoot } from './paths';
 const UPLOAD_ROOT = getUploadsRoot();
 
 const ALLOWED_EXT = new Set(['.pdf', '.doc', '.docx', '.png', '.jpg', '.jpeg', '.webp']);
-const MAX_BYTES = 8 * 1024 * 1024; // 8 MB
+const RESUME_EXT = new Set(['.pdf', '.docx']);
+
+/** Direct browser → Blob uploads (bypasses Vercel 4.5 MB request body limit). */
+export const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
+
+/** Legacy multipart through the serverless function — stay under Vercel ~4.5 MB body cap. */
+export const MAX_SERVER_UPLOAD_BYTES = 4 * 1024 * 1024;
+
+export const MAX_CERT_FILES = 3;
 
 const MIME: Record<string, string> = {
   '.pdf': 'application/pdf',
@@ -20,6 +28,8 @@ const MIME: Record<string, string> = {
   '.webp': 'image/webp',
 };
 
+const BLOB_HOSTS = ['blob.vercel-storage.com', 'public.blob.vercel-storage.com'];
+
 export type SavedUpload = {
   path: string;
   originalName: string;
@@ -30,18 +40,33 @@ function env(key: string) {
   return String(import.meta.env[key] ?? process.env[key] ?? '').trim();
 }
 
-function blobEnabled() {
+export function blobUploadEnabled() {
   return Boolean(env('BLOB_READ_WRITE_TOKEN'));
 }
 
-function blobToken() {
+export function blobToken() {
   return env('BLOB_READ_WRITE_TOKEN') || undefined;
 }
 
 /** Must match the Vercel Blob store mode (public vs private). Wrong mode → Forbidden on put. */
-function blobAccess(): 'public' | 'private' {
+export function blobAccess(): 'public' | 'private' {
   const mode = env('BLOB_ACCESS').toLowerCase();
   return mode === 'private' ? 'private' : 'public';
+}
+
+export function uploadPrefixForUser(userId: number) {
+  return `portal/${userId}/`;
+}
+
+export function isAllowedUploadContentType(contentType: string) {
+  return [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'image/png',
+    'image/jpeg',
+    'image/webp',
+  ].includes(contentType);
 }
 
 function ensureDir(dir: string) {
@@ -64,6 +89,45 @@ export function isRemoteUploadPath(path: string) {
   return /^https?:\/\//i.test(path);
 }
 
+function isBlobUrlForUser(url: string, userId: number) {
+  try {
+    const parsed = new URL(url);
+    if (!BLOB_HOSTS.some((host) => parsed.hostname === host || parsed.hostname.endsWith(`.${host}`))) {
+      return false;
+    }
+    return parsed.pathname.includes(`/portal/${userId}/`);
+  } catch {
+    return false;
+  }
+}
+
+export function registerClientUpload(
+  url: string,
+  userId: number,
+  kind: 'resume' | 'cert',
+  originalName: string,
+  size: number,
+): SavedUpload {
+  if (!isBlobUrlForUser(url, userId)) {
+    throw new Error('Upload verification failed. Please re-attach your file and try again.');
+  }
+  if (size <= 0 || size > MAX_UPLOAD_BYTES) {
+    throw new Error(`${kind === 'resume' ? 'Resume' : 'File'} must be under 8 MB.`);
+  }
+  const ext = safeExt(originalName);
+  if (!ext) {
+    throw new Error('Allowed files: PDF, DOC, DOCX, PNG, JPG, WEBP.');
+  }
+  if (kind === 'resume' && !RESUME_EXT.has(ext)) {
+    throw new Error('Resume must be a PDF or DOCX file.');
+  }
+  return {
+    path: url,
+    originalName: sanitizeBase(originalName) || `${kind}${ext}`,
+    size,
+  };
+}
+
 export function absoluteUploadPath(relativePath: string) {
   const cleaned = relativePath.replace(/^[/\\]+/, '').replace(/\.\./g, '');
   return join(UPLOAD_ROOT, cleaned);
@@ -75,16 +139,18 @@ export async function saveUpload(
   kind: 'resume' | 'cert',
 ): Promise<SavedUpload | null> {
   if (!file || typeof File === 'undefined' || !(file instanceof File) || file.size === 0) return null;
-  if (file.size > MAX_BYTES) {
-    throw new Error(`${kind === 'resume' ? 'Resume' : 'File'} must be under 8 MB.`);
+  if (file.size > MAX_SERVER_UPLOAD_BYTES) {
+    throw new Error(
+      `${kind === 'resume' ? 'Resume' : 'File'} must be under 4 MB when uploading through the form. Try a smaller file.`,
+    );
   }
 
   const ext = safeExt(file.name);
   if (!ext) {
     throw new Error('Allowed files: PDF, DOC, DOCX, PNG, JPG, WEBP.');
   }
-  if (kind === 'resume' && ext !== '.docx') {
-    throw new Error('Resume must be a DOCX file only.');
+  if (kind === 'resume' && !RESUME_EXT.has(ext)) {
+    throw new Error('Resume must be a PDF or DOCX file.');
   }
 
   const token = randomBytes(8).toString('hex');
@@ -93,9 +159,8 @@ export async function saveUpload(
   const buf = Buffer.from(await file.arrayBuffer());
   const contentType = MIME[ext] || 'application/octet-stream';
 
-  if (blobEnabled()) {
-    // access must match the store type in Vercel Storage (this project uses a public store).
-    const blob = await put(`portal/${userId}/${stored}`, buf, {
+  if (blobUploadEnabled()) {
+    const blob = await put(`${uploadPrefixForUser(userId)}${stored}`, buf, {
       access: blobAccess(),
       contentType,
       token: blobToken(),
@@ -117,10 +182,17 @@ export async function saveUploads(
   kind: 'resume' | 'cert',
 ): Promise<SavedUpload[]> {
   const saved: SavedUpload[] = [];
+  let count = 0;
   for (const entry of files) {
     if (!(entry instanceof File) || entry.size === 0) continue;
+    if (kind === 'cert' && count >= MAX_CERT_FILES) {
+      throw new Error(`You can attach up to ${MAX_CERT_FILES} certification files.`);
+    }
     const one = await saveUpload(entry, userId, kind);
-    if (one) saved.push(one);
+    if (one) {
+      saved.push(one);
+      count += 1;
+    }
   }
   return saved;
 }
@@ -135,7 +207,6 @@ async function openRemoteBlob(storedPath: string): Promise<{
   const token = blobToken();
 
   if (token) {
-    // Prefer the configured store mode, then the other (covers legacy rows).
     const order = blobAccess() === 'private' ? (['private', 'public'] as const) : (['public', 'private'] as const);
     for (const access of order) {
       try {
@@ -154,7 +225,6 @@ async function openRemoteBlob(storedPath: string): Promise<{
     }
   }
 
-  // Fallback for legacy public blobs if token get fails.
   const res = await fetch(storedPath);
   if (!res.ok || !res.body) throw new Error('File missing');
   const sizeHeader = res.headers.get('content-length');
