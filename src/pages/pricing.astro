@@ -11,67 +11,66 @@ import '../styles/pricing-page.css';
 export const prerender = true;
 
 const starterIncludes = [
-  'One AI voice bot',
-  'One campaign workflow',
-  'Campaign script configuration',
-  'Qualification logic',
-  'Intent / lead qualification',
-  'Warm-transfer workflow',
-  'Call recordings & transcripts',
-  'Dialer / SIP connection support',
-  'Basic campaign monitoring',
-  'Direct onboarding support',
+  'One AI bot',
+  'One campaign rule set',
+  'Easy script setup',
+  'Finds good leads automatically',
+  'Smooth call transfers',
+  'Listen to past calls',
+  'Connects to your dialer',
+  'Basic campaign stats',
+  'Direct setup help',
 ];
 
 const enterpriseIncludes = [
   'Multiple AI bots',
-  'Multiple campaigns',
-  'Custom qualification rules',
-  'Advanced routing',
-  'Custom integrations',
-  'High-volume deployment',
-  'Campaign optimization',
-  'Priority support',
-  'Custom operational requirements',
-  'Volume-based pricing',
+  'Multiple campaigns at once',
+  'Custom rules for your business',
+  'Smart call routing',
+  'Connects with any tool',
+  'For very busy call centers',
+  'Expert campaign help',
+  'Priority support line',
+  'Custom setup for your needs',
+  'Special pricing for high volume',
 ];
 
 const comparison = [
-  { feature: 'AI Voice Bot', starter: true, enterprise: true },
-  { feature: 'Campaign Configuration', starter: true, enterprise: true },
-  { feature: 'Qualification Logic', starter: true, enterprise: true },
-  { feature: 'Warm Transfers', starter: true, enterprise: true },
-  { feature: 'Call Records', starter: true, enterprise: true },
-  { feature: 'Transcripts', starter: true, enterprise: true },
-  { feature: 'Dialer / SIP Integration', starter: true, enterprise: true },
+  { feature: 'AI Bot', starter: true, enterprise: true },
+  { feature: 'Campaign Setup', starter: true, enterprise: true },
+  { feature: 'Finds Good Leads', starter: true, enterprise: true },
+  { feature: 'Smooth Transfers', starter: true, enterprise: true },
+  { feature: 'Call Recordings', starter: true, enterprise: true },
+  { feature: 'Call Transcripts', starter: true, enterprise: true },
+  { feature: 'Dialer Integration', starter: true, enterprise: true },
   { feature: 'Multiple Campaigns', starter: false, enterprise: true },
   { feature: 'Multiple Bots', starter: false, enterprise: true },
-  { feature: 'Advanced Routing', starter: false, enterprise: true },
-  { feature: 'Custom Integrations', starter: false, enterprise: true },
+  { feature: 'Smart Routing', starter: false, enterprise: true },
+  { feature: 'Custom Connections', starter: false, enterprise: true },
   { feature: 'Priority Support', starter: false, enterprise: true },
   { feature: 'Volume Pricing', starter: false, enterprise: true },
 ];
 
 const faqs = [
   {
-    q: 'Is the $35 price the total cost of calling?',
-    a: 'No. AI voice infrastructure, telephony, SIP, carrier usage, or other third-party services may carry separate usage costs depending on your deployment. The exact cost depends on how your calling environment is configured.',
+    q: 'Does $35 cover everything?',
+    a: 'No. The $35 is for the AI software. Things like phone line costs (telephony, SIP) are separate depending on your current setup.',
   },
   {
-    q: 'Can I start with one campaign?',
-    a: 'Yes. The starter option is designed specifically for testing a single campaign before expanding.',
+    q: 'Can I start small?',
+    a: 'Yes. The Starter plan is perfect for testing one campaign before spending more.',
   },
   {
-    q: 'Can you handle large call centers?',
-    a: 'Yes. Enterprise deployments can be structured around multiple campaigns, bots, calling environments, and operational requirements.',
+    q: 'Can you handle huge call centers?',
+    a: 'Yes. The Enterprise plan is built for huge teams running many campaigns and bots at the same time.',
   },
   {
-    q: 'Do I have to replace my dialer?',
-    a: 'No. DialerBot is designed to work alongside your existing calling infrastructure.',
+    q: 'Do I have to buy a new dialer?',
+    a: 'No. DialerBot works with the calling software you already have.',
   },
   {
-    q: 'Do you provide onboarding?',
-    a: 'Yes. We help configure the campaign, conversation flow, connection, and handoff workflow.',
+    q: 'Will you help me set it up?',
+    a: 'Yes. We will help you connect everything and write your first script.',
   },
 ];
 ---
@@ -97,10 +96,9 @@ const faqs = [
             <span>Pricing</span>
           </nav>
           <p class="pr-brand">DialerBot</p>
-          <h1>Start with one AI agent. Scale when your floor is ready.</h1>
+          <h1>Start with one AI bot. Upgrade when you are ready.</h1>
           <p class="pr-deck">
-            Start small with a campaign-specific AI voice bot and expand to multiple campaigns, bots, and calling
-            environments as your operation grows.
+            Start small with one simple AI bot for a single campaign. When you're ready, upgrade to handle massive call volumes and multiple teams.
           </p>
           <div class="pr-actions">
             <a class="pr-btn pr-btn--solid" href={demo.pricing} target="_blank" rel="noopener noreferrer">
@@ -149,7 +147,7 @@ const faqs = [
               </p>
               <p class="pr-dial__unit">per bot · software</p>
               <p class="pr-rail__detail" style="margin:0.75rem 0 1rem">
-                Built for one campaign and one qualification workflow. Telephony and AI usage may be billed separately.
+                Perfect for one campaign. Note: Phone line and usage costs are separate.
               </p>
               <a
                 class="pr-btn pr-btn--solid pr-dial__cta"
@@ -173,7 +171,7 @@ const faqs = [
               </p>
               <p class="pr-dial__unit">Quoted for your floor</p>
               <p class="pr-rail__detail" style="margin:0.75rem 0 1rem">
-                For call centers running multiple campaigns, bots, seats, or advanced workflows.
+                For big teams running many campaigns and custom setups.
               </p>
               <a
                 class="pr-btn pr-btn--lime pr-dial__cta"
@@ -193,7 +191,7 @@ const faqs = [
       <div class="pr-shell">
         <div class="pr-section__head" data-reveal>
           <p class="pr-kicker">Plans</p>
-          <h2 id="pr-lanes-title">Starter clarity. Enterprise when the floor needs it.</h2>
+          <h2 id="pr-lanes-title">Clear pricing for beginners. Custom plans for pros.</h2>
         </div>
 
         <div class="pr-lanes">
@@ -226,8 +224,8 @@ const faqs = [
               <p class="pr-kicker pr-kicker--lime">Enterprise</p>
               <h3>Custom pricing</h3>
               <p class="pr-lane__price pr-lane__price--lite">
-                <strong>Multi-campaign floors</strong>
-                <span>Quoted for your operation</span>
+                <strong>For big teams</strong>
+                <span>Priced for your needs</span>
               </p>
             </header>
             <ul>
@@ -281,8 +279,8 @@ const faqs = [
     <section class="pr-section" aria-labelledby="pr-faq-title">
       <div class="pr-shell">
         <div class="pr-section__head" data-reveal>
-          <p class="pr-kicker">Important pricing FAQ</p>
-          <h2 id="pr-faq-title">Know what $35 covers — and what it doesn't</h2>
+          <p class="pr-kicker">Pricing FAQ</p>
+          <h2 id="pr-faq-title">Common Questions</h2>
         </div>
         <ol class="pr-steps">
           {
@@ -304,7 +302,7 @@ const faqs = [
           </a>
         </div>
         <p class="pr-deck" style="text-align:center;margin-top:1.25rem" data-reveal>
-          Don't commit your entire call center on day one. Start with one campaign. Prove the workflow. Then scale.
+          Don't risk everything on day one. Try it on one campaign, see the results, and then grow.
         </p>
       </div>
     </section>

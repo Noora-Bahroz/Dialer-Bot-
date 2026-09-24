@@ -12,69 +12,69 @@ import '../styles/features-page.css';
 export const prerender = true;
 
 const featuresDefinition =
-  'DialerBot features help call centers build, launch, monitor, and improve AI voice campaigns — from the first greeting to the final handoff.';
+  'DialerBot features help you easily build, run, and track AI phone campaigns — from the first hello to the final transfer.';
 
 const matrix = [
   {
     n: '01',
-    title: 'AI Voice Conversations',
-    text: 'Your bot can hold a real conversation — listen, understand responses, ask follow-ups, and keep the call moving.',
+    title: 'Natural Conversations',
+    text: 'Your bot talks like a real person. It listens, answers, and asks follow-up questions to keep the call going.',
   },
   {
     n: '02',
-    title: 'Campaign Scripts',
-    text: 'Create a separate conversation flow for every campaign: opening message, questions, objections, transfer and end-call rules.',
+    title: 'Custom Scripts',
+    text: 'Write a unique script for each campaign. Decide what the bot says, what it asks, and when it transfers a call.',
   },
   {
     n: '03',
-    title: 'Qualification & Intent',
-    text: 'Set the criteria that define a qualified conversation. Qualified → transfer. Uncertain → continue. Not qualified → end or disposition.',
+    title: 'Find the Best Leads',
+    text: 'Tell the bot what makes a good lead. Good leads get transferred, unsure ones get more questions, and bad leads are dropped.',
   },
   {
     n: '04',
-    title: 'Warm Transfer',
-    text: 'Transfer to a human agent with the context collected during the AI conversation — not a cold “how can I help you?” start.',
+    title: 'Smooth Transfers',
+    text: 'When a lead is ready, the bot transfers them to a human along with all the notes. No more cold starts.',
   },
   {
     n: '05',
-    title: 'Dialer Integration',
-    text: 'Connect DialerBot with your existing dialer, SIP environment, or calling infrastructure. AI operates as the conversation layer.',
+    title: 'Easy Connection',
+    text: 'Link DialerBot right into the calling software you already use. It acts as a helpful add-on, not a replacement.',
   },
   {
     n: '06',
-    title: 'Call Recording & Transcripts',
-    text: 'Review recordings, transcripts, lead responses, disposition, transfer reason, campaign, and call outcome for QA.',
+    title: 'Listen to Calls',
+    text: 'Read text versions of calls and listen to recordings so you can see exactly how your campaigns are doing.',
   },
   {
     n: '07',
-    title: 'Campaign Management',
-    text: 'Run different AI agents for different campaigns — each with its own voice, script, qualification rules, and operating hours.',
+    title: 'Manage Campaigns',
+    text: 'Run different bots for different jobs. Each one can have its own voice, rules, and working hours.',
   },
   {
     n: '08',
-    title: 'Monitoring & Analytics',
-    text: 'Monitor calls, active conversations, qualified leads, transfers, completed calls, and campaign outcomes over time.',
+    title: 'Track Performance',
+    text: 'See live updates on active calls, good leads, successful transfers, and overall campaign results.',
   },
 ];
 
 const modules = [
   {
-    kicker: 'Script Control',
-    title: 'Keep critical language consistent.',
-    body: 'Keep opening questions and compliance language consistent while allowing the AI to respond naturally around them.',
-    items: ['Locked critical turns', 'Natural follow-up responses', 'Campaign-specific rules'],
+    kicker: 'Control the Script',
+    title: 'Make sure important things are said.',
+    body: 'Lock in specific phrases for legal or intro reasons, while still letting the AI chat naturally the rest of the time.',
+    items: ['Lock important phrases', 'Keep the chat natural', 'Set custom rules per campaign'],
   },
   {
-    kicker: 'Smart Follow-Ups',
-    title: 'Handle unexpected answers.',
-    body: 'The conversation does not have to end when a prospect gives an unexpected answer. Clarify, handle objections, and continue qualification.',
-    items: ['Objection handling', 'Clarifying questions', 'Continue or transfer logic'],
+    kicker: 'Smart Answers',
+    title: 'Handle unexpected replies.',
+    body: 'The call does not stop if someone asks a weird question. The AI can clarify, handle doubts, and keep going.',
+    items: ['Answer doubts', 'Ask clarifying questions', 'Decide when to transfer'],
   },
   {
-    kicker: 'Agent Routing',
-    title: 'Send the right calls to the right team.',
-    body: 'Send qualified calls to the appropriate team, campaign, or agent — with CRM and webhook connections for the systems you already use.',
-    items: ['Team / campaign routing', 'CRM & webhooks', 'Voice and language per campaign'],
+    kicker: 'Send to the Right Person',
+    title: 'Route calls correctly.',
+    body: 'Send good leads to the right team or person, and automatically save their info in your customer database.',
+    items: ['Route to teams or agents', 'Connect to your CRM', 'Choose voices per campaign'],
   },
 ];
 ---
@@ -106,7 +106,7 @@ const modules = [
           <h1>Everything you need to automate the first conversation.</h1>
           <AeoDefinition term="DialerBot features" definition={featuresDefinition} tone="dark" />
           <p class="fx-deck">
-            Build, launch, monitor, and improve AI voice campaigns — from the first greeting to the final handoff.
+            Easily build, launch, and track AI phone campaigns — from the first hello to the final transfer.
             Starter bots from ${site.pricePerBot}.
           </p>
           <div class="fx-actions">
@@ -149,10 +149,10 @@ const modules = [
     <section class="fx-section" aria-labelledby="fx-matrix-title">
       <div class="fx-shell">
         <div class="fx-section__head" data-reveal>
-          <p class="fx-kicker">Feature grid</p>
-          <h2 id="fx-matrix-title">Eight capabilities. One calling workflow.</h2>
+          <p class="fx-kicker">All Features</p>
+          <h2 id="fx-matrix-title">Everything you need for better calls.</h2>
           <p class="fx-section__deck">
-            Clear tools for operators evaluating DialerBot — without internal jargon getting in the way.
+            Simple tools to help you manage calls and grow your business without confusing tech terms.
           </p>
         </div>
 
@@ -173,11 +173,10 @@ const modules = [
     <section class="fx-section fx-section--tint" aria-labelledby="fx-modules-title">
       <div class="fx-shell">
         <div class="fx-section__head" data-reveal>
-          <p class="fx-kicker">Advanced</p>
-          <h2 id="fx-modules-title">Built around the way call centers actually operate.</h2>
+          <p class="fx-kicker">Advanced Tools</p>
+          <h2 id="fx-modules-title">Built for teams that make a lot of calls.</h2>
           <p class="fx-section__deck">
-            Script control, smart follow-ups, routing, CRM connections, voice configuration, and reliability —
-            designed for high-volume floors.
+            Control your scripts, handle unexpected answers, and send calls to the right place. Perfect for busy teams.
           </p>
         </div>
 

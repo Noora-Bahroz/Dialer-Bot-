@@ -13,38 +13,38 @@ export const prerender = true;
 const beliefs = [
   {
     n: '01',
-    title: 'AI should work with your team',
-    text: 'Human agents remain critical for complex conversations, negotiation, empathy, and closing.',
+    title: 'AI should help your team, not replace it',
+    text: 'Human agents are still needed for tough conversations, empathy, and closing the final deal.',
   },
   {
     n: '02',
-    title: 'Automation should be measurable',
-    text: 'Every campaign should give operators enough information to understand what happened and improve it.',
+    title: 'Results should be easy to see',
+    text: 'You should always know exactly how a campaign is doing and what needs to improve.',
   },
   {
     n: '03',
-    title: 'Integration matters',
-    text: 'The best AI system is not useful if it forces a call center to throw away the infrastructure it already depends on.',
+    title: 'Keep your current tools',
+    text: 'A great AI system shouldn\'t force you to throw away the software you already use and like.',
   },
   {
     n: '04',
-    title: 'Simplicity wins',
-    text: 'A calling team should understand what the bot is doing, why it transferred a call, and what happened afterward.',
+    title: 'Simple is better',
+    text: 'Your team should always know what the bot is doing and why a call was transferred.',
   },
   {
     n: '05',
-    title: "Don't automate for the sake of automation",
-    text: "The objective isn't to make the AI talk more. The objective is to make the operation perform better.",
+    title: "Don't automate just to look cool",
+    text: "The goal isn't to use more AI. The goal is to make your business run better and make more money.",
   },
 ];
 
 const careAbout = [
-  'Talk time',
-  'Qualification rate',
-  'Transfer quality',
-  'Agent productivity',
-  'Campaign performance',
-  'Call quality',
+  'Call Length',
+  'Lead Quality',
+  'Smooth Transfers',
+  'Agent Happiness',
+  'Campaign Results',
+  'Call Quality',
   'Reliability',
 ];
 ---
@@ -71,14 +71,12 @@ const careAbout = [
             <span>Company</span>
           </nav>
           <p class="co-brand">About DialerBot</p>
-          <h1>We build AI for the people who spend their day on the phone.</h1>
+          <h1>We build AI for teams that spend their day on the phone.</h1>
           <p class="co-deck">
-            DialerBot is an AI voice platform built for calling teams. We help call centers automate repetitive
-            conversations, qualify leads, answer inbound calls, and connect qualified prospects with human agents.
+            DialerBot is a smart AI phone system. We help teams automate the boring parts of calling, answer questions, and connect the best leads with real human agents.
           </p>
           <p class="co-deck" style="margin-top:0.75rem">
-            We don't believe AI should replace every person on a calling floor. We believe it should remove the work
-            that doesn't require one.
+            We don't want to replace everyone. We just want to handle the repetitive work so your people can focus on closing deals.
           </p>
           <div class="co-actions">
             <a class="co-btn co-btn--solid" href={demo.company} target="_blank" rel="noopener noreferrer">
@@ -125,15 +123,13 @@ const careAbout = [
     <section class="co-section" aria-labelledby="co-mission-title">
       <div class="co-shell co-story">
         <div class="co-story__copy" data-reveal="left">
-          <p class="co-kicker">Our mission</p>
-          <h2 id="co-mission-title">Make every human conversation more valuable.</h2>
+          <p class="co-kicker">Our Mission</p>
+          <h2 id="co-mission-title">Make every conversation count.</h2>
           <p>
-            Call centers handle thousands of conversations every day. Many of those conversations start the same way —
-            the same questions, the same qualification, the same objections, the same data collection.
+            Call centers make thousands of calls every day. Most of them start exactly the same way — the same hello, the same basic questions, the same quick hang-ups.
           </p>
           <p>
-            DialerBot turns that repetitive first layer into an AI-powered workflow so human agents can focus on the
-            conversations where they create the most value.
+            DialerBot handles this repetitive early step using AI, so your human agents only step in when it's time to actually help the customer and close the deal.
           </p>
         </div>
         <figure class="co-story__media" data-reveal="right" style="--reveal-i:1">
@@ -159,20 +155,17 @@ const careAbout = [
         </div>
         <div class="co-story__copy" data-reveal style="max-width:48rem;margin-inline:auto">
           <p>
-            DialerBot started with a simple observation: call-center agents spend too much time qualifying conversations
-            that never become opportunities.
+            DialerBot started with a simple truth: phone agents spend way too much time talking to people who will never buy anything.
           </p>
           <p>
-            The technology existed to automate parts of that process, but many AI voice products were designed around
-            generic customer-service use cases rather than the realities of high-volume calling.
+            There are many AI tools out there, but most of them are made for simple customer service, not for fast-paced calling teams.
           </p>
           <p>
-            So we built DialerBot around the workflow itself:
-            <strong> Dialer → AI conversation → Qualification → Human handoff → Outcome.</strong>
+            So we built DialerBot to fit right into what you already do:
+            <strong> Dial → AI chats first → Finds good leads → Transfers to a human → Deal closed.</strong>
           </p>
           <p>
-            The result is an AI layer that can fit into an existing calling operation rather than forcing the entire
-            operation to change.
+            The result is an AI that helps your team without forcing you to change everything about how you work.
           </p>
         </div>
       </div>
@@ -181,8 +174,8 @@ const careAbout = [
     <section class="co-section" aria-labelledby="co-beliefs-title">
       <div class="co-shell">
         <div class="co-section__head" data-reveal>
-          <p class="co-kicker">What we believe</p>
-          <h2 id="co-beliefs-title">Principles that guide every release</h2>
+          <p class="co-kicker">Our Core Beliefs</p>
+          <h2 id="co-beliefs-title">Rules we live by</h2>
         </div>
         <ul class="co-principles">
           {
@@ -202,10 +195,9 @@ const careAbout = [
       <div class="co-shell">
         <div class="co-section__head" data-reveal>
           <p class="co-kicker">Why we are different</p>
-          <h2 id="co-diff-title">We think like a calling team.</h2>
+          <h2 id="co-diff-title">We think like phone agents.</h2>
           <p style="max-width:40rem;margin:0.75rem auto 0;opacity:0.85">
-            An AI voice bot isn't impressive when it's demonstrated in a perfect demo. It's useful when it survives a
-            real campaign.
+            A fancy AI is useless if it breaks during a real campaign. We built our tool to survive the real world.
           </p>
         </div>
         <ol class="co-arc">
@@ -214,7 +206,7 @@ const careAbout = [
               <li data-reveal="up" style={`--reveal-i: ${i % 4}`}>
                 <span>{String(i + 1).padStart(2, '0')}</span>
                 <h3>{item}</h3>
-                <p>We care about this because floor operators do.</p>
+                <p>We care about this because your team does.</p>
               </li>
             ))
           }
@@ -228,8 +220,7 @@ const careAbout = [
           </a>
         </div>
         <p style="text-align:center;margin-top:1.25rem;max-width:36rem;margin-inline:auto;opacity:0.8" data-reveal>
-          Have a call-center workflow that should be automated? Show us the process. We'll help you figure out where AI
-          can actually make a difference.
+          Have a calling problem? Tell us about it. We'll help you figure out if AI can actually fix it.
         </p>
       </div>
     </section>
