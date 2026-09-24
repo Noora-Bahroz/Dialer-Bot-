@@ -27,6 +27,7 @@ data/uploads/
 
 # exported applicant CVs (local only — do not commit)
 AI ENGINEER CVS/
+ALL CVS/
 
 # macOS-specific files
 .DS_Store
