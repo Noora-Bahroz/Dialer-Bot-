@@ -6,8 +6,10 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
   output: 'server',
   adapter: vercel({
-    // Mumbai — closest to Turso ap-south-1 and Pakistan visitors
-    regions: ['bom1'],
+    // NOTE: `regions` is not a supported VercelServerlessConfig key in
+    // @astrojs/vercel 11.x and was silently dropped from the build output, so
+    // it never pinned Mumbai. To pin a region, add a vercel.json with
+    // "functions": { "dist/server/entry.mjs": { "regions": ["bom1"] } }.
     maxDuration: 60,
   }),
   site: 'https://dialerbot.online',

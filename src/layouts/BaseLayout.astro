@@ -2,6 +2,7 @@
 import DemoSticky from '../components/DemoSticky.astro';
 import WhatsAppFloat from '../components/WhatsAppFloat.astro';
 import Analytics from '@vercel/analytics/astro';
+import { site } from '../data/site';
 import {
   DEFAULT_DESCRIPTION,
   DEFAULT_OG_IMAGE,
@@ -17,6 +18,8 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  /** MIME type of `image`. Required when the URL has no file extension (e.g. Unsplash). */
+  imageType?: string;
   ogType?: 'website' | 'article';
   noindex?: boolean;
   /** Smooth Lenis scroll — off on portal for snappier TTI */
@@ -32,6 +35,7 @@ const {
   title,
   description = DEFAULT_DESCRIPTION,
   image = DEFAULT_OG_IMAGE,
+  imageType,
   ogType = 'website',
   noindex = false,
   smoothScroll = true,
@@ -42,10 +46,24 @@ const {
 
 const demoBar = showDemoBar ?? !noindex;
 
-const pageTitle = title.includes('Dialer Bot') ? title : `${title} | Dialer Bot`;
+// Titles are authored with either brand spelling ("Dialer Bot" / "DialerBot").
+// Guard on both so the suffix is never appended twice.
+const hasBrandSuffix = /\|\s*Dialer ?Bot\s*$/i.test(title);
+const pageTitle = hasBrandSuffix ? title : `${title} | ${site.name}`;
 // Match sitemap + trailingSlash:never (homepage without trailing slash)
 const canonical = absoluteUrl(Astro.url.pathname);
 const ogImage = absoluteUrl(image);
+// og:image:type must describe the image we actually point at. Local OG assets are
+// WebP, but blog posts pass extensionless external Unsplash URLs, which serve
+// JPEG — declaring webp there is a false MIME type and can make scrapers drop
+// the preview. An explicit imageType prop wins; otherwise infer from extension.
+const ogImageType =
+  imageType ??
+  (/\.png(\?|$)/i.test(image)
+    ? 'image/png'
+    : /\.jpe?g(\?|$)/i.test(image)
+      ? 'image/jpeg'
+      : 'image/webp');
 const robots = noindex ? 'noindex, nofollow' : 'index, follow';
 
 const baseSchemas = noindex ? [] : [organizationJsonLd(), websiteJsonLd(), siteNavigationJsonLd()];
@@ -77,9 +95,9 @@ const fontHref =
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:type" content="image/webp" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content={ogImageType} />
+    <meta property="og:image:width" content="420" />
+    <meta property="og:image:height" content="530" />
     <meta property="og:image:alt" content="Dialer Bot — AI voice bots for calling floors" />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -114,12 +132,11 @@ const fontHref =
     <link rel="dns-prefetch" href="//demo.dialerbot.online" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Non-blocking font CSS (swap in after load) -->
+    <!-- Non-blocking font CSS (swap in after load). A single URL: the
+         media=print -> all swap already covers JS-enabled clients, so a
+         <noscript> copy would only duplicate the request. -->
     <link rel="preload" as="style" href={fontHref} />
     <link rel="stylesheet" href={fontHref} media="print" onload="this.media='all'" />
-    <noscript>
-      <link rel="stylesheet" href={fontHref} />
-    </noscript>
     <title>{pageTitle}</title>
     {
       schemas.map((schema) => (

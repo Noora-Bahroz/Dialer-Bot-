@@ -127,6 +127,7 @@ export function websiteJsonLd() {
 export function siteNavigationJsonLd() {
   const links = [
     { name: 'Features', path: '/features' },
+    { name: 'Solutions', path: '/solutions' },
     { name: 'Pricing', path: '/pricing' },
     { name: 'Careers', path: '/careers' },
     { name: 'Blog', path: '/blog' },
