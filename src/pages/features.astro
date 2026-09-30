@@ -6,56 +6,22 @@ import PageMastFx from '../components/PageMastFx.astro';
 import AeoDefinition from '../components/AeoDefinition.astro';
 import { wa, site, demo } from '../data/site';
 import { breadcrumbJsonLd, definedTermJsonLd } from '../data/seo';
+import { capabilities } from '../data/product';
 import '../styles/global.css';
 import '../styles/features-page.css';
 
 export const prerender = true;
 
 const featuresDefinition =
-  'DialerBot features help you easily build, run, and track AI phone campaigns — from the first hello to the final transfer.';
+  'Dialer Bot features cover the first part of a call: AI voice conversations, business-specific scripts, lead qualification, call detection, live transfer to a human closer, dispositions, and PC dialer integration.';
 
-const matrix = [
-  {
-    n: '01',
-    title: 'Natural Conversations',
-    text: 'Your bot talks like a real person. It listens, answers, and asks follow-up questions to keep the call going.',
-  },
-  {
-    n: '02',
-    title: 'Custom Scripts',
-    text: 'Write a unique script for each campaign. Decide what the bot says, what it asks, and when it transfers a call.',
-  },
-  {
-    n: '03',
-    title: 'Find the Best Leads',
-    text: 'Tell the bot what makes a good lead. Good leads get transferred, unsure ones get more questions, and bad leads are dropped.',
-  },
-  {
-    n: '04',
-    title: 'Smooth Transfers',
-    text: 'When a lead is ready, the bot transfers them to a human along with all the notes. No more cold starts.',
-  },
-  {
-    n: '05',
-    title: 'Easy Connection',
-    text: 'Link DialerBot right into the calling software you already use. It acts as a helpful add-on, not a replacement.',
-  },
-  {
-    n: '06',
-    title: 'Listen to Calls',
-    text: 'Read text versions of calls and listen to recordings so you can see exactly how your campaigns are doing.',
-  },
-  {
-    n: '07',
-    title: 'Manage Campaigns',
-    text: 'Run different bots for different jobs. Each one can have its own voice, rules, and working hours.',
-  },
-  {
-    n: '08',
-    title: 'Track Performance',
-    text: 'See live updates on active calls, good leads, successful transfers, and overall campaign results.',
-  },
-];
+const matrix = capabilities
+  .filter((c) => c.primary)
+  .map((c, i) => ({
+    n: String(i + 1).padStart(2, '0'),
+    title: c.name,
+    text: c.plain,
+  }));
 
 const modules = [
   {
@@ -72,22 +38,22 @@ const modules = [
   },
   {
     kicker: 'Send to the Right Person',
-    title: 'Route calls correctly.',
-    body: 'Send good leads to the right team or person, and automatically save their info in your customer database.',
-    items: ['Route to teams or agents', 'Connect to your CRM', 'Choose voices per campaign'],
+    title: 'Live-transfer to a closer.',
+    body: 'Qualified and interested calls are transferred live to a human closer, who then completes the conversation, verification, paperwork, and the actual sale.',
+    items: ['Live transfer to closers', 'Capture the details a campaign needs', 'Choose voices per campaign'],
   },
 ];
 ---
 
 <BaseLayout
-  title="AI Outbound Calling Features | DialerBot"
-  description="AI outbound calling features for dialer floors — voice campaigns, lead qualification, warm handoffs, dialer integration, recordings, and supervisor monitoring."
+  title="AI Voice Bot Features | DialerBot"
+  description="AI voice bot features for call centers — AI voice conversations, business-specific scripts, lead qualification, call detection, live transfer to a human closer, dispositions, and PC dialer integration."
   jsonLd={[
     breadcrumbJsonLd([
       { name: 'Home', path: '/' },
       { name: 'Features', path: '/features' },
     ]),
-    definedTermJsonLd('DialerBot features', featuresDefinition, '/features'),
+    definedTermJsonLd('Dialer Bot features', featuresDefinition, '/features'),
   ]}
 >
   <Header slot="header" />
@@ -102,12 +68,12 @@ const modules = [
             <span aria-hidden="true">/</span>
             <span>Features</span>
           </nav>
-          <p class="fx-brand">DialerBot</p>
-          <h1>Everything you need to automate the first conversation.</h1>
-          <AeoDefinition term="DialerBot features" definition={featuresDefinition} tone="dark" />
+          <p class="fx-brand">Dialer Bot</p>
+          <h1>Everything you need for the first call.</h1>
+          <AeoDefinition term="Dialer Bot features" definition={featuresDefinition} tone="dark" />
           <p class="fx-deck">
-            Easily build, launch, and track AI phone campaigns — from the first hello to the final transfer.
-            Starter bots from ${site.pricePerBot}.
+            Detect who picked up, run your business-specific script, qualify the lead, and live-transfer the good ones to a human closer.
+            Bots from ${site.pricePerBot} per month.
           </p>
           <div class="fx-actions">
             <a class="fx-btn fx-btn--solid" href={demo.features} target="_blank" rel="noopener noreferrer">
@@ -121,20 +87,20 @@ const modules = [
           <div class="fx-snapshot">
             <div class="fx-snapshot__top">
               <p class="fx-snapshot__label">At a glance</p>
-              <span class="fx-snapshot__badge">AI voice platform</span>
+              <span class="fx-snapshot__badge">AI voice bot</span>
             </div>
             <dl class="fx-snapshot__grid">
               <div>
                 <dt>Focus</dt>
-                <dd>First conversation</dd>
+                <dd>First call</dd>
               </div>
               <div>
                 <dt>Modules</dt>
-                <dd>8 core capabilities</dd>
+                <dd>{capabilities.filter((c) => c.primary).length} core capabilities</dd>
               </div>
               <div>
                 <dt>Handoff</dt>
-                <dd>Warm transfer</dd>
+                <dd>Live transfer</dd>
               </div>
               <div>
                 <dt>Sales path</dt>
@@ -150,9 +116,9 @@ const modules = [
       <div class="fx-shell">
         <div class="fx-section__head" data-reveal>
           <p class="fx-kicker">All Features</p>
-          <h2 id="fx-matrix-title">Everything you need for better calls.</h2>
+          <h2 id="fx-matrix-title">Everything you need for better first calls.</h2>
           <p class="fx-section__deck">
-            Simple tools to help you manage calls and grow your business without confusing tech terms.
+            Plainly explained, so you can see what the bot does before it reaches a call.
           </p>
         </div>
 
@@ -174,19 +140,19 @@ const modules = [
       <div class="fx-shell">
         <div class="fx-section__head" data-reveal>
           <p class="fx-kicker">Advanced Tools</p>
-          <h2 id="fx-modules-title">Built for teams that make a lot of calls.</h2>
+          <h2 id="fx-modules-title">Built for call centers that run lots of calls.</h2>
           <p class="fx-section__deck">
-            Control your scripts, handle unexpected answers, and send calls to the right place. Perfect for busy teams.
+            Control your scripts, handle unexpected answers, and live-transfer qualified calls to the right closer.
           </p>
         </div>
 
         <div class="fx-arch" aria-label="Advanced capabilities">
           <div class="fx-arch__flow" data-reveal>
-            <span>Script</span>
+            <span>Detect</span>
             <i aria-hidden="true"></i>
-            <span>Follow-up</span>
+            <span>Qualify</span>
             <i aria-hidden="true"></i>
-            <span>Route</span>
+            <span>Live transfer</span>
           </div>
 
           <div class="fx-arch__grid">

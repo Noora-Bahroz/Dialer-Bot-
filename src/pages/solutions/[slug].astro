@@ -27,7 +27,7 @@ const path = `/solutions/${solution.slug}`;
 const jsonLd = [
   breadcrumbJsonLd([
     { name: 'Home', path: '/' },
-    { name: 'Solutions', path: '/features' },
+      { name: 'Solutions', path: '/solutions' },
     { name: solution.title, path },
   ]),
   webPageJsonLd({
@@ -51,7 +51,7 @@ const jsonLd = [
           <nav class="sl-crumb" aria-label="Breadcrumb">
             <a href="/">Home</a>
             <span aria-hidden="true">/</span>
-            <a href="/features">Solutions</a>
+            <a href="/solutions">Solutions</a>
             <span aria-hidden="true">/</span>
             <span>{solution.title}</span>
           </nav>

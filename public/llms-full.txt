@@ -4,7 +4,38 @@
 
 ## What Dialer Bot is
 
-Dialer Bot is an AI voice bot product for calling floors. It greets, asks the first qualification questions, and warm-handoffs only closable leads to human agents. It is used for inbound reception and outbound campaigns across call centers, truck dispatch, ACA, FE, and HI insurance calling.
+Dialer Bot is an AI voice bot for call-center operations. It works with the call center's existing PC dialer, handles the first part of the call, and live-transfers qualified, interested calls to a human closer who completes the sale. Main industries are call centers, restaurants, and truck dispatch. ACA, FE, and HI are example use cases.
+
+The bot is not the final salesperson. It handles the opening conversation and the qualification; the human closer handles the conversation, verification, paperwork, and the actual deal.
+
+## How a call works
+
+PC Dialer → AI Voice Bot → Detection & Qualification → Qualification Decision → Live Transfer → Disposition
+
+1. PC Dialer — the existing PC dialer automatically dials calls and sets the pace. Dialer Bot is designed to integrate with that workflow.
+2. AI Voice Bot — the bot answers and runs a business-specific script in a high-quality AI voice. Each business or campaign can have its own script and required questions.
+3. Detection & Qualification — the bot detects a human answer, voicemail, answering machine, or honeypot / automated response. If a human answers, it asks the required qualification questions and checks DNC (Do Not Call) status before proceeding.
+4. Qualification Decision — the bot determines whether the lead meets the required criteria and is actually interested.
+5. Live Transfer — qualified, interested calls are transferred live to a human closer, with context where available.
+6. Disposition — the call is recorded with a final status: qualified/transferred, callback, not interested, voicemail, answering machine, or other.
+
+## Capabilities
+
+- AI voice conversations
+- Business-specific scripts and qualification flows per business or campaign
+- Lead qualification against required criteria and interest
+- Human / automated call detection
+- Voicemail detection
+- Answering-machine detection
+- Honeypot / automated-response detection
+- Live transfer / warm handoff
+- Dispositions
+- DNC compliance
+- Address capturing
+- High-quality AI voice
+- Voice cloning
+- Multi-language support
+- PC dialer integration
 
 Website: https://dialerbot.online  
 Live demo: https://demo.dialerbot.online  
@@ -14,17 +45,19 @@ Office: Office 12, Pakistan Town Phase 2, Islamabad, Pakistan
 
 ## Core value proposition
 
-- Qualify calls before agents pick up
+- Qualify calls before a human closer picks up
 - Reduce wasted talk time on unqualified leads
-- Warm handoff instead of cold transfer
-- Dialer-synced pacing for outbound floors
+- Live transfer to a human closer instead of a cold transfer
+- Works with the existing PC dialer rather than replacing it
+- Detect voicemail, answering machines, and honeypots before they reach a seat
+- Every call ends with a recorded disposition
 - Transcript and QA visibility for supervisors
-- Compliance-aware opener packs for regulated campaigns
 
 ## Key pages
 
 - Home: https://dialerbot.online/
 - Features: https://dialerbot.online/features
+- Solutions: https://dialerbot.online/solutions
 - ACA voice bot: https://dialerbot.online/solutions/aca-voice-bot
 - Truck dispatch bot: https://dialerbot.online/solutions/truck-dispatch-bot
 - Warm handoff: https://dialerbot.online/solutions/warm-handoff
@@ -40,7 +73,7 @@ Office: Office 12, Pakistan Town Phase 2, Islamabad, Pakistan
 
 ## Pricing signal
 
-Starter pricing is published from $35 per bot on the pricing page. Enterprise / multi-bot and compliance-heavy deployments are quoted via WhatsApp.
+Starter pricing is $35 USD per bot per month. A bot is the AI calling unit that handles calls as part of the call-center workflow. 100 bots at the reference price is $3,500 per month before any volume discount. Pricing is negotiated by volume, so larger bot counts are quoted based on the customer's setup. Bots relate to a call center's agent count and campaign volume, but are generally fewer than the total number of human agents. Phone line, telephony, and SIP costs are separate from the software price.
 
 ## Sales paths
 

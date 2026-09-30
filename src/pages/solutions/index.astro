@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PageMastFx from '../../components/PageMastFx.astro';
+import AeoDefinition from '../../components/AeoDefinition.astro';
+import { wa, demo } from '../../data/site';
+import { solutions } from '../../data/solutions';
+import { primaryIndustries, exampleIndustries, definition } from '../../data/product';
+import { breadcrumbJsonLd, definedTermJsonLd, webPageJsonLd } from '../../data/seo';
+import '../../styles/global.css';
+import '../../styles/solution-page.css';
+
+export const prerender = true;
+
+const pageTitle = 'Solutions | Dialer Bot';
+const pageDescription =
+  'Dialer Bot solutions for call centers, restaurants, and truck dispatch. The bot detects voicemail, qualifies leads, and live-transfers qualified calls to a human closer.';
+const pagePath = '/solutions';
+
+const cards = [
+  ...primaryIndustries.map((industry) => ({
+    name: industry.name,
+    description: industry.note,
+    href: industry.href,
+    badge: 'Primary',
+  })),
+  ...solutions.map((solution) => ({
+    name: solution.title,
+    description: solution.audience,
+    href: `/solutions/${solution.slug}`,
+    badge: 'Use case',
+  })),
+];
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  jsonLd={[
+    breadcrumbJsonLd([
+      { name: 'Home', path: '/' },
+      { name: 'Solutions', path: pagePath },
+    ]),
+    webPageJsonLd({ name: pageTitle, description: pageDescription, path: pagePath }),
+    definedTermJsonLd('Dialer Bot solutions', definition, pagePath),
+  ]}
+>
+  <Header slot="header" />
+
+  <div class="sl">
+    <header class="sl-mast page-mast" data-mast>
+      <PageMastFx />
+      <div class="sl-shell sl-mast__grid">
+        <div class="sl-mast__copy">
+          <nav class="sl-crumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Solutions</span>
+          </nav>
+          <p class="sl-brand">Dialer Bot</p>
+          <h1>Solutions for call centers, restaurants, and truck dispatch.</h1>
+          <AeoDefinition term="Dialer Bot solutions" definition={definition} tone="dark" />
+          <p class="sl-deck">
+            The qualification pattern is the same everywhere. Each business or campaign gets its own script and required questions.
+          </p>
+          <div class="sl-actions">
+            <a class="sl-btn sl-btn--solid" href={demo.solution} target="_blank" rel="noopener noreferrer">
+              Try live demo
+            </a>
+            <a class="sl-btn sl-btn--ghost" href={wa.start} target="_blank" rel="noopener noreferrer">
+              WhatsApp sales
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="sl-section">
+      <div class="sl-shell">
+        <h2>Primary industries</h2>
+        <ul class="sl-list">
+          {
+            primaryIndustries.map((industry) => (
+              <li>
+                <strong>{industry.name}</strong> — {industry.note}
+                {industry.href && (
+                  <>
+                    {' '}
+                    <a href={industry.href}>Read the {industry.name} solution</a>.
+                  </>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="sl-section sl-section--wash">
+      <div class="sl-shell">
+        <h2>All solutions and use cases</h2>
+        <ul class="sl-steps">
+          {
+            cards.map((card, i) => (
+              <li>
+                <span class="sl-steps__n">{String(i + 1).padStart(2, '0')}</span>
+                <span>
+                  {card.href ? (
+                    <a href={card.href}>
+                      <strong>{card.name}</strong>
+                    </a>
+                  ) : (
+                    <strong>{card.name}</strong>
+                  )}{' '}
+                  — {card.description} {card.badge && <em>({card.badge})</em>}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="sl-section">
+      <div class="sl-shell">
+        <h2>Other use cases</h2>
+        <ul class="sl-list">
+          {
+            exampleIndustries.map((industry) => (
+              <li>
+                {industry.href ? (
+                  <a href={industry.href}>
+                    <strong>{industry.name}</strong>
+                  </a>
+                ) : (
+                  <strong>{industry.name}</strong>
+                )}{' '}
+                — {industry.note}
+              </li>
+            ))
+          }
+        </ul>
+        <div class="sl-actions">
+          <a class="sl-btn sl-btn--solid" href={demo.solution} target="_blank" rel="noopener noreferrer">
+            Open live demo
+          </a>
+          <a class="sl-btn sl-btn--ghost" href="/pricing">View pricing</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <Footer slot="footer" />
+</BaseLayout>

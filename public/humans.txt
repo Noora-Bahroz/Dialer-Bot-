@@ -1,6 +1,13 @@
 /* Dialer Bot — https://dialerbot.online
 
-   AI voice bots for calling floors.
+   Dialer Bot is an AI voice bot for call-center operations. It works with your
+   existing PC dialer, detects voicemail, answering machines, and honeypots, runs
+   your business-specific script, checks whether a lead qualifies and is
+   interested, then live-transfers qualified calls to a human closer. Every call
+   ends with a recorded disposition. Pricing is $35 USD per bot per month, with
+   volume pricing available. Main industries: call centers, restaurants, and
+   truck dispatch.
+
    Contact: Query@dialerbot.online
    Demo: https://demo.dialerbot.online
 
@@ -10,4 +17,4 @@
    - /llms-full.txt
    - /sitemap-index.xml
    - /.well-known/security.txt
-*/
+ */

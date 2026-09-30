@@ -1,35 +1,72 @@
 # Dialer Bot
 
-> AI voice bots that qualify inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoff closable leads to human agents.
+> Dialer Bot is an AI voice bot for call-center operations. It works with your existing PC dialer, detects voicemail, answering machines, and honeypots, runs your business-specific script, checks whether a lead qualifies and is interested, then live-transfers qualified calls to a human closer. Every call ends with a recorded disposition.
 
 Dialer Bot is built in Islamabad, Pakistan. Primary conversion paths are the live product demo and WhatsApp sales. Public contact email is Query@dialerbot.online. Job applications go through the careers portal on this site.
+
+## How a call works
+
+PC Dialer → AI Voice Bot → Detection & Qualification → Qualification Decision → Live Transfer → Disposition
+
+1. **PC Dialer** — your existing PC dialer starts the call and sets the pace. Dialer Bot integrates with the workflow you already run.
+2. **AI Voice Bot** — the bot answers and runs your business-specific script in a high-quality AI voice.
+3. **Detection & Qualification** — the bot detects a human answer, voicemail, answering machine, or honeypot/automated response, then asks the required qualification questions and checks DNC (Do Not Call) status.
+4. **Qualification Decision** — the bot decides whether the lead meets the required criteria and is actually interested.
+5. **Live Transfer** — qualified, interested calls are transferred live to a human closer, who completes the conversation, verification, paperwork, and the sale.
+6. **Disposition** — the call is marked with a final status such as qualified/transferred, callback, not interested, voicemail, answering machine, or other.
+
+## Capabilities
+
+- AI voice conversations
+- Business-specific scripts (each business or campaign can have its own script and qualification flow)
+- Lead qualification
+- Human / automated call detection
+- Voicemail detection
+- Answering-machine detection
+- Honeypot / automated-response detection
+- Live transfer / warm handoff
+- Dispositions
+- DNC compliance
+- Address capturing
+- High-quality AI voice
+- Voice cloning
+- Multi-language support
+- PC dialer integration
+
+## Pricing
+
+$35 USD per bot per month. A bot is the AI calling unit that handles calls as part of the call-center workflow. 100 bots at the reference price is $3,500 per month before any volume discount. Pricing is negotiated by volume, so larger bot counts are quoted based on the customer's setup. The number of bots relates to a call center's agent count and campaign volume but is generally fewer than the total number of human agents. Phone line, telephony, and SIP costs are separate.
+
+## Industries
+
+Main industries: call centers, restaurants, and truck dispatch. Other use cases include ACA, FE, and HI campaigns.
 
 ## Primary
 
 - [Home](https://dialerbot.online/): Product overview and main sales pitch for Dialer Bot
-- [Features](https://dialerbot.online/features): Intent scoring, opener packs, compliance gates, transcripts, routing, pace control
-- [Pricing](https://dialerbot.online/pricing): Starter bot pricing and enterprise quote path
+- [Features](https://dialerbot.online/features): AI voice, scripts, qualification, call detection, live transfer, dispositions, DNC, PC dialer integration
+- [Solutions](https://dialerbot.online/solutions): Industries and use cases
+- [Pricing](https://dialerbot.online/pricing): Per-bot pricing and volume quote path
 - [Live demo](https://demo.dialerbot.online/): Full working Dialer Bot product demo
 - [Contact](https://dialerbot.online/contact): WhatsApp, email, office address, and contact form
-- [Company](https://dialerbot.online/company): About Contactivity / Dialer Bot team in Islamabad
+- [Company](https://dialerbot.online/company): About the Dialer Bot team in Islamabad
 - [Careers](https://dialerbot.online/careers): Open roles and hiring portal
 
 ## Product niches
 
-- [ACA voice bot](https://dialerbot.online/solutions/aca-voice-bot): Compliant ACA / FE / HI qualification and warm handoff
-- [Truck dispatch bot](https://dialerbot.online/solutions/truck-dispatch-bot): First logistics questions before dispatchers join
-- [Warm handoff](https://dialerbot.online/solutions/warm-handoff): Context-rich transfers instead of cold dumps
-- [Features](https://dialerbot.online/features): Intent scoring, opener packs, compliance, vault, routing, pace
+- [ACA voice bot](https://dialerbot.online/solutions/aca-voice-bot): ACA / FE / HI qualification and live transfer
+- [Truck dispatch bot](https://dialerbot.online/solutions/truck-dispatch-bot): First logistics questions before a dispatcher joins
+- [Warm handoff](https://dialerbot.online/solutions/warm-handoff): Live transfers with context instead of cold dumps
 
 ## Content
 
-- [Blog](https://dialerbot.online/blog): Floor-tested articles on warm handoff, openers, pace, dispatch, vault, pricing
-- [Warm handoff beats cold transfer](https://dialerbot.online/blog/warm-handoff-beats-cold-transfer): Why warm handoff converts better than cold transfer
+- [Blog](https://dialerbot.online/blog): Floor-tested articles on handoffs, scripts, pace, dispatch, and pricing
+- [Warm handoff beats cold transfer](https://dialerbot.online/blog/warm-handoff-beats-cold-transfer): Why context-rich handoffs convert better
 - [ACA opener packs that survive QA](https://dialerbot.online/blog/aca-opener-packs-that-survive-qa): Building compliant ACA openers
 - [Pace governor for dialer RPM](https://dialerbot.online/blog/pace-governor-for-dialer-rpm): Matching bot pace to live dialer speed
 - [Truck dispatch bots first questions](https://dialerbot.online/blog/truck-dispatch-bots-first-questions): First questions for dispatch voice bots
 - [Transcript vault for supervisors](https://dialerbot.online/blog/transcript-vault-for-supervisors): Supervisor transcript workflows
-- [When to buy enterprise bots](https://dialerbot.online/blog/when-to-buy-enterprise-bots): When starter packs vs enterprise make sense
+- [When to buy enterprise bots](https://dialerbot.online/blog/when-to-buy-enterprise-bots): When starter plans vs enterprise make sense
 
 ## Trust & policy
 

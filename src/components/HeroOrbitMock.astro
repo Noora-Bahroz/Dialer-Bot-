@@ -11,7 +11,7 @@ const meta = [
   { k: 'Intent', v: 'what_is_this', live: true },
 ];
 
-const pipeline = ['Rapport', 'Pitch + subsidy', 'Coverage gate', 'Consent', 'Warm transfer'];
+const pipeline = ['Detection', 'Business script', 'Qualification', 'Interest', 'Live transfer'];
 
 const activity = [
   { who: 'bot', text: 'Hey Jordan — checked your health subsidy this year?' },
@@ -105,8 +105,8 @@ const activity = [
     <div class="vc-main">
       <header class="vc-head">
         <div class="vc-head__copy">
-          <p class="vc-head__title" data-vc-title>Gate → warm transfer</p>
-          <p class="vc-deck" data-vc-deck>Qualify, score, then warm handoff.</p>
+          <p class="vc-head__title" data-vc-title>Qualified → live transfer</p>
+          <p class="vc-deck" data-vc-deck>Qualify, then live transfer.</p>
         </div>
         <div class="vc-head__actions">
           <span class="vc-live" data-vc-live><i />Live</span>
@@ -296,7 +296,7 @@ const activity = [
       if (live) live.classList.toggle('is-off', !on);
       if (startBtn) startBtn.disabled = on;
       if (hangBtn) hangBtn.disabled = !on;
-      if (title) title.textContent = on ? 'Gate → warm transfer' : 'Call ended';
+      if (title) title.textContent = on ? 'Qualified → live transfer' : 'Call ended';
       if (deck) {
         deck.textContent = on ? 'Qualify, score, then warm handoff.' : 'Session closed. Start a new call.';
       }

@@ -12,12 +12,13 @@ export const prerender = true;
 
 const starterIncludes = [
   'One AI bot',
-  'One campaign rule set',
+  'One campaign script set',
   'Easy script setup',
-  'Finds good leads automatically',
-  'Smooth call transfers',
+  'Detects voicemail and answering machines',
+  'Finds qualified leads automatically',
+  'Live transfer to a human closer',
   'Listen to past calls',
-  'Connects to your dialer',
+  'PC dialer integration',
   'Basic campaign stats',
   'Direct setup help',
 ];
@@ -27,46 +28,61 @@ const enterpriseIncludes = [
   'Multiple campaigns at once',
   'Custom rules for your business',
   'Smart call routing',
-  'Connects with any tool',
+  'Campaign-level configuration',
   'For very busy call centers',
   'Expert campaign help',
   'Priority support line',
   'Custom setup for your needs',
-  'Special pricing for high volume',
+  'Volume pricing for larger bot counts',
 ];
 
 const comparison = [
-  { feature: 'AI Bot', starter: true, enterprise: true },
-  { feature: 'Campaign Setup', starter: true, enterprise: true },
-  { feature: 'Finds Good Leads', starter: true, enterprise: true },
-  { feature: 'Smooth Transfers', starter: true, enterprise: true },
+  { feature: 'AI Voice Bot', starter: true, enterprise: true },
+  { feature: 'Campaign Script Setup', starter: true, enterprise: true },
+  { feature: 'Lead Qualification', starter: true, enterprise: true },
+  { feature: 'Live Transfer', starter: true, enterprise: true },
+  { feature: 'Call Detection (voicemail, answering machine, honeypot)', starter: true, enterprise: true },
+  { feature: 'Dispositions', starter: true, enterprise: true },
+  { feature: 'DNC (Do Not Call) Checks', starter: true, enterprise: true },
+  { feature: 'Address Capturing', starter: true, enterprise: true },
+  { feature: 'PC Dialer Integration', starter: true, enterprise: true },
   { feature: 'Call Recordings', starter: true, enterprise: true },
   { feature: 'Call Transcripts', starter: true, enterprise: true },
-  { feature: 'Dialer Integration', starter: true, enterprise: true },
   { feature: 'Multiple Campaigns', starter: false, enterprise: true },
   { feature: 'Multiple Bots', starter: false, enterprise: true },
   { feature: 'Smart Routing', starter: false, enterprise: true },
-  { feature: 'Custom Connections', starter: false, enterprise: true },
   { feature: 'Priority Support', starter: false, enterprise: true },
   { feature: 'Volume Pricing', starter: false, enterprise: true },
 ];
 
 const faqs = [
   {
-    q: 'Does $35 cover everything?',
-    a: 'No. The $35 is for the AI software. Things like phone line costs (telephony, SIP) are separate depending on your current setup.',
+    q: `Does $${site.pricePerBot} per bot per month cover everything?`,
+    a: 'No. That price is for the software per bot. Phone line costs, telephony, and SIP are separate depending on your current setup.',
+  },
+  {
+    q: 'What exactly is a bot?',
+    a: 'An AI voice agent/bot that handles calls as part of the call-center workflow. A bot is the AI calling unit your call center runs.',
+  },
+  {
+    q: 'How many bots does a call center need?',
+    a: 'It depends on your agent count and campaign volume. Bots relate to your call-center capacity but are generally fewer than the total number of human agents.',
   },
   {
     q: 'Can I start small?',
-    a: 'Yes. The Starter plan is perfect for testing one campaign before spending more.',
+    a: 'Yes. The Starter plan is a good fit for getting a first bot live on one campaign before spending more.',
   },
   {
     q: 'Can you handle huge call centers?',
-    a: 'Yes. The Enterprise plan is built for huge teams running many campaigns and bots at the same time.',
+    a: 'Yes. The Enterprise plan is built for teams running many bots and campaigns at the same time.',
   },
   {
     q: 'Do I have to buy a new dialer?',
-    a: 'No. DialerBot works with the calling software you already have.',
+    a: 'No. Dialer Bot is designed to integrate with the PC dialer workflow you already run.',
+  },
+  {
+    q: 'Is volume pricing available?',
+    a: 'Yes. Pricing is negotiated by volume, so larger bot counts are quoted based on your setup.',
   },
   {
     q: 'Will you help me set it up?',
@@ -77,7 +93,7 @@ const faqs = [
 
 <BaseLayout
   title="AI Voice Bot Pricing | DialerBot"
-  description={`AI outbound calling from $${site.pricePerBot}/bot per month. Start with one agent, scale campaigns when your floor is ready. Software pricing is separate from telephony usage.`}
+  description={`AI voice bots from $${site.pricePerBot} per bot per month. A bot is the AI calling unit your call center runs. Volume pricing available for larger bot counts. Telephony is separate.`}
   jsonLd={breadcrumbJsonLd([
     { name: 'Home', path: '/' },
     { name: 'Pricing', path: '/pricing' },
@@ -95,10 +111,10 @@ const faqs = [
             <span aria-hidden="true">/</span>
             <span>Pricing</span>
           </nav>
-          <p class="pr-brand">DialerBot</p>
-          <h1>Start with one AI bot. Upgrade when you are ready.</h1>
+          <p class="pr-brand">Dialer Bot</p>
+          <h1>Start with one AI voice bot. Add more when you are ready.</h1>
           <p class="pr-deck">
-            Start small with one simple AI bot for a single campaign. When you're ready, upgrade to handle massive call volumes and multiple teams.
+            A bot is the AI calling unit your call center runs. Start with one on a single campaign, then add bots as your call volume and agent count grow.
           </p>
           <div class="pr-actions">
             <a class="pr-btn pr-btn--solid" href={demo.pricing} target="_blank" rel="noopener noreferrer">
@@ -145,9 +161,9 @@ const faqs = [
                 <span class="pr-dial__currency">$</span>
                 <span class="pr-dial__num" data-pr-count>{site.pricePerBot}</span>
               </p>
-              <p class="pr-dial__unit">per bot · software</p>
+              <p class="pr-dial__unit">per bot · per month</p>
               <p class="pr-rail__detail" style="margin:0.75rem 0 1rem">
-                Perfect for one campaign. Note: Phone line and usage costs are separate.
+                A bot is the AI calling unit that handles calls in your workflow. Note: phone line and usage costs are separate.
               </p>
               <a
                 class="pr-btn pr-btn--solid pr-dial__cta"
@@ -191,17 +207,17 @@ const faqs = [
       <div class="pr-shell">
         <div class="pr-section__head" data-reveal>
           <p class="pr-kicker">Plans</p>
-          <h2 id="pr-lanes-title">Clear pricing for beginners. Custom plans for pros.</h2>
+          <h2 id="pr-lanes-title">Clear per-bot pricing. Volume quotes for larger floors.</h2>
         </div>
 
         <div class="pr-lanes">
           <article class="pr-lane pr-lane--starter" data-reveal="left" data-lift>
             <header>
               <p class="pr-kicker">Starter</p>
-              <h3>${site.pricePerBot} / bot</h3>
+              <h3>${site.pricePerBot} per bot / month</h3>
               <p class="pr-lane__price">
-                <strong>Best for testing one campaign</strong>
-                <span>or launching your first AI agent</span>
+                <strong>Best for getting a first bot live</strong>
+                <span>on one campaign</span>
               </p>
             </header>
             <ul>
@@ -302,7 +318,7 @@ const faqs = [
           </a>
         </div>
         <p class="pr-deck" style="text-align:center;margin-top:1.25rem" data-reveal>
-          Don't risk everything on day one. Try it on one campaign, see the results, and then grow.
+          Don't add everything on day one. Run one bot on one campaign, see the results, and then grow.
         </p>
       </div>
     </section>

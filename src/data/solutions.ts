@@ -20,9 +20,9 @@ export const solutions: SolutionPage[] = [
     title: 'ACA Voice Bot',
     h1: 'ACA voice bots that qualify before agents dial back',
     description:
-      'Dialer Bot ACA voice bots ask compliant first questions, score intent, and warm-handoff only closable ACA, FE, and HI leads to agents.',
+      'Dialer Bot ACA voice bots detect voicemail and answering machines, ask compliant first questions, and live-transfer qualified ACA, FE, and HI leads to human closers.',
     definition:
-      'An ACA voice bot is an AI caller that runs your locked opener pack on ACA (and related FE/HI) campaigns, confirms basic eligibility intent, and transfers only scored leads to human agents with context — instead of dumping cold transfers into seats.',
+      'An ACA voice bot is an AI voice bot that runs your ACA (and related FE/HI) campaign script, confirms basic eligibility and interest, and live-transfers only qualified leads to a human closer with context — instead of sending cold transfers into seats.',
     audience: 'Insurance calling floors running ACA, Final Expense, and Health Insurance outbound or inbound qualification.',
     problems: [
       'Agents burn seats on tire-kickers and incomplete openers',
@@ -34,7 +34,7 @@ export const solutions: SolutionPage[] = [
       'Lock turns 1–3 for compliance and QA',
       'Score answers for intent and readiness',
       'Run quiet-hour / consent gates before the pitch deepens',
-      'Warm-handoff with transcript context to the right seat',
+      'Live transfer with context to the right closer',
     ],
     outcomes: [
       'Higher agent talk-time on closable leads',
@@ -67,7 +67,7 @@ export const solutions: SolutionPage[] = [
     title: 'Truck Dispatch Voice Bot',
     h1: 'Truck dispatch voice bots for the first questions that waste seats',
     description:
-      'Dialer Bot for truck dispatch asks the first logistics questions, filters incomplete calls, and warm-handoffs ready conversations to dispatchers.',
+      'Dialer Bot for truck dispatch asks the first logistics questions, filters incomplete calls, and live-transfers ready conversations to dispatchers.',
     definition:
       'A truck dispatch voice bot is an AI voice layer that greets carriers or shippers, asks the first operational questions (equipment, lane, timing, availability), and only connects dispatchers when the call is worth human time.',
     audience: 'Truck dispatch teams, broker floors, and logistics call centers that still qualify loads and carriers by phone.',
@@ -81,7 +81,7 @@ export const solutions: SolutionPage[] = [
       'Answer and ask first dispatch questions consistently',
       'Capture lane, timing, and fit signals before transfer',
       'Score readiness so weak calls stay with the bot or get scheduled',
-      'Warm-handoff with a short context packet to the dispatcher',
+      'Live transfer with a short context packet to the dispatcher',
     ],
     outcomes: [
       'Dispatchers spend more time on workable conversations',
@@ -92,7 +92,7 @@ export const solutions: SolutionPage[] = [
     faqs: [
       {
         q: 'Is Dialer Bot built for truck dispatch or only insurance?',
-        a: 'Both. Dialer Bot is used on truck dispatch floors and insurance calling floors. The qualification pattern is the same; the opener pack changes.',
+        a: 'Truck dispatch and call centers are the main industries, with restaurants and ACA, FE, and HI as further use cases. The qualification pattern is the same; the script and required questions are set per business or campaign.',
       },
       {
         q: 'What first questions should a dispatch bot ask?',
@@ -100,7 +100,7 @@ export const solutions: SolutionPage[] = [
       },
       {
         q: 'Can it sync with our existing phone workflow?',
-        a: 'Dialer Bot connects to dialer/SIP paths calling teams already run. Confirm your stack on WhatsApp before go-live.',
+        a: 'Dialer Bot is designed to integrate with the PC dialer workflow your call center already runs. Confirm your specific stack on WhatsApp before go-live.',
       },
     ],
     related: [
@@ -111,12 +111,12 @@ export const solutions: SolutionPage[] = [
   },
   {
     slug: 'warm-handoff',
-    title: 'Warm Handoff for Calling Floors',
-    h1: 'Warm handoff beats cold transfer on live dialing floors',
+    title: 'Live Transfer for Calling Floors',
+    h1: 'Live transfer beats cold transfer on calling floors',
     description:
-      'Dialer Bot warm handoff passes scored, contextual leads to agents — not cold transfers that waste seats and kill conversion.',
+      'Dialer Bot live transfers qualified, contextual leads to human closers — not cold transfers that waste seats and kill conversion.',
     definition:
-      'Warm handoff means the bot finishes first-contact qualification, packages what was asked and confirmed, then connects a human agent who already knows why the lead is worth time. Cold transfer dumps a live caller with little or no context.',
+      'A live transfer means the bot finishes first-contact qualification and passes the call to a human closer while the caller is still on the line, with what was asked and confirmed already attached. A cold transfer connects a live caller with little or no context.',
     audience: 'Call center and dispatch supervisors who measure conversion after transfer, not just connect rate.',
     problems: [
       'Cold transfers force agents to re-ask the same questions',
@@ -126,7 +126,7 @@ export const solutions: SolutionPage[] = [
     ],
     howItWorks: [
       'Qualify and score before any seat is occupied',
-      'Attach transcript context to the handoff',
+      'Attach context to the live transfer',
       'Prefer affinity routing to the right book of business',
       'Log disposition the moment the bot decides',
     ],
@@ -138,8 +138,8 @@ export const solutions: SolutionPage[] = [
     ],
     faqs: [
       {
-        q: 'What is the difference between warm handoff and cold transfer?',
-        a: 'Cold transfer connects a caller with little context. Warm handoff only connects after qualification and passes what was asked, confirmed, and why the lead scored high enough for a human.',
+        q: 'What is the difference between a live transfer and a cold transfer?',
+        a: 'A cold transfer connects a caller with little context. A live transfer only connects after qualification, and passes what was asked, confirmed, and why the lead qualified for a human closer.',
       },
       {
         q: 'Does Dialer Bot always transfer every call?',

@@ -8,94 +8,76 @@ import HeroOrbitMock from '../components/HeroOrbitMock.astro';
 import AeoDefinition from '../components/AeoDefinition.astro';
 import { wa, demo } from '../data/site';
 import { definedTermJsonLd, webPageJsonLd } from '../data/seo';
+import {
+  definition,
+  productFlow,
+  capabilities,
+  dispositions,
+  dispositionPlainEnglish,
+  pricing,
+  primaryIndustries,
+} from '../data/product';
 import '../styles/global.css';
 
 export const prerender = true;
 
-const dialerBotDefinition =
-  'DialerBot is an AI assistant for call centers. It makes the first call, and your human agents only talk to the people who are interested.';
+const dialerBotDefinition = definition;
 
-const homeTitle = 'AI Voice Assistant for Call Centers | DialerBot';
+const homeTitle = 'AI Voice Bot for Call Centers | DialerBot';
 const homeDescription =
-  'Automate your phone calls with AI. DialerBot talks to leads first and transfers the good ones to your team.';
+  'AI voice bot for call centers. Works with your existing PC dialer, detects voicemail and answering machines, qualifies leads, and live-transfers qualified calls to a human closer.';
 
 const benefitFeatures = [
   {
     icon: '/images/dialerbot-elements.svg',
-    title: 'AI makes the first call',
-    text: 'It greets the customer, asks basic questions, and checks if they are interested. No more repetitive work for your team.',
+    title: 'The bot opens every call',
+    text: 'It greets the customer, follows your business-specific script, and asks the qualification questions your campaign requires.',
   },
   {
     icon: '/images/dialerbot-elements-1.svg',
-    title: 'Your team closes the deal',
-    text: 'When a lead is ready, the AI transfers the call to your human agent along with all the details it gathered.',
+    title: 'Your human closer completes the sale',
+    text: 'When a lead qualifies, the bot live-transfers the call to your closer, who handles the conversation, verification, paperwork, and the actual deal.',
   },
 ];
 
-const howItWorks = [
-  {
-    n: '01',
-    title: 'Connect your system',
-    text: 'Keep using your current calling software. Just link DialerBot to it.',
-  },
-  {
-    n: '02',
-    title: 'Set up your rules',
-    text: 'Tell the bot what to say, what to ask, and when to transfer a call.',
-  },
-  {
-    n: '03',
-    title: 'AI talks naturally',
-    text: 'The bot sounds like a real person. It listens and responds instead of just reading a script.',
-  },
-  {
-    n: '04',
-    title: 'Find the best leads',
-    text: 'The bot figures out if the person on the phone is a good fit for your business.',
-  },
-  {
-    n: '05',
-    title: 'Transfer to a human',
-    text: 'Good leads get sent to your agents immediately, along with all the notes.',
-  },
-  {
-    n: '06',
-    title: 'Check the results',
-    text: 'Listen to call recordings, read transcripts, and see how your campaign is doing in one place.',
-  },
-];
+/** The six canonical stages, straight from product.ts. */
+const howItWorks = productFlow.map((step) => ({
+  n: String(step.n).padStart(2, '0'),
+  title: step.name,
+  text: step.plain,
+}));
 
 const valueProps = [
   {
-    title: 'Save time on early calls',
-    text: 'Let AI handle the repetitive first stage of every campaign and reduce the number of low-value conversations reaching your agents.',
+    title: 'Stop wasting talk time',
+    text: 'The bot filters out voicemail, answering machines, and automated responses before they ever reach a closer.',
   },
   {
-    title: 'Keep your existing dialer',
-    text: 'DialerBot is designed to work alongside the infrastructure your call center already uses instead of forcing you to replace your entire stack.',
+    title: 'Keep your existing PC dialer',
+    text: 'Dialer Bot is designed to integrate with the PC dialer workflow your call center already runs, instead of forcing you to replace your stack.',
   },
   {
-    title: 'Warm-transfer qualified leads',
-    text: "Don't send an agent into a conversation blind. Transfer the call with the relevant context already collected.",
+    title: 'Live-transfer qualified leads',
+    text: "Don't drop an agent into a conversation blind. A qualified, interested call is transferred live, with the context already collected.",
   },
   {
-    title: 'Run campaigns around the clock',
-    text: 'Use AI for outbound campaigns, inbound reception, overflow handling, callbacks, lead qualification, and other repetitive calling workflows.',
+    title: 'Every call gets a disposition',
+    text: `${dispositionPlainEnglish} Examples: ${dispositions.examples.map((d) => d.label).join(', ')}.`,
   },
 ];
 
 const spotlights = [
   {
     image: '/images/dialerbot-home-01.webp',
-    title: 'Answering service that routes calls to the right person',
+    title: 'Call detection that filters out voicemail, answering machines, and honeypots',
   },
   {
     image: '/images/dialerbot-home-02.webp',
-    title: 'Calling campaigns that filter out bad leads automatically',
+    title: 'Business-specific scripts and qualification questions that filter out bad leads',
   },
   {
     image: '/images/dialerbot-home-03.webp',
-    title: 'Listen to recordings and see how your campaigns are doing',
+    title: 'Dispositions, recordings, and transcripts so you can see how each campaign is doing',
   },
 ];
 
@@ -128,60 +110,53 @@ const serviceRows = [
   },
   {
     reverse: false,
-    label: 'Easy Setup',
-    title: 'Keep using your favorite tools',
+    label: 'PC Dialer Setup',
+    title: 'Keep the PC dialer you already run',
     points: [
-      { icon: '/images/dialerbot-elements-4.svg', text: 'Works with your current dialer or calling system' },
+      { icon: '/images/dialerbot-elements-4.svg', text: 'Designed to integrate with your existing PC dialer workflow' },
       { icon: '/images/dialerbot-discover-circle.svg', text: 'Your team does not need to learn a whole new software' },
-      { icon: '/images/dialerbot-bulb-charge.svg', text: 'AI acts like a helper, not a replacement for your tools' },
-      { icon: '/images/dialerbot-cloud-upload.svg', text: 'Grow your business without changing how you work' },
+      { icon: '/images/dialerbot-bulb-charge.svg', text: 'The bot handles the opening call, not the whole workflow' },
+      { icon: '/images/dialerbot-cloud-upload.svg', text: 'Add bots as your call volume and agent count grow' },
     ],
     mock: 'dialer' as const,
     cta: 'Let\'s talk setup',
   },
   {
     reverse: true,
-    label: 'Manage Campaigns',
-    title: 'Everything in one simple dashboard',
+    label: 'Voice & Campaigns',
+    title: 'A high-quality AI voice for every business',
     points: [
-      { icon: '/images/dialerbot-cloud-upload.svg', text: 'Make AI sound natural instead of like a robot' },
-      { icon: '/images/dialerbot-clock.svg', text: 'Set up different rules for different campaigns' },
-      { icon: '/images/dialerbot-hourglass.svg', text: 'Listen to past calls to see what works best' },
-      { icon: '/images/dialerbot-paragraph-bullets-point-01.svg', text: 'Watch your campaign results live' },
+      { icon: '/images/dialerbot-cloud-upload.svg', text: 'High-quality AI voice that holds a real conversation' },
+      { icon: '/images/dialerbot-clock.svg', text: 'Each business or campaign can have its own script' },
+      { icon: '/images/dialerbot-hourglass.svg', text: 'Voice cloning and multi-language support' },
+      { icon: '/images/dialerbot-paragraph-bullets-point-01.svg', text: 'Listen to past calls to see what works best' },
     ],
     mock: 'backend' as const,
     cta: 'See all features',
   },
 ];
 
-const featuresList = [
-  { title: 'Interactive Dashboard', text: 'Monitor all your active calls, campaign stats, and agent statuses in one real-time view.' },
-  { title: 'Calendar Scheduling', text: 'Allow the AI to automatically book appointments directly into your team\'s calendar.' },
-  { title: 'Multi-Language Support', text: 'Run campaigns in different languages with perfectly fluent AI voices.' },
-  { title: 'API & Webhooks', text: 'Connect seamlessly to Zapier, Salesforce, HubSpot, or any custom CRM system.' },
-  { title: 'Voice Cloning', text: 'Use our ultra-realistic preset voices or clone a specific voice for your brand.' },
-  { title: 'Call Transcripts', text: 'Every call is recorded and fully transcribed so you can review exactly what was said.' },
-  { title: 'DNC Compliance', text: 'Automatically respect Do Not Call lists and handle opt-out requests instantly.' },
-  { title: 'Custom Analytics', text: 'Generate detailed reports on conversion rates, call durations, and transfer success.' },
-];
+/**
+ * Confirmed capabilities only, from product.ts. Calendar Scheduling and
+ * native Zapier/Salesforce/HubSpot are intentionally absent.
+ */
+const featuresList = capabilities
+  .filter((c) => c.primary)
+  .map((c) => ({ title: c.name, text: c.plain }));
 
-const useCases = [
-  { title: 'Real Estate', text: 'Automatically call new leads to see if they are looking to buy or sell, then transfer to a realtor.' },
-  { title: 'Solar & Home Services', text: 'Qualify homeowners by asking about their roof type and energy bill before booking a consultation.' },
-  { title: 'Recruiting', text: 'Screen hundreds of job applicants quickly by asking basic experience questions before a real interview.' },
-  { title: 'Insurance', text: 'Ask introductory questions about age, location, and coverage needs before passing to a licensed broker.' },
-  { title: 'Debt Collection', text: 'Handle initial payment reminders and simple payment setups automatically and politely.' },
-  { title: 'Medical Offices', text: 'Call patients to remind them of upcoming appointments and allow them to reschedule via voice.' },
-];
+const useCases = primaryIndustries.map((industry) => ({
+  title: industry.name,
+  text: industry.note,
+  href: industry.href,
+}));
 
 const callCenterNeeds = [
-  'Zero sick days or breaks',
-  'Perfect script compliance',
-  'Instantly scalable to 10,000+ calls',
-  'No training time required',
-  'Removes agent burnout',
-  'Eliminates bad attitudes on calls',
-  'Dramatically lowers cost per lead',
+  'Fewer calls wasted on voicemail and answering machines',
+  'Closer time spent on leads that actually qualify',
+  'Scales with campaign volume without extra headcount',
+  'No new training for closers — they take the same live call',
+  'DNC (Do Not Call) checked before a call proceeds',
+  'Every call ends with a recorded disposition',
 ];
 ---
 
@@ -207,16 +182,17 @@ const callCenterNeeds = [
         <div class="hero-copy">
           <div class="announcement">
             <span class="badge">AI</span>
-            <p>AI Voice Agents for Call Centers</p>
+            <p>AI Voice Bot for Call Centers</p>
             <span class="arrow" aria-hidden="true">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
             </span>
           </div>
-          <h1>Let AI handle the first conversation. Your team handles the close.</h1>
+          <h1>Let the AI voice bot handle the first call. Your closer handles the sale.</h1>
           <p class="lead">
-            DialerBot works with your current tools to answer calls, speak naturally, ask questions, and transfer only the best leads to your human agents.<br/><br/>
+            Dialer Bot works with your existing PC dialer. It detects voicemail, answering machines, and honeypots, runs your business-specific script,
+            checks whether the lead qualifies and is interested, then live-transfers the good ones to a human closer.<br/><br/>
             <span style="opacity:0.9;font-weight:600;">Get more good calls and stop wasting time on bad ones.</span>
           </p>
           <div class="hero-actions">
@@ -229,7 +205,7 @@ const callCenterNeeds = [
             </a>
           </div>
           <p style="margin:1rem 0 0;font-size:0.85rem;opacity:0.75;max-width:36rem;line-height:1.45">
-            Perfect for teams making or taking lots of calls. Connect your system and let the AI do the heavy lifting.
+            Built for call centers that make or take a lot of calls. Keep your existing PC dialer and let the bot handle the opening conversation.
           </p>
         </div>
         <div class="hero-visual" data-reveal="right" style="--reveal-i:0">
@@ -241,24 +217,24 @@ const callCenterNeeds = [
 
   <section class="aeo-solutions wrap" aria-label="DialerBot promise">
     <p class="section-label" data-reveal>Our Promise</p>
-    <h2 class="section-title" data-reveal style="--reveal-i:1">
-      You find the numbers. DialerBot makes the call. Your agents close the deal.
-    </h2>
+      <h2 class="section-title" data-reveal style="--reveal-i:1">
+        You find the numbers. Your PC dialer dials. The bot qualifies. Your closer closes the deal.
+      </h2>
     <div data-reveal style="--reveal-i:1.5">
       <AeoDefinition term="DialerBot" definition={dialerBotDefinition} />
     </div>
     <div class="aeo-solutions__grid">
-      <a class="aeo-solutions__card" href="/solutions/warm-handoff" data-reveal="up" style="--reveal-i:0">
-        <strong>Warm transfer</strong>
-        <span>Qualified conversations reach agents with context — not cold dumps.</span>
+      <a class="aeo-solutions__card" href="/features" data-reveal="up" style="--reveal-i:0">
+        <strong>Live transfer</strong>
+        <span>Qualified, interested calls reach a human closer live, not on blind hold.</span>
       </a>
       <a class="aeo-solutions__card" href="/features" data-reveal="up" style="--reveal-i:1">
-        <strong>Campaign control</strong>
-        <span>Scripts, qualification rules, monitoring, and recordings in one platform.</span>
+        <strong>Call detection</strong>
+        <span>Voicemail, answering machines, and honeypots are filtered out before they reach a seat.</span>
       </a>
       <a class="aeo-solutions__card" href="/pricing" data-reveal="up" style="--reveal-i:2">
         <strong>Start with one bot</strong>
-        <span>From $35 per bot. Scale when your floor is ready.</span>
+        <span>${pricing.reference.amount} per bot per month. Scale when your floor is ready.</span>
       </a>
     </div>
   </section>
@@ -277,9 +253,9 @@ const callCenterNeeds = [
           <WarmHandoffMock />
         </div>
         <div>
-          <h3>DialerBot takes care of the boring stuff.</h3>
+          <h3>Dialer Bot takes care of the boring first call.</h3>
           <p class="desc" style="margin-bottom:1.25rem">
-            Agents spend too much time saying hello, asking basic questions, and dealing with people who aren't interested. This works needs to be done, but a human shouldn't have to do it.
+            Closers spend too much time saying hello, asking basic questions, and talking to people who are not interested. This work still needs doing, but a human should not have to do all of it.
           </p>
           {
             benefitFeatures.map((f) => (
@@ -317,7 +293,7 @@ const callCenterNeeds = [
   <section class="spotlight">
     <div class="spotlight-inner">
       <p class="section-label center" data-reveal>Why Choose Us</p>
-      <h2 class="section-title center" data-reveal style="--reveal-i:1">The smart AI assistant for your team.</h2>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">The AI voice bot for your call-center workflow.</h2>
       <div class="spotlight-grid">
         {
           spotlights.map((card, i) => (
@@ -392,13 +368,18 @@ const callCenterNeeds = [
   <section class="success" id="company">
     <div class="wrap">
       <p class="section-label center" data-reveal>Industries</p>
-      <h2 class="section-title center" data-reveal style="--reveal-i:1">Perfect for any business.</h2>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">Built for call centers, restaurants, and truck dispatch.</h2>
       <div class="aeo-solutions__grid" style="margin-top:2rem">
         {
           useCases.map((u, i) => (
             <div class="aeo-solutions__card" data-reveal="up" style={`--reveal-i: ${i % 3}`}>
               <strong>{u.title}</strong>
               <span>{u.text}</span>
+              {u.href && (
+                <a href={u.href} style="margin-top:0.75rem;display:inline-block">
+                  Learn more
+                </a>
+              )}
             </div>
           ))
         }
@@ -409,7 +390,7 @@ const callCenterNeeds = [
   <section class="stats" id="pricing">
     <div class="wrap">
       <p class="section-label center" data-reveal>Features</p>
-      <h2 class="section-title center" data-reveal style="--reveal-i:1">Everything you need for smart calling.</h2>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">Everything you need for the first call.</h2>
       <div class="aeo-solutions__grid" style="margin-top:2rem">
         {
           featuresList.map((f, i) => (
@@ -426,10 +407,10 @@ const callCenterNeeds = [
   <section class="testimonials">
     <div class="wrap">
       <p class="section-label center" data-reveal>Operational Benefits</p>
-      <h2 class="section-title center" data-reveal style="--reveal-i:1">Why businesses switch to AI.</h2>
-      <p class="lead center" data-reveal style="--reveal-i:2;max-width:42rem;margin-inline:auto">
-        Managing a large team of human agents comes with challenges. DialerBot solves the biggest headaches of running a call center.
-      </p>
+      <h2 class="section-title center" data-reveal style="--reveal-i:1">Why call centers add a bot to the floor.</h2>
+          <p class="lead center" data-reveal style="--reveal-i:2;max-width:42rem;margin-inline:auto">
+            Running a call center comes with challenges. Dialer Bot takes on the repetitive opening calls so your closers spend their time where they close.
+          </p>
       <div class="aeo-solutions__grid" style="margin-top:2rem">
         {
           callCenterNeeds.map((need, i) => (
@@ -444,12 +425,12 @@ const callCenterNeeds = [
       <div class="success-grid" style="margin-top:3rem">
         <div class="success-copy" data-reveal="left">
           <p class="section-label">Results</p>
-          <h3>Give your team better calls, not just more calls.</h3>
+          <h3>Give your closers better calls, not just more calls.</h3>
           <p class="lead">
-            The goal isn't to replace your staff. It's to help them succeed. DialerBot does the boring work so your team can focus on the calls that actually matter.
+            The bot is not the final salesperson. It handles the opening conversation and the qualification; your human closer completes the actual sale.
           </p>
           <p class="lead" style="font-weight:700">
-            AI handles the boring parts. Your team handles the real conversations.
+            The bot handles the first part of the call. Your closer handles the deal.
           </p>
           <div class="hero-actions" style="margin-top:1.5rem">
             <a class="btn btn-chip" href={demo.homeHero} target="_blank" rel="noopener noreferrer">Try the Live Demo</a>

@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import PageMastFx from '../components/PageMastFx.astro';
 import { wa, site } from '../data/site';
 import { breadcrumbJsonLd, faqPageJsonLd } from '../data/seo';
+import { definitionLong } from '../data/product';
 import '../styles/global.css';
 import '../styles/faqs-page.css';
 
@@ -15,19 +16,43 @@ const faqs = [
     id: 'what',
     topic: 'Product',
     q: 'What is Dialer Bot?',
-    a: 'Dialer Bot is an AI voice bot platform that qualifies inbound and outbound calls for call centers, truck dispatch, ACA, FE, and HI — then warm-handoffs only closable leads to human agents with context.',
+    a: definitionLong,
   },
   {
     id: 'replace',
     topic: 'Product',
-    q: 'Does Dialer Bot replace agents?',
-    a: 'No. It clears openers and tire-kickers so agents spend time on closable conversations. Humans still close.',
+    q: 'Does Dialer Bot replace my human closers?',
+    a: 'No. The bot is not the final salesperson. It handles the opening conversation and the qualification, then a human closer completes the conversation, verification, paperwork, and the actual sale.',
   },
   {
-    id: 'warm',
+    id: 'flow',
     topic: 'Product',
-    q: 'What is warm handoff vs cold transfer?',
-    a: 'Cold transfer connects a caller with little context. Warm handoff only connects after qualification and passes what was asked, confirmed, and why the lead scored high enough for a human.',
+    q: 'What happens on a call?',
+    a: 'Your PC dialer starts the call. The bot detects whether a human, voicemail, an answering machine, or a honeypot picked up. If a human answers, it follows your business-specific script, asks the required qualification questions, checks whether the lead meets your criteria and is interested, and then live-transfers the call to a human closer. Every call ends with a recorded disposition.',
+  },
+  {
+    id: 'detection',
+    topic: 'Product',
+    q: 'Can the bot tell if a human actually picked up?',
+    a: 'Yes. The bot detects human answers, voicemail, answering machines, and honeypot or other automated responses, so your closers do not pick up a machine.',
+  },
+  {
+    id: 'disposition',
+    topic: 'Product',
+    q: 'What is a disposition?',
+    a: 'A disposition is the final status recorded for a call. Examples include callback, not interested, voicemail, answering machine, qualified or transferred, and other outcomes your campaign tracks.',
+  },
+  {
+    id: 'scripts',
+    topic: 'Product',
+    q: 'Does every business get the same script?',
+    a: 'No. Each business or campaign can have its own script and its own required qualification questions. The script stays consistent for that business while the conversation adapts to the answers given.',
+  },
+  {
+    id: 'transfer',
+    topic: 'Product',
+    q: 'What is the difference between a live transfer and a cold transfer?',
+    a: 'A live transfer hands the caller straight to a human closer while they are still on the line, with the context already collected. A cold transfer connects a caller with little or no context.',
   },
   {
     id: 'lock',
@@ -36,16 +61,34 @@ const faqs = [
     a: 'Yes. First questions can be hardcoded for compliance and QA, with adaptive follow-ups after intent forms.',
   },
   {
+    id: 'dnc',
+    topic: 'Product',
+    q: 'Does Dialer Bot handle Do Not Call?',
+    a: 'Yes. DNC means Do Not Call. The system checks whether a number is on a Do Not Call list before the call proceeds, and does not proceed where applicable.',
+  },
+  {
+    id: 'voice',
+    topic: 'Product',
+    q: 'Can I use my own voice and other languages?',
+    a: 'Yes. Dialer Bot supports high-quality AI voices, voice cloning for your brand, and multi-language campaigns.',
+  },
+  {
+    id: 'address',
+    topic: 'Product',
+    q: 'Can the bot capture addresses or service locations?',
+    a: 'Yes. Address capturing is a supported capability, so the details a campaign needs can be collected during the call and passed to the closer.',
+  },
+  {
     id: 'aca',
     topic: 'Product',
     q: 'Does Dialer Bot work for ACA campaigns?',
-    a: 'Yes. ACA, FE, and HI floors use locked opener packs, intent scoring, and warm handoff. See the ACA voice bot solution page for the full pattern.',
+    a: 'Yes. ACA, FE, and HI are example use cases for the same qualification pattern. See the ACA voice bot solution page for the full pattern.',
   },
   {
     id: 'dispatch',
     topic: 'Product',
     q: 'Can it qualify truck dispatch calls?',
-    a: 'Yes. Dispatch packs ask first logistics questions (fit, lane, timing) and only connect dispatchers when the call is worth human time.',
+    a: 'Yes. Truck dispatch is one of the main industries. Dispatch questions cover things like equipment or load type, lane or geography, timing, and availability, and dispatchers only join the call when it is worth human time.',
   },
   {
     id: 'vault',
@@ -57,31 +100,43 @@ const faqs = [
     id: 'demo',
     topic: 'Buying',
     q: 'How do I try Dialer Bot before buying?',
-    a: 'Open the live demo at demo.dialerbot.online, then WhatsApp sales if you want a pack configured for your dialer.',
+    a: 'Open the live demo at demo.dialerbot.online, then WhatsApp sales if you want a script configured for your dialer.',
   },
   {
     id: 'price',
     topic: 'Buying',
     q: 'How much does Dialer Bot cost?',
-    a: `Starter pricing is $${site.pricePerBot} USD per bot. Multi-bot floors and custom compliance are quoted as enterprise on WhatsApp.`,
+    a: `Starter pricing is $${site.pricePerBot} USD per bot per month. Pricing is negotiated by volume, so larger bot counts are quoted based on your setup.`,
+  },
+  {
+    id: 'what-is-a-bot',
+    topic: 'Buying',
+    q: 'What exactly is a bot?',
+    a: 'A bot is an AI voice agent/bot that handles calls as part of the call-center workflow — the AI calling unit your call center runs.',
+  },
+  {
+    id: 'how-many-bots',
+    topic: 'Buying',
+    q: 'How many bots does a call center need?',
+    a: 'It depends on your agent count and campaign volume. Bots relate to your call-center capacity, but are generally fewer than the total number of human agents. For scale, 100 bots at the reference price is $3,500 per month before any volume discount.',
   },
   {
     id: 'enterprise',
     topic: 'Buying',
     q: 'When do we need enterprise instead of starter?',
-    a: 'Choose enterprise when you need multi-bot scale, custom compliance workflows, or deeper dialer/CRM integration than a single campaign pack.',
+    a: 'Choose enterprise when you need multi-bot scale, custom compliance workflows, or more campaign-level configuration than a single campaign script set.',
   },
   {
     id: 'dialer',
     topic: 'Ops',
-    q: 'Which dialers do you support?',
-    a: 'We connect to dialers and SIP paths calling teams already run. Confirm your stack on WhatsApp before you buy.',
+    q: 'Do I have to replace my PC dialer?',
+    a: 'No. Dialer Bot is designed to integrate with the PC dialer workflow your call center already runs. Confirm your specific stack on WhatsApp before you buy.',
   },
   {
     id: 'live',
     topic: 'Ops',
     q: 'How fast can we go live?',
-    a: 'A focused campaign pack moves quickly once dialer access and openers are clear — often days, not months, for a single lane.',
+    a: 'A focused campaign script set moves quickly once dialer access and required questions are clear — often days, not months, for a single lane.',
   },
   {
     id: 'qa',
@@ -108,7 +163,7 @@ const topics = ['All', ...Array.from(new Set(faqs.map((f) => f.topic)))];
 
 <BaseLayout
   title="FAQs | Dialer Bot"
-  description="FAQs on Dialer Bot pricing, warm handoff, ACA and dispatch bots, dialer support, demo access, go-live speed, and Islamabad office contact."
+  description="FAQs on Dialer Bot: what the AI voice bot does, call detection, lead qualification, live transfer to a human closer, dispositions, DNC, PC dialer support, pricing per bot, and contact."
   jsonLd={[
     breadcrumbJsonLd([
       { name: 'Home', path: '/' },
